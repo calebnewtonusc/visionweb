@@ -712,7 +712,7 @@ export default function TTSSite() {
                   <div
                     style={{
                       fontSize: 12,
-                      color: "#52525b",
+                      color: "#a1a1aa",
                       marginTop: 4,
                       textTransform: "uppercase",
                       letterSpacing: "0.08em",
@@ -731,7 +731,7 @@ export default function TTSSite() {
               bottom: 32,
               left: "50%",
               transform: "translateX(-50%)",
-              color: "#3f3f46",
+              color: "#71717a",
             }}
           >
             <ChevronDown size={20} className="animate-bounce" />
@@ -900,7 +900,7 @@ export default function TTSSite() {
                     {title}
                   </h3>
                   <p
-                    style={{ fontSize: 14, color: "#52525b", lineHeight: 1.7 }}
+                    style={{ fontSize: 14, color: "#a1a1aa", lineHeight: 1.7 }}
                   >
                     {body}
                   </p>
@@ -957,7 +957,7 @@ export default function TTSSite() {
               >
                 Three tracks. One community.
               </h2>
-              <p style={{ fontSize: 16, color: "#52525b" }}>
+              <p style={{ fontSize: 16, color: "#a1a1aa" }}>
                 You can switch. Most people end up doing two.
               </p>
             </div>
@@ -1150,7 +1150,7 @@ export default function TTSSite() {
               >
                 How TTS actually runs
               </h2>
-              <p style={{ fontSize: 16, color: "#52525b" }}>
+              <p style={{ fontSize: 16, color: "#a1a1aa" }}>
                 Consistent rhythm. Real output. No fluff.
               </p>
             </div>
@@ -1179,7 +1179,7 @@ export default function TTSSite() {
                   desc: "Co-working. Build, get mentorship, or help onboard someone. Always staffed by e-board.",
                 },
                 {
-                  accent: "#52525b",
+                  accent: "#a1a1aa",
                   day: "Sunday",
                   time: "E-board only",
                   label: "Leadership Sync",
@@ -1227,7 +1227,7 @@ export default function TTSSite() {
                     <span
                       style={{
                         fontSize: 11,
-                        color: "#3f3f46",
+                        color: "#71717a",
                         padding: "3px 8px",
                         borderRadius: 6,
                         background: "#1a1a1e",
@@ -1248,7 +1248,7 @@ export default function TTSSite() {
                     {label}
                   </h3>
                   <p
-                    style={{ fontSize: 14, color: "#52525b", lineHeight: 1.7 }}
+                    style={{ fontSize: 14, color: "#a1a1aa", lineHeight: 1.7 }}
                   >
                     {desc}
                   </p>
@@ -1507,7 +1507,7 @@ export default function TTSSite() {
                           alignItems: "flex-start",
                           gap: 10,
                           fontSize: 13,
-                          color: "#52525b",
+                          color: "#a1a1aa",
                         }}
                       >
                         <div
@@ -1515,7 +1515,7 @@ export default function TTSSite() {
                             width: 4,
                             height: 4,
                             borderRadius: "50%",
-                            background: "#3f3f46",
+                            background: "#71717a",
                             flexShrink: 0,
                             marginTop: 6,
                           }}
@@ -1583,7 +1583,7 @@ export default function TTSSite() {
               className="tts-fade"
               style={{
                 fontSize: 16,
-                color: "#52525b",
+                color: "#a1a1aa",
                 lineHeight: 1.75,
                 marginBottom: 48,
               }}
@@ -1626,7 +1626,7 @@ export default function TTSSite() {
                         margin: "0 auto 8px",
                         fontSize: 11,
                         fontWeight: 800,
-                        color: i === 0 ? "#fff" : "#3f3f46",
+                        color: i === 0 ? "#fff" : "#71717a",
                       }}
                     >
                       {num}
@@ -1634,7 +1634,7 @@ export default function TTSSite() {
                     <div
                       style={{
                         fontSize: 11,
-                        color: i === 0 ? "#a1a1aa" : "#3f3f46",
+                        color: i === 0 ? "#a1a1aa" : "#71717a",
                         whiteSpace: "nowrap",
                       }}
                     >
@@ -1809,7 +1809,7 @@ export default function TTSSite() {
                       {val}
                     </div>
                     <div
-                      style={{ fontSize: 11, color: "#52525b", marginTop: 3 }}
+                      style={{ fontSize: 11, color: "#a1a1aa", marginTop: 3 }}
                     >
                       {label}
                     </div>
@@ -1844,7 +1844,7 @@ export default function TTSSite() {
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
-                color: "#52525b",
+                color: "#a1a1aa",
                 fontSize: 13,
               }}
             >
@@ -1867,7 +1867,7 @@ export default function TTSSite() {
             <div
               style={{
                 fontSize: 11,
-                color: "#52525b",
+                color: "#a1a1aa",
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
               }}
