@@ -184,7 +184,7 @@ export default function TTSSite() {
       wg.showPredictionPoints(false);
       setGazeActive(true);
       toast.success(
-        "Eye tracking on — look at a nav link for 1 sec to navigate",
+        "Eye tracking on. Look at a nav link for 1 second to navigate.",
         { id: "gaze", duration: 5000 },
       );
     } catch (err) {
@@ -603,9 +603,9 @@ export default function TTSSite() {
                 fontWeight: 400,
               }}
             >
-              Trojan Technology Solutions is USC&apos;s hands-on tech club. No
-              prerequisites. No gatekeeping. Just people who want to ship real
-              things.
+              Trojan Technology Solutions is USC&apos;s builder club. Open to
+              everyone. Come to ship products, solve client problems, and leave
+              college with proof of work.
             </p>
 
             <div
@@ -797,10 +797,9 @@ export default function TTSSite() {
                   lineHeight: 1.75,
                 }}
               >
-                Not another resume-padding org. Not another AI club that
-                doesn&apos;t ship anything. TTS is where you come to actually
-                build — products, client work, and career leverage — in one
-                semester.
+                Not another resume-padding org. Not another AI club that never
+                ships. TTS is where you build products, solve problems for
+                clients, and leave with something to show for it.
               </p>
             </div>
 
@@ -819,7 +818,7 @@ export default function TTSSite() {
                   accentDim: "rgba(204,0,0,0.1)",
                   num: "01",
                   title: "Startup Studio",
-                  body: "Build apps with AI, deploy live products, find real users — all in one semester. 6-week arcs from idea to shipped.",
+                  body: "Build with AI and deploy this semester. 6-week cycles from idea to shipped product with actual users.",
                 },
                 {
                   Icon: Briefcase,
@@ -827,7 +826,7 @@ export default function TTSSite() {
                   accentDim: "rgba(255,204,0,0.1)",
                   num: "02",
                   title: "Consulting Arm",
-                  body: "Solve real client problems with AI-first workflows. Real scope. Real deliverables. Strategic reps before you graduate.",
+                  body: "Work on actual client projects with AI. Full scope, full deliverables, full accountability before you graduate.",
                 },
                 {
                   Icon: Users,
@@ -835,7 +834,7 @@ export default function TTSSite() {
                   accentDim: "rgba(255,255,255,0.07)",
                   num: "03",
                   title: "Builder Community",
-                  body: "Anyone can join — no technical background required. Engineering, business, pre-med, design — all welcome.",
+                  body: "Anyone can join. Engineering, business, pre-med, design. No CS background needed. Curiosity is the only requirement.",
                 },
               ].map(({ Icon, accent, accentDim, num, title, body }) => (
                 <div
@@ -973,7 +972,7 @@ export default function TTSSite() {
                   items: [
                     "Build apps and tools with AI",
                     "Deploy live products this semester",
-                    "Find real users and iterate",
+                    "Find users and iterate fast",
                     "6-week arc to a shipped product",
                   ],
                 },
@@ -983,7 +982,7 @@ export default function TTSSite() {
                   title: "Consulting",
                   sub: "Client Work & Strategy",
                   items: [
-                    "Solve real problems for real clients",
+                    "Work on client projects with AI",
                     "AI-first research and analysis",
                     "Build and present deliverables",
                     "Get strategic reps before you graduate",
@@ -997,7 +996,7 @@ export default function TTSSite() {
                   items: [
                     "Apply AI directly to your major",
                     "Build your network intentionally",
-                    "Speaker series with real operators",
+                    "Speaker series with practitioners",
                     "Career positioning that actually works",
                   ],
                 },
@@ -1305,7 +1304,7 @@ export default function TTSSite() {
                 {[
                   "What TTS is and who it's for",
                   "Why AI changes everything before you graduate",
-                  "Pick your track — switch anytime",
+                  "Pick your track, switch anytime",
                   "Live vibe coding demo: ship something in 20 min",
                   "Join Discord, meet your cohort",
                   "Leave with a clear next action",
