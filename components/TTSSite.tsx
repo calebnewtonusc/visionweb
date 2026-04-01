@@ -62,6 +62,9 @@ export default function TTSSite() {
   const gazeDotRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const skewRef = useRef({ vel: 0, lastY: 0 });
   const mouseRef = useRef({ x: -100, y: -100 });
   const ringRef = useRef({ x: -100, y: -100 });
   const rafRef = useRef(0);
@@ -76,10 +79,19 @@ export default function TTSSite() {
     };
     document.addEventListener("mousemove", onMove);
     const tick = () => {
+      // Cursor ring lerp
       ringRef.current.x += (mouseRef.current.x - ringRef.current.x) * 0.13;
       ringRef.current.y += (mouseRef.current.y - ringRef.current.y) * 0.13;
       if (cursorRingRef.current) {
         cursorRingRef.current.style.transform = `translate(${ringRef.current.x - 16}px, ${ringRef.current.y - 16}px)`;
+      }
+      // Scroll velocity skew — physical scroll feel
+      const y = window.scrollY;
+      const rawVel = (y - skewRef.current.lastY) * 0.07;
+      skewRef.current.vel += (rawVel - skewRef.current.vel) * 0.1;
+      skewRef.current.lastY = y;
+      if (wrapperRef.current && Math.abs(skewRef.current.vel) > 0.001) {
+        wrapperRef.current.style.transform = `skewY(${skewRef.current.vel.toFixed(3)}deg)`;
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -94,10 +106,15 @@ export default function TTSSite() {
   useEffect(() => {
     const handle = () => {
       const scrollY = window.scrollY;
-      const nearBottom =
-        scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - 200;
+      const docH = document.documentElement.scrollHeight;
+      const winH = window.innerHeight;
+      const nearBottom = scrollY + winH >= docH - 200;
       setNavVisible(scrollY > 80 && !nearBottom);
+      // Reading progress bar — Zeigarnik Effect
+      if (progressBarRef.current) {
+        const pct = Math.min(scrollY / (docH - winH), 1);
+        progressBarRef.current.style.transform = `scaleX(${pct})`;
+      }
     };
     window.addEventListener("scroll", handle, { passive: true });
     return () => window.removeEventListener("scroll", handle);
@@ -112,7 +129,9 @@ export default function TTSSite() {
         }),
       { threshold: 0.08 },
     );
-    document.querySelectorAll(".tts-fade").forEach((el) => obs.observe(el));
+    document
+      .querySelectorAll(".tts-fade, .tts-slide")
+      .forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 
@@ -209,6 +228,24 @@ export default function TTSSite() {
         strategy="afterInteractive"
       />
 
+      {/* Reading progress bar — Zeigarnik Effect */}
+      <div
+        ref={progressBarRef}
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 2,
+          background: "linear-gradient(90deg, #CC0000 0%, #FFCC00 100%)",
+          transformOrigin: "left",
+          transform: "scaleX(0)",
+          zIndex: 10000,
+          pointerEvents: "none",
+        }}
+      />
+
       {/* Cursor dot */}
       <div
         ref={cursorDotRef}
@@ -265,12 +302,14 @@ export default function TTSSite() {
       />
 
       <div
+        ref={wrapperRef}
         style={{
           cursor: "none",
           background: "#09090b",
           minHeight: "100vh",
           fontFamily:
             "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          willChange: "transform",
         }}
       >
         {/* ── NAV ── scroll-aware: hidden at top, slides in after 80px */}
@@ -620,6 +659,7 @@ export default function TTSSite() {
             >
               <button
                 onClick={() => scrollTo("join")}
+                className="tts-apply-pulse"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -632,20 +672,19 @@ export default function TTSSite() {
                   fontWeight: 600,
                   border: "none",
                   cursor: "pointer",
-                  boxShadow: "0 8px 32px rgba(204,0,0,0.4)",
-                  transition: "all 0.15s",
+                  transition: "background 0.15s, transform 0.15s",
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.background =
                     "#aa0000";
                   (e.currentTarget as HTMLButtonElement).style.transform =
-                    "translateY(-1px)";
+                    "translateY(-2px) scale(1.02)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.background =
                     "#CC0000";
                   (e.currentTarget as HTMLButtonElement).style.transform =
-                    "translateY(0)";
+                    "translateY(0) scale(1)";
                 }}
               >
                 Apply Now <ArrowRight size={16} />
@@ -745,8 +784,9 @@ export default function TTSSite() {
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
             {/* Manifesto row */}
-            <div className="tts-fade" style={{ marginBottom: 80 }}>
+            <div style={{ marginBottom: 80 }}>
               <div
+                className="tts-fade"
                 style={{
                   display: "flex",
                   alignItems: "flex-start",
@@ -777,6 +817,7 @@ export default function TTSSite() {
                 </span>
               </div>
               <h2
+                className="tts-slide"
                 style={{
                   fontSize: "clamp(36px, 5vw, 64px)",
                   fontWeight: 900,
@@ -785,16 +826,19 @@ export default function TTSSite() {
                   lineHeight: 1.05,
                   maxWidth: 800,
                   margin: "0 0 24px",
+                  transitionDelay: "0.1s",
                 }}
               >
                 The club that exists to make you dangerous.
               </h2>
               <p
+                className="tts-fade"
                 style={{
                   fontSize: 17,
                   color: "#71717a",
                   maxWidth: 600,
                   lineHeight: 1.75,
+                  transitionDelay: "0.2s",
                 }}
               >
                 Not another resume-padding org. Not another AI club that never
@@ -836,7 +880,7 @@ export default function TTSSite() {
                   title: "Builder Community",
                   body: "Anyone can join. Engineering, business, pre-med, design. No CS background needed. Curiosity is the only requirement.",
                 },
-              ].map(({ Icon, accent, accentDim, num, title, body }) => (
+              ].map(({ Icon, accent, accentDim, num, title, body }, i) => (
                 <div
                   key={num}
                   className="tts-fade"
@@ -845,7 +889,9 @@ export default function TTSSite() {
                     borderRadius: 20,
                     border: "1px solid #1f1f23",
                     padding: "32px 28px",
-                    transition: "transform 0.2s",
+                    transition:
+                      "transform 0.2s, opacity 0.65s cubic-bezier(0.16,1,0.3,1), scale 0.65s cubic-bezier(0.16,1,0.3,1)",
+                    transitionDelay: `${i * 0.12}s`,
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLDivElement).style.transform =
@@ -916,8 +962,9 @@ export default function TTSSite() {
           style={{ background: "#09090b", padding: "120px 24px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-            <div className="tts-fade" style={{ marginBottom: 80 }}>
+            <div style={{ marginBottom: 80 }}>
               <div
+                className="tts-fade"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -947,17 +994,26 @@ export default function TTSSite() {
                 </span>
               </div>
               <h2
+                className="tts-slide"
                 style={{
                   fontSize: "clamp(32px, 4vw, 56px)",
                   fontWeight: 900,
                   color: "#fff",
                   letterSpacing: "-0.03em",
                   marginBottom: 16,
+                  transitionDelay: "0.1s",
                 }}
               >
                 Three tracks. One community.
               </h2>
-              <p style={{ fontSize: 16, color: "#a1a1aa" }}>
+              <p
+                className="tts-fade"
+                style={{
+                  fontSize: 16,
+                  color: "#a1a1aa",
+                  transitionDelay: "0.2s",
+                }}
+              >
                 You can switch. Most people end up doing two.
               </p>
             </div>
@@ -1000,7 +1056,7 @@ export default function TTSSite() {
                     "Career positioning that actually works",
                   ],
                 },
-              ].map(({ num, accent, title, sub, items }) => (
+              ].map(({ num, accent, title, sub, items }, i) => (
                 <div
                   key={num}
                   className="tts-fade"
@@ -1014,6 +1070,7 @@ export default function TTSSite() {
                     gap: 40,
                     alignItems: "center",
                     transition: "transform 0.2s",
+                    transitionDelay: `${i * 0.15}s`,
                   }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLDivElement).style.transform =
@@ -1109,8 +1166,9 @@ export default function TTSSite() {
           style={{ background: "#0d0d10", padding: "120px 24px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-            <div className="tts-fade" style={{ marginBottom: 80 }}>
+            <div style={{ marginBottom: 80 }}>
               <div
+                className="tts-fade"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -1140,17 +1198,26 @@ export default function TTSSite() {
                 </span>
               </div>
               <h2
+                className="tts-slide"
                 style={{
                   fontSize: "clamp(32px, 4vw, 56px)",
                   fontWeight: 900,
                   color: "#fff",
                   letterSpacing: "-0.03em",
                   marginBottom: 16,
+                  transitionDelay: "0.1s",
                 }}
               >
                 How TTS actually runs
               </h2>
-              <p style={{ fontSize: 16, color: "#a1a1aa" }}>
+              <p
+                className="tts-fade"
+                style={{
+                  fontSize: 16,
+                  color: "#a1a1aa",
+                  transitionDelay: "0.2s",
+                }}
+              >
                 Consistent rhythm. Real output. No fluff.
               </p>
             </div>
@@ -1185,7 +1252,7 @@ export default function TTSSite() {
                   label: "Leadership Sync",
                   desc: "Review wins and problems, plan Monday, assign owners, protect founder health.",
                 },
-              ].map(({ accent, day, time, label, desc }) => (
+              ].map(({ accent, day, time, label, desc }, i) => (
                 <div
                   key={day}
                   className="tts-fade"
@@ -1195,6 +1262,7 @@ export default function TTSSite() {
                     border: "1px solid #1f1f23",
                     padding: "32px 28px",
                     transition: "transform 0.2s",
+                    transitionDelay: `${i * 0.12}s`,
                   }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLDivElement).style.transform =
@@ -1351,8 +1419,9 @@ export default function TTSSite() {
           style={{ background: "#09090b", padding: "120px 24px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-            <div className="tts-fade" style={{ marginBottom: 80 }}>
+            <div style={{ marginBottom: 80 }}>
               <div
+                className="tts-fade"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -1382,11 +1451,13 @@ export default function TTSSite() {
                 </span>
               </div>
               <h2
+                className="tts-slide"
                 style={{
                   fontSize: "clamp(32px, 4vw, 56px)",
                   fontWeight: 900,
                   color: "#fff",
                   letterSpacing: "-0.03em",
+                  transitionDelay: "0.1s",
                 }}
               >
                 Built by builders
@@ -1428,7 +1499,7 @@ export default function TTSSite() {
                     "Community culture and recruiting",
                   ],
                 },
-              ].map(({ initials, accent, accentDim, name, role, owns }) => (
+              ].map(({ initials, accent, accentDim, name, role, owns }, i) => (
                 <div
                   key={name}
                   className="tts-fade"
@@ -1438,6 +1509,7 @@ export default function TTSSite() {
                     border: "1px solid #1f1f23",
                     padding: "36px 32px",
                     transition: "transform 0.2s",
+                    transitionDelay: `${i * 0.15}s`,
                   }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLDivElement).style.transform =

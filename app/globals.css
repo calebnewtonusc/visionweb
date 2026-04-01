@@ -141,23 +141,52 @@ body,
     Roboto,
     sans-serif !important;
 }
-/* Scroll reveal */
+/* Scroll reveal — fade up + scale */
 .tts-fade {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(28px) scale(0.97);
   transition:
     opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .tts-fade.tts-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
-.tts-fade:nth-child(2) {
-  transition-delay: 0.1s;
+
+/* Scroll reveal — horizontal slide (for section headings) */
+.tts-slide {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.tts-fade:nth-child(3) {
-  transition-delay: 0.2s;
+.tts-slide.tts-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Von Restorff — Apply button pulse ring */
+@keyframes tts-pulse-ring {
+  0% {
+    box-shadow:
+      0 8px 32px rgba(204, 0, 0, 0.45),
+      0 0 0 0 rgba(204, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow:
+      0 8px 32px rgba(204, 0, 0, 0.45),
+      0 0 0 14px rgba(204, 0, 0, 0);
+  }
+  100% {
+    box-shadow:
+      0 8px 32px rgba(204, 0, 0, 0.45),
+      0 0 0 0 rgba(204, 0, 0, 0);
+  }
+}
+.tts-apply-pulse {
+  animation: tts-pulse-ring 2.2s ease-out infinite;
 }
 
 /* Force-hide all WebGazer DOM elements */
