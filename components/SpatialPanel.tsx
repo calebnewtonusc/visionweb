@@ -15,6 +15,7 @@ interface Props {
 }
 
 export function SpatialPanel({
+  id,
   title,
   initialX,
   initialY,
@@ -29,7 +30,7 @@ export function SpatialPanel({
       (typeof window !== "undefined" ? window.innerWidth / 2 - width / 2 : 100),
     y: initialY ?? 120,
   });
-  const [scale, setScale] = useState(1);
+  const scale = 1;
   const dragRef = useRef<{ dragging: boolean; offX: number; offY: number }>({
     dragging: false,
     offX: 0,
@@ -67,6 +68,7 @@ export function SpatialPanel({
 
   return (
     <div
+      id={id}
       data-gaze-target="true"
       className="fixed z-[100] rounded-2xl shadow-[0_32px_80px_rgba(0,0,0,0.5)] transition-[border-color,box-shadow] duration-200"
       style={{

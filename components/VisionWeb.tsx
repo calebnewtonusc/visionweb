@@ -29,7 +29,7 @@ interface PanelDef {
   content: "welcome" | "gestures" | "focus" | "about";
 }
 
-// ── Focus engine ───────────────────────────────────────────────────────────
+// ── Focus engine (module-level, not React state) ───────────────────────────
 const STABILITY_MS = 180;
 const SWITCH_DIST = 60;
 let _feCurrent: Element | null = null;
@@ -60,7 +60,6 @@ function feUpdate(x: number, y: number, now: number) {
     }
   }
 
-  // sticky current target
   if (_feCurrent && best !== _feCurrent) {
     const r = _feCurrent.getBoundingClientRect();
     if (
@@ -81,13 +80,15 @@ function feUpdate(x: number, y: number, now: number) {
     _feCurrent?.classList.add("gaze-focus");
   }
 
-  const dwellProgress = _feCurrent
-    ? Math.min((now - _feDwellStart) / _feDwellMs, 1)
-    : 0;
-  return { target: _feCurrent, dwellProgress };
+  return {
+    target: _feCurrent,
+    dwellProgress: _feCurrent
+      ? Math.min((now - _feDwellStart) / _feDwellMs, 1)
+      : 0,
+  };
 }
 
-// ── Panel content ──────────────────────────────────────────────────────────
+// ── Panel content components ───────────────────────────────────────────────
 function WelcomeContent() {
   return (
     <div className="space-y-3">
@@ -116,7 +117,7 @@ function WelcomeContent() {
 }
 
 function GestureContent() {
-  const rows = [
+  const rows: [string, string, string][] = [
     ["Pinch", "Index + thumb close", "Select / click"],
     ["Hold pinch", "Hold 220ms", "Long press"],
     ["Drag", "Pinch + move", "Reposition panel"],
@@ -154,14 +155,16 @@ function FocusContent({
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-2">
-        {[
-          ["Gaze", gazeActive ? "Active" : "Off", gazeActive],
-          ["Hands", handsActive ? "Active" : "Off", handsActive],
-          ["FPS", fps.toString(), fps > 20],
-          ["Dwell", "1200ms", true],
-        ].map(([label, val, ok]) => (
+        {(
+          [
+            ["Gaze", gazeActive ? "Active" : "Off", gazeActive],
+            ["Hands", handsActive ? "Active" : "Off", handsActive],
+            ["FPS", String(fps), fps > 20],
+            ["Dwell", "1200ms", true],
+          ] as [string, string, boolean][]
+        ).map(([label, val, ok]) => (
           <div
-            key={label as string}
+            key={label}
             className="rounded-xl p-3 bg-white/[0.04] border border-white/[0.06]"
           >
             <div className="text-[10px] text-zinc-500 mb-1">{label}</div>
@@ -200,7 +203,6 @@ function AboutContent() {
 
 // ── Main component ─────────────────────────────────────────────────────────
 export default function VisionWeb() {
-  const [webgazerReady, setWebgazerReady] = useState(false);
   const [stage, setStage] = useState<"permission" | "calibration" | "app">(
     "permission",
   );
@@ -214,6 +216,7 @@ export default function VisionWeb() {
   const [calProgress, setCalProgress] = useState(0);
   const [panels, setPanels] = useState<PanelDef[]>([]);
   const [navVisible, setNavVisible] = useState(false);
+  const [dwellMs, setDwellMs] = useState(1200);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const pinchLeft = useRef(new PinchDetector());
@@ -223,6 +226,16 @@ export default function VisionWeb() {
   const gestureRecRef = useRef<unknown>(null);
   const animIdRef = useRef<number>(0);
   const lastVideoTime = useRef(-1);
+  // FIX #2: track WebGazer load state as a ref (not state) to avoid re-renders
+  const webgazerReadyRef = useRef(false);
+  // FIX #5: guard against double-init
+  const gazeStartedRef = useRef(false);
+  const handsStartedRef = useRef(false);
+
+  // Sync dwell time to focus engine
+  useEffect(() => {
+    _feDwellMs = dwellMs;
+  }, [dwellMs]);
 
   // Scroll-aware navbar
   useEffect(() => {
@@ -259,19 +272,41 @@ export default function VisionWeb() {
     }
   }, []);
 
-  // Init WebGazer
+  // Init WebGazer — FIX #2: wait for webgazer to be ready
   const startGaze = useCallback(async () => {
-    const wg = (window as unknown as { webgazer?: unknown }).webgazer as {
-      setGazeListener: (fn: (d: { x: number; y: number } | null) => void) => {
-        begin: () => Promise<void>;
-      };
-      showVideo: (v: boolean) => void;
-      showFaceOverlay: (v: boolean) => void;
-      showFaceFeedbackBox: (v: boolean) => void;
-      showPredictionPoints: (v: boolean) => void;
-    };
-    if (!wg) return;
+    // FIX #5: guard double-init
+    if (gazeStartedRef.current) return;
+
+    // Wait up to 5s for WebGazer script to load
+    let waited = 0;
+    while (!webgazerReadyRef.current && waited < 5000) {
+      await new Promise((r) => setTimeout(r, 100));
+      waited += 100;
+      // also check if webgazer is actually on window
+      if ((window as unknown as Record<string, unknown>).webgazer) {
+        webgazerReadyRef.current = true;
+      }
+    }
+
+    const wg = (window as unknown as { webgazer?: unknown }).webgazer as
+      | {
+          setGazeListener: (
+            fn: (d: { x: number; y: number } | null) => void,
+          ) => { begin: () => Promise<void> };
+          showVideo: (v: boolean) => void;
+          showFaceOverlay: (v: boolean) => void;
+          showFaceFeedbackBox: (v: boolean) => void;
+          showPredictionPoints: (v: boolean) => void;
+        }
+      | undefined;
+
+    if (!wg) {
+      toast.error("WebGazer failed to load. Check your connection.");
+      return;
+    }
+
     try {
+      gazeStartedRef.current = true;
       await wg
         .setGazeListener((data) => {
           if (!data) return;
@@ -287,94 +322,99 @@ export default function VisionWeb() {
       wg.showPredictionPoints(false);
       setGazeActive(true);
     } catch {
+      gazeStartedRef.current = false;
       toast.error("Eye tracking failed to start.");
     }
   }, []);
 
   // Init MediaPipe hands
   const startHands = useCallback(async () => {
+    // FIX #5: guard double-init
+    if (handsStartedRef.current) return;
     if (!videoRef.current) return;
-    const { GestureRecognizer, FilesetResolver, DrawingUtils } = await import(
-      // @ts-expect-error CDN dynamic import
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs"
-    );
-    const vision = await FilesetResolver.forVisionTasks(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm",
-    );
-    const rec = await GestureRecognizer.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath:
-          "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
-        delegate: "GPU",
-      },
-      runningMode: "VIDEO",
-      numHands: 2,
-    });
-    gestureRecRef.current = rec;
-    (window as unknown as Record<string, unknown>)._GestureRecognizer =
-      GestureRecognizer;
-    (window as unknown as Record<string, unknown>)._DrawingUtils = DrawingUtils;
-    setHandsActive(true);
 
-    const video = videoRef.current;
-    function loop() {
-      animIdRef.current = requestAnimationFrame(loop);
-      if (!video || video.readyState < 2) return;
-      if (video.currentTime === lastVideoTime.current) return;
-      lastVideoTime.current = video.currentTime;
+    handsStartedRef.current = true;
+    try {
+      const { GestureRecognizer, FilesetResolver } = await import(
+        // @ts-expect-error CDN dynamic import
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs"
+      );
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm",
+      );
+      const rec = await GestureRecognizer.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
+          delegate: "GPU",
+        },
+        runningMode: "VIDEO",
+        numHands: 2,
+      });
+      gestureRecRef.current = rec;
+      setHandsActive(true);
 
-      const now = performance.now();
-      fpsFrames.current++;
-      if (now - fpsLast.current >= 1000) {
-        setFps(fpsFrames.current);
-        fpsFrames.current = 0;
-        fpsLast.current = now;
-      }
+      const video = videoRef.current;
+      function loop() {
+        animIdRef.current = requestAnimationFrame(loop);
+        if (!video || video.readyState < 2) return;
+        if (video.currentTime === lastVideoTime.current) return;
+        lastVideoTime.current = video.currentTime;
 
-      try {
-        const results = (
-          gestureRecRef.current as {
-            recognizeForVideo: (
-              v: HTMLVideoElement,
-              t: number,
-            ) => {
-              landmarks?: { x: number; y: number; z?: number }[][];
-              handednesses?: { categoryName: string }[][];
-            };
-          }
-        ).recognizeForVideo(video, now);
-        if (results.landmarks) {
-          results.landmarks.forEach((lm, i) => {
-            const side =
-              results.handednesses?.[i]?.[0]?.categoryName?.toLowerCase() ??
-              "right";
-            if (side === "left") pinchLeft.current.update(lm, now);
-            else pinchRight.current.update(lm, now);
-          });
-        } else {
-          pinchLeft.current.update(null, now);
-          pinchRight.current.update(null, now);
+        const now = performance.now();
+        fpsFrames.current++;
+        if (now - fpsLast.current >= 1000) {
+          setFps(fpsFrames.current);
+          fpsFrames.current = 0;
+          fpsLast.current = now;
         }
-      } catch {
-        /* ignore frame errors */
+
+        try {
+          const results = (
+            gestureRecRef.current as {
+              recognizeForVideo: (
+                v: HTMLVideoElement,
+                t: number,
+              ) => {
+                landmarks?: { x: number; y: number; z?: number }[][];
+                handednesses?: { categoryName: string }[][];
+              };
+            }
+          ).recognizeForVideo(video, now);
+
+          if (results.landmarks) {
+            results.landmarks.forEach((lm, i) => {
+              const side =
+                results.handednesses?.[i]?.[0]?.categoryName?.toLowerCase() ??
+                "right";
+              if (side === "left") pinchLeft.current.update(lm, now);
+              else pinchRight.current.update(lm, now);
+            });
+          } else {
+            pinchLeft.current.update(null, now);
+            pinchRight.current.update(null, now);
+          }
+        } catch {
+          /* ignore per-frame errors */
+        }
       }
+      loop();
+    } catch {
+      handsStartedRef.current = false;
+      toast.error("Hand tracking failed to initialize.");
     }
-    loop();
   }, []);
 
-  // Permission granted
   const handlePermissionGrant = useCallback(async () => {
     const ok = await startCamera();
     if (!ok) return;
     setStage("calibration");
   }, [startCamera]);
 
-  // Calibration done
+  // FIX #4: proper calibration done — only starts tracking, doesn't skip calibration
   const handleCalibrationDone = useCallback(async () => {
     setStage("app");
-    await startGaze();
-    await startHands();
-    // Spawn initial panels
+    await Promise.all([startGaze(), startHands()]);
     setPanels([
       { id: "welcome", title: "Welcome", x: 60, y: 100, content: "welcome" },
       {
@@ -387,6 +427,13 @@ export default function VisionWeb() {
       { id: "focus", title: "System Status", x: 820, y: 100, content: "focus" },
     ]);
   }, [startGaze, startHands]);
+
+  // FIX #4: recalibrate goes back to calibration screen properly
+  const handleRecalibrate = useCallback(() => {
+    setCalProgress(0);
+    setSettingsOpen(false);
+    setStage("calibration");
+  }, []);
 
   const closePanel = useCallback((id: string) => {
     setPanels((p) => p.filter((panel) => panel.id !== id));
@@ -409,8 +456,7 @@ export default function VisionWeb() {
     [],
   );
 
-  // Calibration points
-  const CAL_POINTS = [
+  const CAL_POINTS: [number, number][] = [
     [10, 10],
     [50, 10],
     [90, 10],
@@ -441,12 +487,37 @@ export default function VisionWeb() {
     }
   };
 
+  // ── Toolbar items ──────────────────────────────────────────────────────
+  type ToolbarItem = [
+    React.ComponentType<{ size: number; className?: string }>,
+    string,
+    boolean,
+    (() => void) | null,
+  ];
+  const toolbarItems: ToolbarItem[] = [
+    [Eye, "Gaze", gazeActive, null],
+    [Hand, "Hands", handsActive, null],
+    [Plus, "New Panel", true, () => addPanel("about", "About VisionWeb")],
+    [
+      LayoutGrid,
+      "Gestures",
+      true,
+      () => addPanel("gestures", "Gesture Reference"),
+    ],
+    [BookOpen, "Status", true, () => addPanel("focus", "System Status")],
+    [Settings, "Settings", true, () => setSettingsOpen((s) => !s)],
+    [Bug, "Debug", true, () => setDebugOpen((s) => !s)],
+  ];
+
   return (
     <>
-      {/* Load WebGazer */}
+      {/* FIX #2: mark WebGazer as ready when script loads */}
       <Script
         src="https://webgazer.cs.brown.edu/webgazer.js"
-        onReady={() => setWebgazerReady(true)}
+        strategy="afterInteractive"
+        onReady={() => {
+          webgazerReadyRef.current = true;
+        }}
       />
 
       {/* Hidden camera video */}
@@ -499,23 +570,32 @@ export default function VisionWeb() {
               VisionWeb uses your webcam to track your eyes and hands.
               Everything runs locally on your device.
             </p>
+            {/* FIX #1: use explicit static classes, not dynamic template literals */}
             <div className="space-y-2.5 mb-7 text-left">
-              {[
-                [Eye, "Eye tracking via WebGazer.js", "indigo"],
-                [Hand, "Hand gestures via MediaPipe", "violet"],
-                [Zap, "Zero data leaves your device", "emerald"],
-              ].map(([Icon, label, color]) => (
-                <div key={label as string} className="flex items-center gap-3">
-                  <div
-                    className={`w-8 h-8 rounded-xl bg-${color}-500/10 flex items-center justify-center flex-shrink-0`}
-                  >
-                    <Icon size={15} className={`text-${color}-400`} />
-                  </div>
-                  <span className="text-sm text-zinc-300">
-                    {label as string}
-                  </span>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+                  <Eye size={15} className="text-indigo-400" />
                 </div>
-              ))}
+                <span className="text-sm text-zinc-300">
+                  Eye tracking via WebGazer.js
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                  <Hand size={15} className="text-violet-400" />
+                </div>
+                <span className="text-sm text-zinc-300">
+                  Hand gestures via MediaPipe
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                  <Zap size={15} className="text-emerald-400" />
+                </div>
+                <span className="text-sm text-zinc-300">
+                  Zero data leaves your device
+                </span>
+              </div>
             </div>
             <button
               onClick={handlePermissionGrant}
@@ -532,7 +612,7 @@ export default function VisionWeb() {
 
       {/* ── CALIBRATION ── */}
       {stage === "calibration" && (
-        <div className="fixed inset-0 z-[9990] flex flex-col items-center justify-center bg-zinc-950/97">
+        <div className="fixed inset-0 z-[9990] flex flex-col items-center justify-center bg-zinc-950">
           <div className="text-center mb-8">
             <div className="text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-3">
               Eye Tracking Calibration
@@ -562,9 +642,12 @@ export default function VisionWeb() {
                   btn.style.background = "#22c55e";
                   btn.style.boxShadow = "0 0 24px rgba(34,197,94,0.8)";
                   btn.disabled = true;
-                  const next = calProgress + 1;
-                  setCalProgress(next);
-                  if (next >= 9) setTimeout(handleCalibrationDone, 500);
+                  // FIX #3: use functional update to avoid stale closure
+                  setCalProgress((prev) => {
+                    const next = prev + 1;
+                    if (next >= 9) setTimeout(handleCalibrationDone, 500);
+                    return next;
+                  });
                 }}
               />
             ))}
@@ -585,8 +668,7 @@ export default function VisionWeb() {
           <div
             className="fixed inset-0 -z-10"
             style={{
-              background:
-                "radial-gradient(ellipse at top, rgba(99,102,241,0.12) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(139,92,246,0.08) 0%, transparent 60%), #09090b",
+              background: "#09090b",
               backgroundImage:
                 "radial-gradient(ellipse at top, rgba(99,102,241,0.12), transparent 60%), radial-gradient(ellipse at bottom right, rgba(139,92,246,0.08), transparent 60%), radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
               backgroundSize: "100% 100%, 100% 100%, 32px 32px",
@@ -595,42 +677,12 @@ export default function VisionWeb() {
 
           {/* Toolbar */}
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 glass rounded-2xl px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-            {(
-              [
-                [Eye, "Gaze", gazeActive, null],
-                [Hand, "Hands", handsActive, null],
-                [
-                  Plus,
-                  "New Panel",
-                  true,
-                  () => addPanel("about", "About VisionWeb"),
-                ],
-                [
-                  LayoutGrid,
-                  "Gestures",
-                  true,
-                  () => addPanel("gestures", "Gesture Reference"),
-                ],
-                [
-                  BookOpen,
-                  "Status",
-                  true,
-                  () => addPanel("focus", "System Status"),
-                ],
-                [Settings, "Settings", true, () => setSettingsOpen((s) => !s)],
-                [Bug, "Debug", true, () => setDebugOpen((s) => !s)],
-              ] as [
-                React.ComponentType<{ size: number; className?: string }>,
-                string,
-                boolean,
-                (() => void) | null,
-              ][]
-            ).map(([Icon, label, active, action]) => (
+            {toolbarItems.map(([Icon, label, active, action]) => (
               <button
                 key={label}
                 onClick={action ?? undefined}
                 title={label}
-                className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all duration-150 cursor-pointer ${action ? "hover:bg-white/[0.1] active:scale-95" : "cursor-default"}`}
+                className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all duration-150 ${action ? "hover:bg-white/[0.1] active:scale-95 cursor-pointer" : "cursor-default"}`}
               >
                 <Icon
                   size={16}
@@ -647,13 +699,14 @@ export default function VisionWeb() {
 
           {/* Gaze cursor */}
           <div
-            className="fixed pointer-events-none z-[9000] transition-[opacity] duration-200"
+            className="fixed pointer-events-none z-[9000]"
             style={{
               left: gazePos.x - 12,
               top: gazePos.y - 12,
               width: 24,
               height: 24,
               opacity: gazeActive ? 1 : 0,
+              transition: "opacity 0.2s",
             }}
           >
             <div className="w-6 h-6 rounded-full border-2 border-indigo-400/70 bg-indigo-400/10" />
@@ -698,48 +751,24 @@ export default function VisionWeb() {
               <div className="text-zinc-400 font-semibold text-[11px] mb-2 flex items-center gap-2">
                 <Bug size={12} /> Debug
               </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Gaze X</span>
-                <span className="text-zinc-200">{gazePos.x.toFixed(0)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Gaze Y</span>
-                <span className="text-zinc-200">{gazePos.y.toFixed(0)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">FPS</span>
-                <span
-                  className={fps > 20 ? "text-emerald-400" : "text-red-400"}
-                >
-                  {fps}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Eye tracking</span>
-                <span
-                  className={gazeActive ? "text-emerald-400" : "text-zinc-600"}
-                >
-                  {gazeActive ? "ON" : "OFF"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Hands</span>
-                <span
-                  className={handsActive ? "text-emerald-400" : "text-zinc-600"}
-                >
-                  {handsActive ? "ON" : "OFF"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Dwell</span>
-                <span className="text-zinc-200">
-                  {(dwellProgress * 100).toFixed(0)}%
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Panels</span>
-                <span className="text-zinc-200">{panels.length}</span>
-              </div>
+              {(
+                [
+                  ["Gaze X", gazePos.x.toFixed(0), true],
+                  ["Gaze Y", gazePos.y.toFixed(0), true],
+                  ["FPS", String(fps), fps > 20],
+                  ["Eye tracking", gazeActive ? "ON" : "OFF", gazeActive],
+                  ["Hands", handsActive ? "ON" : "OFF", handsActive],
+                  ["Dwell", `${(dwellProgress * 100).toFixed(0)}%`, true],
+                  ["Panels", String(panels.length), true],
+                ] as [string, string, boolean][]
+              ).map(([label, val, ok]) => (
+                <div key={label} className="flex justify-between">
+                  <span className="text-zinc-500">{label}</span>
+                  <span className={ok ? "text-zinc-200" : "text-zinc-600"}>
+                    {val}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
 
@@ -757,19 +786,18 @@ export default function VisionWeb() {
               </div>
               <div className="space-y-4 text-xs text-zinc-400">
                 <div>
+                  {/* FIX #6: dwellMs is React state so it updates in UI */}
                   <div className="flex justify-between mb-1">
                     <span>Dwell time</span>
-                    <span className="text-zinc-300">{_feDwellMs}ms</span>
+                    <span className="text-zinc-300">{dwellMs}ms</span>
                   </div>
                   <input
                     type="range"
                     min={400}
                     max={3000}
                     step={100}
-                    defaultValue={1200}
-                    onChange={(e) => {
-                      _feDwellMs = parseInt(e.target.value);
-                    }}
+                    value={dwellMs}
+                    onChange={(e) => setDwellMs(parseInt(e.target.value))}
                     className="w-full accent-indigo-500 cursor-pointer"
                   />
                 </div>
@@ -777,16 +805,17 @@ export default function VisionWeb() {
                   <span>Debug overlay</span>
                   <button
                     onClick={() => setDebugOpen((s) => !s)}
-                    className={`w-10 h-5 rounded-full transition-colors duration-200 cursor-pointer ${debugOpen ? "bg-indigo-600" : "bg-zinc-700"}`}
+                    className={`relative w-10 h-5 rounded-full transition-colors duration-200 cursor-pointer ${debugOpen ? "bg-indigo-600" : "bg-zinc-700"}`}
                   >
                     <div
-                      className={`w-4 h-4 rounded-full bg-white mx-0.5 transition-transform duration-200 ${debugOpen ? "translate-x-5" : "translate-x-0"}`}
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all duration-200 ${debugOpen ? "left-5" : "left-0.5"}`}
                     />
                   </button>
                 </div>
                 <div className="pt-2 border-t border-white/[0.06]">
+                  {/* FIX #4: recalibrate goes back to calibration screen */}
                   <button
-                    onClick={handleCalibrationDone}
+                    onClick={handleRecalibrate}
                     className="w-full text-xs text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
                   >
                     Recalibrate eye tracking
