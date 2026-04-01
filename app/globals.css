@@ -189,6 +189,62 @@ body,
   animation: tts-pulse-ring 2.2s ease-out infinite;
 }
 
+/* Aesthetic-Usability Effect — card hover glow */
+.tts-card {
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease !important;
+}
+.tts-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Peak-End Rule — checkmark bounce in */
+@keyframes tts-check-bounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.tts-check-appear {
+  animation: tts-check-bounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Section nav dots */
+.tts-nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.tts-nav-dot:hover,
+.tts-nav-dot.active {
+  background: #ffffff;
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+}
+.tts-nav-dot.active {
+  background: #cc0000;
+}
+
 /* Force-hide all WebGazer DOM elements */
 #webgazerVideoContainer,
 #webgazerFaceOverlay,
@@ -219,4 +275,11 @@ video[id^="webgazer"] {
 }
 .panel-header:active {
   cursor: grabbing;
+}
+
+/* Spinner for email loading state */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

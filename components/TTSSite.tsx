@@ -11,6 +11,7 @@ import {
   Briefcase,
   Users,
   Globe,
+  Check,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -56,7 +57,9 @@ export default function TTSSite() {
   }>({ target: null, progress: 0 });
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
   const [navVisible, setNavVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
   const gazeStartedRef = useRef(false);
   const dwellFiredRef = useRef(false);
   const gazeDotRef = useRef<HTMLDivElement>(null);
@@ -132,6 +135,33 @@ export default function TTSSite() {
     document
       .querySelectorAll(".tts-fade, .tts-slide")
       .forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  // Section tracker — Law of Common Region (drives nav dots)
+  useEffect(() => {
+    const sectionIds = [
+      "hero",
+      "about",
+      "tracks",
+      "how-it-works",
+      "leadership",
+      "join",
+    ];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.intersectionRatio >= 0.3) {
+            setActiveSection(e.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
     return () => obs.disconnect();
   }, []);
 
@@ -245,6 +275,45 @@ export default function TTSSite() {
           pointerEvents: "none",
         }}
       />
+
+      {/* Section nav dots — Law of Common Region */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          right: 20,
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 100,
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        {(
+          [
+            "hero",
+            "about",
+            "tracks",
+            "how-it-works",
+            "leadership",
+            "join",
+          ] as const
+        ).map((id) => (
+          <button
+            key={id}
+            aria-label={`Scroll to ${id}`}
+            onClick={() => scrollTo(id)}
+            className={`tts-nav-dot${activeSection === id ? " active" : ""}`}
+            style={{
+              border: "none",
+              padding: 0,
+              background: "transparent",
+              cursor: "pointer",
+            }}
+          />
+        ))}
+      </div>
 
       {/* Cursor dot */}
       <div
@@ -532,6 +601,7 @@ export default function TTSSite() {
 
         {/* ── HERO ── */}
         <section
+          id="hero"
           style={{
             minHeight: "100vh",
             display: "flex",
@@ -883,23 +953,13 @@ export default function TTSSite() {
               ].map(({ Icon, accent, accentDim, num, title, body }, i) => (
                 <div
                   key={num}
-                  className="tts-fade"
+                  className="tts-fade tts-card"
                   style={{
                     background: "#111113",
                     borderRadius: 20,
                     border: "1px solid #1f1f23",
                     padding: "32px 28px",
-                    transition:
-                      "transform 0.2s, opacity 0.65s cubic-bezier(0.16,1,0.3,1), scale 0.65s cubic-bezier(0.16,1,0.3,1)",
                     transitionDelay: `${i * 0.12}s`,
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(-3px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(0)";
                   }}
                 >
                   <div
@@ -952,6 +1012,40 @@ export default function TTSSite() {
                   </p>
                 </div>
               ))}
+            </div>
+
+            {/* Hick's Law: one clear next action per section */}
+            <div style={{ textAlign: "center", marginTop: 64 }}>
+              <button
+                onClick={() => scrollTo("tracks")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "12px 24px",
+                  borderRadius: 12,
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#a1a1aa",
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.1)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.05)";
+                  (e.currentTarget as HTMLButtonElement).style.color =
+                    "#a1a1aa";
+                }}
+              >
+                See the tracks <ArrowRight size={14} />
+              </button>
             </div>
           </div>
         </section>
@@ -1059,7 +1153,7 @@ export default function TTSSite() {
               ].map(({ num, accent, title, sub, items }, i) => (
                 <div
                   key={num}
-                  className="tts-fade"
+                  className="tts-fade tts-card"
                   style={{
                     background: "#111113",
                     borderRadius: 20,
@@ -1069,7 +1163,6 @@ export default function TTSSite() {
                     gridTemplateColumns: "120px 1fr 1fr",
                     gap: 40,
                     alignItems: "center",
-                    transition: "transform 0.2s",
                     transitionDelay: `${i * 0.15}s`,
                   }}
                   onMouseEnter={(e) =>
@@ -1156,6 +1249,40 @@ export default function TTSSite() {
                   </ul>
                 </div>
               ))}
+            </div>
+
+            {/* Hick's Law: one clear next action per section */}
+            <div style={{ textAlign: "center", marginTop: 64 }}>
+              <button
+                onClick={() => scrollTo("how-it-works")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "12px 24px",
+                  borderRadius: 12,
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#a1a1aa",
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.1)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.05)";
+                  (e.currentTarget as HTMLButtonElement).style.color =
+                    "#a1a1aa";
+                }}
+              >
+                How it works <ArrowRight size={14} />
+              </button>
             </div>
           </div>
         </section>
@@ -1255,23 +1382,14 @@ export default function TTSSite() {
               ].map(({ accent, day, time, label, desc }, i) => (
                 <div
                   key={day}
-                  className="tts-fade"
+                  className="tts-fade tts-card"
                   style={{
                     background: "#111113",
                     borderRadius: 20,
                     border: "1px solid #1f1f23",
                     padding: "32px 28px",
-                    transition: "transform 0.2s",
                     transitionDelay: `${i * 0.12}s`,
                   }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(-3px)")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(0)")
-                  }
                 >
                   <div
                     style={{
@@ -1410,6 +1528,40 @@ export default function TTSSite() {
                 ))}
               </div>
             </div>
+
+            {/* Hick's Law: one clear next action per section */}
+            <div style={{ textAlign: "center", marginTop: 64 }}>
+              <button
+                onClick={() => scrollTo("leadership")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "12px 24px",
+                  borderRadius: 12,
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#a1a1aa",
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.1)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.05)";
+                  (e.currentTarget as HTMLButtonElement).style.color =
+                    "#a1a1aa";
+                }}
+              >
+                Meet the founders <ArrowRight size={14} />
+              </button>
+            </div>
           </div>
         </section>
 
@@ -1502,23 +1654,14 @@ export default function TTSSite() {
               ].map(({ initials, accent, accentDim, name, role, owns }, i) => (
                 <div
                   key={name}
-                  className="tts-fade"
+                  className="tts-fade tts-card"
                   style={{
                     background: "#111113",
                     borderRadius: 20,
                     border: "1px solid #1f1f23",
                     padding: "36px 32px",
-                    transition: "transform 0.2s",
                     transitionDelay: `${i * 0.15}s`,
                   }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(-3px)")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(0)")
-                  }
                 >
                   <div
                     style={{
@@ -1598,6 +1741,42 @@ export default function TTSSite() {
                   </ul>
                 </div>
               ))}
+            </div>
+
+            {/* Hick's Law: one clear next action per section */}
+            <div style={{ textAlign: "center", marginTop: 64 }}>
+              <button
+                onClick={() => scrollTo("join")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "12px 28px",
+                  borderRadius: 12,
+                  background: "#CC0000",
+                  border: "none",
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                  boxShadow: "0 4px 20px rgba(204,0,0,0.35)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "#aa0000";
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "#CC0000";
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "translateY(0)";
+                }}
+              >
+                Join TTS <ArrowRight size={14} />
+              </button>
             </div>
           </div>
         </section>
@@ -1777,7 +1956,7 @@ export default function TTSSite() {
               <div
                 style={{
                   borderTop: "1px solid #1f1f23",
-                  paddingTop: 16,
+                  paddingTop: 20,
                   marginBottom: 24,
                 }}
               >
@@ -1785,25 +1964,39 @@ export default function TTSSite() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      if (email.trim()) setEmailSubmitted(true);
+                      if (email.trim() && !emailLoading) {
+                        setEmailLoading(true);
+                        // Doherty Threshold: visible loading state
+                        setTimeout(() => {
+                          setEmailLoading(false);
+                          setEmailSubmitted(true);
+                        }, 700);
+                      }
                     }}
-                    style={{ display: "flex", gap: 8 }}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                    }}
                   >
+                    {/* Fitts's Law: stacked layout, full-width target */}
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Not ready yet? Leave your email"
                       required
+                      disabled={emailLoading}
                       style={{
-                        flex: 1,
-                        padding: "10px 14px",
+                        width: "100%",
+                        padding: "12px 14px",
                         borderRadius: 10,
                         background: "#0d0d10",
                         border: "1px solid #2a2a2e",
                         color: "#fff",
-                        fontSize: 13,
+                        fontSize: 14,
                         outline: "none",
+                        boxSizing: "border-box",
                       }}
                       onFocus={(e) => {
                         (
@@ -1818,45 +2011,86 @@ export default function TTSSite() {
                     />
                     <button
                       type="submit"
+                      disabled={emailLoading}
                       style={{
-                        padding: "10px 16px",
+                        width: "100%",
+                        padding: "12px 16px",
                         borderRadius: 10,
-                        background: "rgba(204,0,0,0.12)",
+                        background: emailLoading
+                          ? "rgba(204,0,0,0.08)"
+                          : "rgba(204,0,0,0.12)",
                         border: "1px solid rgba(204,0,0,0.25)",
-                        color: "#CC0000",
-                        fontSize: 13,
+                        color: emailLoading ? "#71717a" : "#CC0000",
+                        fontSize: 14,
                         fontWeight: 600,
-                        cursor: "pointer",
-                        whiteSpace: "nowrap",
+                        cursor: emailLoading ? "not-allowed" : "pointer",
                         transition: "all 0.15s",
-                      }}
-                      onMouseEnter={(e) => {
-                        (
-                          e.currentTarget as HTMLButtonElement
-                        ).style.background = "rgba(204,0,0,0.2)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (
-                          e.currentTarget as HTMLButtonElement
-                        ).style.background = "rgba(204,0,0,0.12)";
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
                       }}
                     >
-                      Notify me
+                      {emailLoading ? (
+                        <>
+                          <div
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: "50%",
+                              border: "2px solid rgba(204,0,0,0.2)",
+                              borderTopColor: "#CC0000",
+                              animation: "spin 0.7s linear infinite",
+                            }}
+                          />
+                          Saving...
+                        </>
+                      ) : (
+                        "Notify me"
+                      )}
                     </button>
                   </form>
                 ) : (
+                  /* Peak-End Rule: dramatic, memorable success moment */
                   <div
                     style={{
-                      padding: "10px 14px",
-                      borderRadius: 10,
-                      background: "rgba(255,204,0,0.06)",
-                      border: "1px solid rgba(255,204,0,0.15)",
-                      color: "#FFCC00",
-                      fontSize: 13,
+                      padding: "24px 20px",
+                      borderRadius: 16,
+                      background:
+                        "linear-gradient(135deg, rgba(204,0,0,0.08) 0%, rgba(255,204,0,0.06) 100%)",
+                      border: "1px solid rgba(255,204,0,0.2)",
                       textAlign: "center",
                     }}
                   >
-                    You&apos;re on the list. See you Week 3.
+                    <div
+                      className="tts-check-appear"
+                      style={{
+                        width: 52,
+                        height: 52,
+                        borderRadius: "50%",
+                        background: "rgba(255,204,0,0.1)",
+                        border: "2px solid #FFCC00",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto 16px",
+                      }}
+                    >
+                      <Check size={22} color="#FFCC00" strokeWidth={2.5} />
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 700,
+                        color: "#fff",
+                        marginBottom: 6,
+                      }}
+                    >
+                      You&apos;re on the list.
+                    </div>
+                    <div style={{ fontSize: 13, color: "#a1a1aa" }}>
+                      We&apos;ll reach out before Week 3. See you there.
+                    </div>
                   </div>
                 )}
               </div>
