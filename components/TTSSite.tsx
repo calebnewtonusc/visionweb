@@ -7,18 +7,11 @@ import {
   Eye,
   Zap,
   ArrowRight,
-  Code2,
-  Globe,
-  TrendingUp,
-  DollarSign,
-  Megaphone,
-  ShieldCheck,
-  Package,
-  MapPin,
-  BarChart3,
   Check,
   ChevronDown,
-  Users,
+  Hammer,
+  Briefcase,
+  Orbit,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -56,69 +49,51 @@ function gazeNavUpdate(x: number, y: number, now: number) {
 
 const ARC = 2 * Math.PI * 10;
 
-const SERVICES = [
+const TRACKS = [
   {
-    icon: Code2,
+    num: "01",
+    icon: Hammer,
     accent: "#CC0000",
-    title: "Technology",
-    sub: "Data, Dev & Engineering",
-    desc: "Data analysis, software engineering, and cutting-edge tech solutions integrated directly into your business operations.",
+    title: "Building",
+    sub: "Product & Startups",
+    tagline: "Ship something real this semester.",
+    items: [
+      "Build apps and tools with AI",
+      "Deploy live products with real users",
+      "6-week arc from idea to shipped",
+      "No CS background required",
+    ],
+    cta: "For: builders, entrepreneurs, anyone who wants to make something",
   },
   {
-    icon: Globe,
+    num: "02",
+    icon: Briefcase,
     accent: "#FFCC00",
-    title: "Web Services",
-    sub: "Design & Development",
-    desc: "Responsive, visually stunning websites that elevate your digital presence and drive real results for your brand.",
+    title: "Consulting",
+    sub: "Client Work & Strategy",
+    tagline: "Solve real problems for real organizations.",
+    items: [
+      "Work on live client engagements",
+      "AI-first research and analysis",
+      "Build and present real deliverables",
+      "Strategic reps before you graduate",
+    ],
+    cta: "For: business, econ, poli-sci, anyone going into strategy or ops",
   },
   {
-    icon: TrendingUp,
-    accent: "#CC0000",
-    title: "Strategy & Operations",
-    sub: "Growth & Efficiency",
-    desc: "Tailored strategies to streamline processes, optimize performance, and unlock lasting competitive advantage.",
-  },
-  {
-    icon: DollarSign,
-    accent: "#FFCC00",
-    title: "Finance",
-    sub: "Fintech & Financial Planning",
-    desc: "Navigate the evolving financial landscape with cutting-edge fintech solutions that streamline operations and enhance security.",
-  },
-  {
-    icon: Megaphone,
-    accent: "#CC0000",
-    title: "Marketing & Sales",
-    sub: "Growth & Conversion",
-    desc: "Targeted strategies that effectively engage and convert prospects, from digital campaigns to sales performance optimization.",
-  },
-  {
-    icon: ShieldCheck,
-    accent: "#FFCC00",
-    title: "Risk Management",
-    sub: "Protection & Resilience",
-    desc: "Proactive risk assessment and mitigation strategies to safeguard your operations, assets, and long-term success.",
-  },
-  {
-    icon: Package,
-    accent: "#CC0000",
-    title: "Product Management",
-    sub: "Build & Launch",
-    desc: "Develop, launch, and manage innovative products aligned with your strategic objectives and user needs.",
-  },
-  {
-    icon: MapPin,
-    accent: "#FFCC00",
-    title: "Market Entry",
-    sub: "Expansion Strategy",
-    desc: "Strategic market entry solutions for small firms looking to expand their reach into new territories and customer segments.",
-  },
-  {
-    icon: BarChart3,
-    accent: "#CC0000",
-    title: "Data Analytics",
-    sub: "Insights & Intelligence",
-    desc: "Unlock actionable insights from your data to drive informed decisions and uncover hidden growth opportunities.",
+    num: "03",
+    icon: Orbit,
+    accent: "#a1a1aa",
+    title: "Orbit",
+    sub: "Career & Network Acceleration",
+    tagline: "Use AI to get ahead in your own field.",
+    items: [
+      "Apply AI directly to your major",
+      "Access YC founders, McKinsey operators, and builders",
+      "Speaker series with real practitioners",
+      "Career positioning that actually works",
+    ],
+    cta: "For: pre-med, law, finance, architecture, any major",
   },
 ];
 
@@ -135,14 +110,14 @@ const TEAM = [
     name: "Emerson Kahle",
     title: "VP of Technology",
     headshot: "/img/headshots/em_shot.webp",
-    bio: "Emerson Kahle is a sophomore double majoring in Applied & Computational Mathematics and Computer Science. In his free time, Emerson enjoys playing soccer with friends and exploring the various applications of computer science.",
+    bio: "Emerson Kahle is a sophomore double majoring in Applied & Computational Mathematics and Computer Science. In his free time, Emerson enjoys playing soccer with friends and exploring the applications of computer science.",
   },
   {
     id: "matt",
     name: "Matthew Kim",
     title: "VP of Business Development",
     headshot: "/img/headshots/matt_shot.webp",
-    bio: "Matthew Kim is a sophomore studying Business Administration with minors in Cinematic Arts, Entertainment Industry, Communication Policy & Law. Born and raised in Koreatown Los Angeles, he wants to enter Management Consulting post-undergrad.",
+    bio: "Matthew Kim is a sophomore studying Business Administration with minors in Cinematic Arts, Entertainment Industry, Communication Policy & Law. Born and raised in Koreatown LA, he wants to enter Management Consulting post-undergrad.",
   },
   {
     id: "abhi",
@@ -156,7 +131,7 @@ const TEAM = [
     name: "Kelly Kim",
     title: "Director of Client Affairs",
     headshot: "/img/headshots/kelly_shot.webp",
-    bio: "Kelly is a sophomore majoring in Business Administration. She is involved in USC OWN IT, Marshall Outreach Volunteer Entrepreneurs, Scholars Leading Scholars, and Society of Women in Law.",
+    bio: "Kelly is a sophomore majoring in Business Administration, involved in USC OWN IT, Marshall Outreach Volunteer Entrepreneurs, Scholars Leading Scholars, and Society of Women in Law.",
   },
   {
     id: "roh",
@@ -177,35 +152,35 @@ const TEAM = [
     name: "Susan Nyirenda",
     title: "Director of Marketing",
     headshot: "/img/headshots/suz_shot.webp",
-    bio: "Susan Nyirenda leads the organization's brand presence and outreach efforts to connect small businesses and USC students with TTS's pro-bono consulting services.",
+    bio: "Susan Nyirenda leads TTS's brand presence and outreach efforts, connecting small businesses and USC students with pro-bono consulting services.",
   },
   {
     id: "ants",
     name: "Anthony Nasser",
     title: "Director of Mobile Development",
     headshot: "/img/headshots/ants_shot.webp",
-    bio: "Anthony Nasser is a senior studying Computer Science and Business Administration. He has helped various startups reach their product goals and has published 3 apps to both the App Store and Google Play Store.",
+    bio: "Anthony is a senior studying CS and Business Administration. He has helped various startups reach product goals and published 3 apps to both the App Store and Google Play Store.",
   },
   {
     id: "lois",
     name: "Lois Yoon",
     title: "Director of Web Development",
     headshot: "/img/headshots/lois_shot.webp",
-    bio: "Lois Yoon is a sophomore studying Business Administration with minors in Computer Programming and Web Development. She is passionate about reaching a global community through technological innovations.",
+    bio: "Lois Yoon is a sophomore studying Business Administration with minors in Computer Programming and Web Development, passionate about reaching a global community through tech.",
   },
   {
     id: "dave",
     name: "David Esquivel",
     title: "Director of Software Engineering",
     headshot: "/img/headshots/headshot.webp",
-    bio: "David Esquivel is a sophomore studying Computer Science. From Gainesville, GA, he is also a part of the Trojans FC soccer team, the ColorStack chapter at USC, and the USC Caruso Catholic Center.",
+    bio: "David Esquivel is a sophomore studying Computer Science. From Gainesville, GA, he is part of Trojans FC, ColorStack at USC, and the USC Caruso Catholic Center.",
   },
   {
     id: "beth",
     name: "Elizabeth Abbey",
     title: "Director of Data Analytics",
     headshot: "/img/headshots/beth_shot.webp",
-    bio: "Elizabeth Abbey has a passion for natural and holistic hair and skincare products, fitness, and travel. She channels her curiosity and creativity into data-driven problem-solving.",
+    bio: "Elizabeth Abbey channels curiosity and creativity into data-driven problem-solving, with a passion for holistic wellness, fitness, and travel.",
   },
 ];
 
@@ -351,7 +326,7 @@ export default function TTSSite() {
   const ringRef = useRef({ x: -100, y: -100 });
   const rafRef = useRef(0);
 
-  // Custom cursor
+  // Custom cursor + scroll velocity skew
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
@@ -361,13 +336,11 @@ export default function TTSSite() {
     };
     document.addEventListener("mousemove", onMove);
     const tick = () => {
-      // Cursor ring lerp
       ringRef.current.x += (mouseRef.current.x - ringRef.current.x) * 0.13;
       ringRef.current.y += (mouseRef.current.y - ringRef.current.y) * 0.13;
       if (cursorRingRef.current) {
         cursorRingRef.current.style.transform = `translate(${ringRef.current.x - 16}px, ${ringRef.current.y - 16}px)`;
       }
-      // Scroll velocity skew
       const y = window.scrollY;
       const rawVel = (y - skewRef.current.lastY) * 0.07;
       skewRef.current.vel += (rawVel - skewRef.current.vel) * 0.1;
@@ -384,7 +357,7 @@ export default function TTSSite() {
     };
   }, []);
 
-  // Scroll-aware nav + progress bar
+  // Scroll-aware nav + reading progress bar
   useEffect(() => {
     const handle = () => {
       const scrollY = window.scrollY;
@@ -418,7 +391,7 @@ export default function TTSSite() {
 
   // Section tracker for nav dots
   useEffect(() => {
-    const sectionIds = ["hero", "about", "services", "leadership", "join"];
+    const sectionIds = ["hero", "mission", "tracks", "leadership", "join"];
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -460,9 +433,7 @@ export default function TTSSite() {
       methodWait += 100;
     }
     if (typeof wg.setGazeListener !== "function") {
-      toast.error("WebGazer did not initialize correctly. Try refreshing.", {
-        id: "gaze",
-      });
+      toast.error("WebGazer did not initialize correctly.", { id: "gaze" });
       return;
     }
     try {
@@ -499,7 +470,10 @@ export default function TTSSite() {
       setGazeActive(true);
       toast.success(
         "Eye tracking on. Look at a nav link for 1 second to navigate.",
-        { id: "gaze", duration: 5000 },
+        {
+          id: "gaze",
+          duration: 5000,
+        },
       );
     } catch (err) {
       console.error("[WebGazer]", err);
@@ -510,9 +484,9 @@ export default function TTSSite() {
   }, [scrollTo]);
 
   const NAV_LINKS = [
-    { label: "About", id: "about" },
-    { label: "Services", id: "services" },
-    { label: "Leadership", id: "leadership" },
+    { label: "Mission", id: "mission" },
+    { label: "Tracks", id: "tracks" },
+    { label: "Team", id: "leadership" },
   ] as const;
 
   return (
@@ -522,7 +496,7 @@ export default function TTSSite() {
         strategy="afterInteractive"
       />
 
-      {/* Reading progress bar — Zeigarnik Effect */}
+      {/* Reading progress bar */}
       <div
         ref={progressBarRef}
         aria-hidden="true"
@@ -540,7 +514,7 @@ export default function TTSSite() {
         }}
       />
 
-      {/* Section nav dots — Law of Common Region */}
+      {/* Section nav dots */}
       <div
         aria-hidden="true"
         style={{
@@ -554,7 +528,7 @@ export default function TTSSite() {
           gap: 8,
         }}
       >
-        {(["hero", "about", "services", "leadership", "join"] as const).map(
+        {(["hero", "mission", "tracks", "leadership", "join"] as const).map(
           (id) => (
             <button
               key={id}
@@ -882,19 +856,12 @@ export default function TTSSite() {
             overflow: "hidden",
           }}
         >
-          {/* Background: USC campus photo at low opacity */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              overflow: "hidden",
-            }}
-          >
+          <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
             <Image
               src="/img/uscphoto.webp"
               alt=""
               fill
-              style={{ objectFit: "cover", opacity: 0.06 }}
+              style={{ objectFit: "cover", opacity: 0.05 }}
               priority
             />
             <div
@@ -902,7 +869,7 @@ export default function TTSSite() {
                 position: "absolute",
                 inset: 0,
                 background:
-                  "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(204,0,0,0.08) 0%, transparent 70%)",
+                  "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(204,0,0,0.1) 0%, transparent 70%)",
               }}
             />
           </div>
@@ -911,11 +878,10 @@ export default function TTSSite() {
             style={{
               position: "relative",
               zIndex: 1,
-              maxWidth: 840,
+              maxWidth: 900,
               textAlign: "center",
             }}
           >
-            {/* Badge */}
             <div
               className="tts-fade"
               style={{
@@ -953,23 +919,25 @@ export default function TTSSite() {
             <h1
               className="tts-slide"
               style={{
-                fontSize: "clamp(44px, 7vw, 88px)",
+                fontSize: "clamp(52px, 8vw, 100px)",
                 fontWeight: 900,
                 letterSpacing: "-0.04em",
                 lineHeight: 1.0,
-                marginBottom: 24,
+                marginBottom: 28,
                 transitionDelay: "0.1s",
               }}
             >
-              <span style={{ color: "#fff" }}>Trojan Tech</span>
+              <span style={{ color: "#fff" }}>Build.</span>
+              <br />
+              <span style={{ color: "#fff" }}>Solve.</span>
               <br />
               <span
                 style={{
                   color: "transparent",
-                  WebkitTextStroke: "1px rgba(204,0,0,0.6)",
+                  WebkitTextStroke: "1px rgba(204,0,0,0.7)",
                 }}
               >
-                Solutions
+                Ship.
               </span>
             </h1>
 
@@ -978,14 +946,27 @@ export default function TTSSite() {
               style={{
                 fontSize: "clamp(16px, 2vw, 20px)",
                 color: "#a1a1aa",
-                lineHeight: 1.7,
-                maxWidth: 560,
-                margin: "0 auto 48px",
+                lineHeight: 1.75,
+                maxWidth: 580,
+                margin: "0 auto 20px",
                 transitionDelay: "0.2s",
               }}
             >
-              Pro-bono technology consulting for small businesses, built and
-              delivered by the best students at USC.
+              Trojan Technology Solutions is USC&apos;s builder club for people
+              who want to use AI to ship products, solve real problems, and
+              become more capable.
+            </p>
+
+            <p
+              className="tts-fade"
+              style={{
+                fontSize: 14,
+                color: "#52525b",
+                marginBottom: 48,
+                transitionDelay: "0.25s",
+              }}
+            >
+              Any major. Any background. Join anytime.
             </p>
 
             <div
@@ -1029,10 +1010,10 @@ export default function TTSSite() {
                     "translateY(0)";
                 }}
               >
-                Student Application <ArrowRight size={16} />
+                Apply Now <ArrowRight size={16} />
               </button>
               <button
-                onClick={() => scrollTo("services")}
+                onClick={() => scrollTo("tracks")}
                 style={{
                   padding: "14px 32px",
                   borderRadius: 14,
@@ -1057,12 +1038,12 @@ export default function TTSSite() {
                     "rgba(255,255,255,0.12)";
                 }}
               >
-                Our Services
+                See the tracks
               </button>
             </div>
           </div>
 
-          {/* Stats row */}
+          {/* Stats */}
           <div
             className="tts-fade"
             style={{
@@ -1072,14 +1053,15 @@ export default function TTSSite() {
               transform: "translateX(-50%)",
               display: "flex",
               alignItems: "center",
-              gap: 48,
+              gap: 56,
               transitionDelay: "0.5s",
+              whiteSpace: "nowrap",
             }}
           >
             {[
-              ["9", "Service Areas"],
-              ["12", "E-Board Members"],
-              ["100%", "Pro Bono"],
+              ["3", "Tracks"],
+              ["12", "E-Board"],
+              ["100%", "Free"],
             ].map(([val, label]) => (
               <div key={label} style={{ textAlign: "center" }}>
                 <div
@@ -1099,7 +1081,6 @@ export default function TTSSite() {
             ))}
           </div>
 
-          {/* Scroll indicator */}
           <div
             style={{
               position: "absolute",
@@ -1110,10 +1091,10 @@ export default function TTSSite() {
               flexDirection: "column",
               alignItems: "center",
               gap: 4,
-              opacity: 0.3,
+              opacity: 0.25,
             }}
           >
-            <div style={{ width: 1, height: 32, background: "#fff" }} />
+            <div style={{ width: 1, height: 28, background: "#fff" }} />
             <span
               style={{
                 fontSize: 10,
@@ -1127,9 +1108,9 @@ export default function TTSSite() {
           </div>
         </section>
 
-        {/* ── ABOUT ── */}
+        {/* ── MISSION ── */}
         <section
-          id="about"
+          id="mission"
           style={{ background: "#0d0d10", padding: "120px 24px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
@@ -1169,7 +1150,7 @@ export default function TTSSite() {
                       textTransform: "uppercase",
                     }}
                   >
-                    Who We Are
+                    Why TTS Exists
                   </span>
                 </div>
                 <h2
@@ -1180,54 +1161,101 @@ export default function TTSSite() {
                     color: "#fff",
                     letterSpacing: "-0.03em",
                     lineHeight: 1.1,
-                    marginBottom: 24,
+                    marginBottom: 28,
                     transitionDelay: "0.1s",
                   }}
                 >
-                  Pro-bono tech
+                  AI is changing
                   <br />
-                  <span style={{ color: "#CC0000" }}>for small business</span>
+                  <span style={{ color: "#CC0000" }}>every industry.</span>
+                  <br />
+                  Are you using it?
                 </h2>
                 <p
                   className="tts-fade"
                   style={{
                     fontSize: 16,
                     color: "#a1a1aa",
-                    lineHeight: 1.8,
-                    marginBottom: 32,
+                    lineHeight: 1.85,
+                    marginBottom: 20,
                     transitionDelay: "0.2s",
                   }}
                 >
-                  Trojan Tech Solutions is a student organization committed to
-                  making a positive impact on the community. Founded in 2023 at
-                  the University of Southern California, we unite top talent to
-                  provide pro-bono consulting and information technology
-                  services to small businesses.
+                  There are two types of students graduating right now. Those
+                  who ignored AI and fell behind. And those who learned to use
+                  it and moved ahead.
                 </p>
                 <p
                   className="tts-fade"
                   style={{
                     fontSize: 16,
                     color: "#a1a1aa",
-                    lineHeight: 1.8,
+                    lineHeight: 1.85,
+                    marginBottom: 32,
+                    transitionDelay: "0.25s",
+                  }}
+                >
+                  TTS exists for the second group. We built a club where the
+                  standard is actually shipping, actually consulting, actually
+                  growing — not just attending.
+                </p>
+
+                <div
+                  className="tts-fade"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 14,
                     transitionDelay: "0.3s",
                   }}
                 >
-                  We believe small businesses are the backbone of the American
-                  economy, and we are dedicated to supporting them in every way
-                  we can.
-                </p>
+                  {[
+                    { accent: "#CC0000", text: "Less talk, more shipping" },
+                    {
+                      accent: "#FFCC00",
+                      text: "Less theory, more client work",
+                    },
+                    {
+                      accent: "#CC0000",
+                      text: "Less gatekeeping, more open doors",
+                    },
+                    {
+                      accent: "#FFCC00",
+                      text: "Less burnout, more sustainable intensity",
+                    },
+                  ].map(({ accent, text }) => (
+                    <div
+                      key={text}
+                      style={{ display: "flex", alignItems: "center", gap: 12 }}
+                    >
+                      <div
+                        style={{
+                          width: 5,
+                          height: 5,
+                          borderRadius: "50%",
+                          background: accent,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span style={{ fontSize: 15, color: "#d4d4d8" }}>
+                        {text}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 16 }}
+              >
                 <div
+                  className="tts-fade"
                   style={{
                     position: "relative",
                     borderRadius: 24,
                     overflow: "hidden",
                     aspectRatio: "4/3",
                   }}
-                  className="tts-fade"
                 >
                   <Image
                     src="/img/team-photo.webp"
@@ -1240,109 +1268,58 @@ export default function TTSSite() {
                       position: "absolute",
                       inset: 0,
                       background:
-                        "linear-gradient(to top, rgba(9,9,11,0.6) 0%, transparent 60%)",
+                        "linear-gradient(to top, rgba(9,9,11,0.7) 0%, transparent 60%)",
                     }}
                   />
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 20,
-                      left: 20,
-                      right: 20,
-                    }}
-                  >
+                  <div style={{ position: "absolute", bottom: 20, left: 20 }}>
                     <div
-                      style={{
-                        display: "flex",
-                        gap: 12,
-                        alignItems: "center",
-                      }}
+                      style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}
                     >
-                      <div
-                        style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: 10,
-                          background: "rgba(204,0,0,0.15)",
-                          border: "1px solid rgba(204,0,0,0.3)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Users size={16} color="#CC0000" />
-                      </div>
-                      <div>
-                        <div
-                          style={{
-                            fontSize: 13,
-                            fontWeight: 700,
-                            color: "#fff",
-                          }}
-                        >
-                          Executive Board 2024-25
-                        </div>
-                        <div style={{ fontSize: 11, color: "#a1a1aa" }}>
-                          University of Southern California
-                        </div>
-                      </div>
+                      Executive Board 2024–25
+                    </div>
+                    <div
+                      style={{ fontSize: 11, color: "#a1a1aa", marginTop: 2 }}
+                    >
+                      University of Southern California
                     </div>
                   </div>
                 </div>
 
-                {/* Value props */}
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
+                    gridTemplateColumns: "1fr 1fr 1fr",
                     gap: 12,
-                    marginTop: 16,
                   }}
                 >
                   {[
-                    {
-                      accent: "#CC0000",
-                      label: "Real Impact",
-                      desc: "Deliver measurable results for local businesses",
-                    },
-                    {
-                      accent: "#FFCC00",
-                      label: "Top Talent",
-                      desc: "USC students across CS, business, and design",
-                    },
-                  ].map(({ accent, label, desc }) => (
+                    { val: "Any major", label: "No prerequisites" },
+                    { val: "Join anytime", label: "No cut-off date" },
+                    { val: "Always free", label: "Pro-bono model" },
+                  ].map(({ val, label }) => (
                     <div
                       key={label}
                       className="tts-fade tts-card"
                       style={{
                         background: "#111113",
-                        borderRadius: 16,
+                        borderRadius: 14,
                         border: "1px solid #1f1f23",
-                        padding: "20px",
+                        padding: "18px 16px",
+                        textAlign: "center",
                       }}
                     >
                       <div
                         style={{
-                          width: 4,
-                          height: 4,
-                          borderRadius: "50%",
-                          background: accent,
-                          marginBottom: 10,
-                        }}
-                      />
-                      <div
-                        style={{
-                          fontSize: 14,
-                          fontWeight: 700,
+                          fontSize: 13,
+                          fontWeight: 800,
                           color: "#fff",
-                          marginBottom: 6,
+                          marginBottom: 4,
                         }}
                       >
-                        {label}
+                        {val}
                       </div>
-                      <div style={{ fontSize: 12, color: "#71717a" }}>
-                        {desc}
+                      <div style={{ fontSize: 11, color: "#71717a" }}>
+                        {label}
                       </div>
                     </div>
                   ))}
@@ -1352,7 +1329,7 @@ export default function TTSSite() {
 
             <div style={{ textAlign: "center", marginTop: 64 }}>
               <button
-                onClick={() => scrollTo("services")}
+                onClick={() => scrollTo("tracks")}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -1379,15 +1356,15 @@ export default function TTSSite() {
                     "#a1a1aa";
                 }}
               >
-                See our services <ArrowRight size={14} />
+                Pick your track <ArrowRight size={14} />
               </button>
             </div>
           </div>
         </section>
 
-        {/* ── SERVICES ── */}
+        {/* ── TRACKS ── */}
         <section
-          id="services"
+          id="tracks"
           style={{ background: "#09090b", padding: "120px 24px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
@@ -1419,7 +1396,7 @@ export default function TTSSite() {
                     textTransform: "uppercase",
                   }}
                 >
-                  What We Offer
+                  Pick Your Path
                 </span>
               </div>
               <h2
@@ -1433,9 +1410,9 @@ export default function TTSSite() {
                   transitionDelay: "0.1s",
                 }}
               >
-                Nine areas.
+                Three tracks.
                 <br />
-                One team.
+                One community.
               </h2>
               <p
                 className="tts-fade"
@@ -1445,87 +1422,170 @@ export default function TTSSite() {
                   transitionDelay: "0.2s",
                 }}
               >
-                From a website rebuild to a full market entry plan, we deliver
-                across the full stack of business needs.
+                You can switch. Most people end up doing two.
               </p>
             </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: 16,
-              }}
-            >
-              {SERVICES.map(({ icon: Icon, accent, title, sub, desc }, i) => (
-                <div
-                  key={title}
-                  className="tts-fade tts-card"
-                  style={{
-                    background: "#111113",
-                    borderRadius: 20,
-                    border: "1px solid #1f1f23",
-                    padding: "32px 28px",
-                    transitionDelay: `${(i % 3) * 0.08}s`,
-                  }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(-4px)")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLDivElement).style.transform =
-                      "translateY(0)")
-                  }
-                >
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              {TRACKS.map(
+                (
+                  { num, icon: Icon, accent, title, sub, tagline, items, cta },
+                  i,
+                ) => (
                   <div
+                    key={num}
+                    className="tts-fade tts-card"
                     style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 12,
-                      background: `${accent}18`,
-                      border: `1px solid ${accent}30`,
-                      display: "flex",
+                      background: "#111113",
+                      borderRadius: 20,
+                      border: "1px solid #1f1f23",
+                      padding: "40px 40px",
+                      display: "grid",
+                      gridTemplateColumns: "80px 1fr 1fr 1fr",
+                      gap: 40,
                       alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: 20,
+                      transitionDelay: `${i * 0.12}s`,
                     }}
+                    onMouseEnter={(e) =>
+                      ((e.currentTarget as HTMLDivElement).style.transform =
+                        "translateY(-3px)")
+                    }
+                    onMouseLeave={(e) =>
+                      ((e.currentTarget as HTMLDivElement).style.transform =
+                        "translateY(0)")
+                    }
                   >
-                    <Icon size={20} color={accent} />
+                    {/* Number */}
+                    <div
+                      style={{
+                        fontSize: 52,
+                        fontWeight: 900,
+                        color: accent,
+                        lineHeight: 1,
+                        letterSpacing: "-0.04em",
+                        opacity: 0.25,
+                      }}
+                    >
+                      {num}
+                    </div>
+
+                    {/* Title block */}
+                    <div>
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 12,
+                          background: `${accent}18`,
+                          border: `1px solid ${accent}30`,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: 16,
+                        }}
+                      >
+                        <Icon size={18} color={accent} />
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          color: accent,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          marginBottom: 8,
+                        }}
+                      >
+                        {sub}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 28,
+                          fontWeight: 900,
+                          color: "#fff",
+                          letterSpacing: "-0.02em",
+                          marginBottom: 8,
+                        }}
+                      >
+                        {title}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 13,
+                          color: "#71717a",
+                          lineHeight: 1.6,
+                        }}
+                      >
+                        {tagline}
+                      </div>
+                    </div>
+
+                    {/* Items */}
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        margin: 0,
+                        padding: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                      }}
+                    >
+                      {items.map((item) => (
+                        <li
+                          key={item}
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: 10,
+                            fontSize: 13,
+                            color: "#71717a",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: 5,
+                              height: 5,
+                              borderRadius: "50%",
+                              background: accent,
+                              flexShrink: 0,
+                              marginTop: 5,
+                            }}
+                          />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Who it's for */}
+                    <div
+                      style={{
+                        background: `${accent}08`,
+                        border: `1px solid ${accent}20`,
+                        borderRadius: 14,
+                        padding: "16px 18px",
+                        fontSize: 13,
+                        color: "#a1a1aa",
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: accent,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          marginBottom: 8,
+                        }}
+                      >
+                        Who it&apos;s for
+                      </div>
+                      {cta}
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: accent,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      marginBottom: 8,
-                    }}
-                  >
-                    {sub}
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 800,
-                      color: "#fff",
-                      letterSpacing: "-0.02em",
-                      marginBottom: 12,
-                    }}
-                  >
-                    {title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: "#71717a",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {desc}
-                  </p>
-                </div>
-              ))}
+                ),
+              )}
             </div>
 
             <div style={{ textAlign: "center", marginTop: 64 }}>
@@ -1569,7 +1629,8 @@ export default function TTSSite() {
           style={{ background: "#0d0d10", padding: "120px 24px" }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-            <div style={{ marginBottom: 64 }}>
+            {/* Founders callout */}
+            <div style={{ marginBottom: 72 }}>
               <div
                 className="tts-fade"
                 style={{
@@ -1597,7 +1658,7 @@ export default function TTSSite() {
                     textTransform: "uppercase",
                   }}
                 >
-                  Executive Board
+                  Founders
                 </span>
               </div>
               <h2
@@ -1607,28 +1668,189 @@ export default function TTSSite() {
                   fontWeight: 900,
                   color: "#fff",
                   letterSpacing: "-0.03em",
-                  marginBottom: 12,
+                  marginBottom: 48,
                   transitionDelay: "0.1s",
                 }}
               >
                 Built by builders
               </h2>
-              <p
-                className="tts-fade"
+
+              <div
                 style={{
-                  fontSize: 16,
-                  color: "#a1a1aa",
-                  transitionDelay: "0.2s",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+                  gap: 16,
+                  maxWidth: 840,
                 }}
               >
-                Click any card to read their bio.
-              </p>
+                {[
+                  {
+                    initials: "CN",
+                    accent: "#CC0000",
+                    accentDim: "rgba(204,0,0,0.12)",
+                    name: "Caleb Newton",
+                    role: "Co-Founder · Entrepreneurship Lead",
+                    owns: [
+                      "Product curriculum and technical systems",
+                      "Website, GitHub, and tooling",
+                      "Startup-facing relationships and builder culture",
+                      "Live demos and AI-first product work",
+                    ],
+                  },
+                  {
+                    initials: "TL",
+                    accent: "#FFCC00",
+                    accentDim: "rgba(255,204,0,0.1)",
+                    name: "Tyler Larsen",
+                    role: "Co-Founder · Consulting Lead",
+                    owns: [
+                      "Consulting curriculum and client pipeline",
+                      "E-board building and people operations",
+                      "Partnerships and cross-club ecosystem",
+                      "Community culture and recruiting architecture",
+                    ],
+                  },
+                ].map(
+                  ({ initials, accent, accentDim, name, role, owns }, i) => (
+                    <div
+                      key={name}
+                      className="tts-fade tts-card"
+                      style={{
+                        background: "#111113",
+                        borderRadius: 20,
+                        border: "1px solid #1f1f23",
+                        padding: "36px 32px",
+                        transitionDelay: `${i * 0.12}s`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 52,
+                          height: 52,
+                          borderRadius: 16,
+                          background: accentDim,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: 20,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 18,
+                            fontWeight: 900,
+                            color: accent,
+                          }}
+                        >
+                          {initials}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          color: accent,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          marginBottom: 6,
+                        }}
+                      >
+                        {role}
+                      </div>
+                      <h3
+                        style={{
+                          fontSize: 22,
+                          fontWeight: 800,
+                          color: "#fff",
+                          letterSpacing: "-0.02em",
+                          marginBottom: 20,
+                        }}
+                      >
+                        {name}
+                      </h3>
+                      <ul
+                        style={{
+                          listStyle: "none",
+                          margin: 0,
+                          padding: 0,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 10,
+                        }}
+                      >
+                        {owns.map((item) => (
+                          <li
+                            key={item}
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                              gap: 10,
+                              fontSize: 13,
+                              color: "#a1a1aa",
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: 4,
+                                height: 4,
+                                borderRadius: "50%",
+                                background: "#52525b",
+                                flexShrink: 0,
+                                marginTop: 6,
+                              }}
+                            />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ),
+                )}
+              </div>
             </div>
+
+            {/* E-board grid */}
+            <div
+              className="tts-fade"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 24,
+              }}
+            >
+              <div
+                style={{
+                  width: 3,
+                  height: 24,
+                  background: "#CC0000",
+                  borderRadius: 2,
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: "#CC0000",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Executive Board
+              </span>
+            </div>
+            <p
+              className="tts-fade"
+              style={{ fontSize: 14, color: "#52525b", marginBottom: 32 }}
+            >
+              Click any card to read their bio.
+            </p>
 
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
                 gap: 16,
               }}
             >
@@ -1690,7 +1912,7 @@ export default function TTSSite() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: 48,
+                gap: 56,
                 alignItems: "start",
               }}
             >
@@ -1722,7 +1944,7 @@ export default function TTSSite() {
                       textTransform: "uppercase",
                     }}
                   >
-                    Get Involved
+                    Get In
                   </span>
                 </div>
                 <h2
@@ -1737,23 +1959,23 @@ export default function TTSSite() {
                     transitionDelay: "0.1s",
                   }}
                 >
-                  Trojan services
+                  The door is
                   <br />
-                  for Trojan enterprise
+                  <span style={{ color: "#CC0000" }}>always open.</span>
                 </h2>
                 <p
                   className="tts-fade"
                   style={{
                     fontSize: 16,
                     color: "#a1a1aa",
-                    lineHeight: 1.8,
-                    marginBottom: 32,
+                    lineHeight: 1.85,
+                    marginBottom: 36,
                     transitionDelay: "0.2s",
                   }}
                 >
-                  Whether you&apos;re a USC student looking to build real-world
-                  skills, or a small business owner looking for expert help, TTS
-                  has a place for you.
+                  No waitlist. No interview. No experience required. If you want
+                  to build, consult, or grow in your field using AI, show up.
+                  That&apos;s it.
                 </p>
 
                 <div
@@ -1761,15 +1983,16 @@ export default function TTSSite() {
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: 12,
+                    gap: 14,
                     transitionDelay: "0.3s",
                   }}
                 >
                   {[
-                    "Pro-bono, high-quality consulting",
-                    "Real projects, real deliverables",
-                    "USC's top cross-disciplinary talent",
-                    "No experience required to join",
+                    "Join any week this semester",
+                    "Pick a track or try all three",
+                    "Work on live projects from day one",
+                    "Access our speaker and mentor network",
+                    "No dues, no gatekeeping, no nonsense",
                   ].map((item) => (
                     <div
                       key={item}
@@ -1800,19 +2023,15 @@ export default function TTSSite() {
               </div>
 
               <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 16,
-                }}
+                style={{ display: "flex", flexDirection: "column", gap: 16 }}
               >
-                {/* Student application card */}
+                {/* Student application */}
                 <div
                   className="tts-fade tts-card"
                   style={{
                     background: "#111113",
                     borderRadius: 24,
-                    border: "1px solid rgba(204,0,0,0.3)",
+                    border: "1px solid rgba(204,0,0,0.35)",
                     padding: "32px",
                   }}
                 >
@@ -1843,13 +2062,13 @@ export default function TTSSite() {
                     style={{
                       fontSize: 14,
                       color: "#71717a",
-                      lineHeight: 1.7,
+                      lineHeight: 1.75,
                       marginBottom: 24,
                     }}
                   >
-                    Work on real client projects, build your skills across
-                    technology and strategy, and join a network of USC&apos;s
-                    most driven students.
+                    Any major, any year. Build products, work on client
+                    projects, and connect with a network of people who are
+                    actually serious about growing.
                   </p>
                   <button
                     onClick={() => window.open("#", "_blank")}
@@ -1887,7 +2106,7 @@ export default function TTSSite() {
                   </button>
                 </div>
 
-                {/* Client application card */}
+                {/* Client application */}
                 <div
                   className="tts-fade tts-card"
                   style={{
@@ -1907,7 +2126,7 @@ export default function TTSSite() {
                       marginBottom: 12,
                     }}
                   >
-                    For Small Businesses
+                    For Organizations & Startups
                   </div>
                   <h3
                     style={{
@@ -1918,19 +2137,18 @@ export default function TTSSite() {
                       letterSpacing: "-0.02em",
                     }}
                   >
-                    Work with us
+                    Work with TTS
                   </h3>
                   <p
                     style={{
                       fontSize: 14,
                       color: "#71717a",
-                      lineHeight: 1.7,
+                      lineHeight: 1.75,
                       marginBottom: 24,
                     }}
                   >
-                    Get matched with a dedicated team of USC students who will
-                    deliver real solutions for your business, completely
-                    pro-bono.
+                    Get a dedicated team of USC students to solve a real problem
+                    in your organization, completely pro-bono.
                   </p>
                   <button
                     onClick={() => window.open("#", "_blank")}
@@ -1967,7 +2185,7 @@ export default function TTSSite() {
                   </button>
                 </div>
 
-                {/* Zeigarnik: email capture */}
+                {/* Email capture */}
                 <div
                   style={{
                     background: "#111113",
@@ -2154,17 +2372,17 @@ export default function TTSSite() {
               >
                 <Zap size={10} color="#CC0000" />
               </div>
-              Trojan Tech Solutions · USC
+              Trojan Technology Solutions · USC
             </div>
             <div
               style={{
                 fontSize: 11,
-                color: "#a1a1aa",
-                letterSpacing: "0.1em",
+                color: "#52525b",
+                letterSpacing: "0.12em",
                 textTransform: "uppercase",
               }}
             >
-              Small Businesses. Big Impacts.
+              Build. Solve. Ship.
             </div>
           </div>
         </footer>
