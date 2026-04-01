@@ -14,15 +14,25 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// ── WebGazer type ──────────────────────────────────────────────────────────
+// ── USC brand colors ───────────────────────────────────────────────────────
+const C = "#CC0000"; // Cardinal bright
+const CDIM = "rgba(204,0,0,0.12)";
+const CBORDER = "rgba(204,0,0,0.28)";
+const G = "#FFCC00"; // Gold
+const GDIM = "rgba(255,204,0,0.12)";
+const GBORDER = "rgba(255,204,0,0.28)";
+
+// ── WebGazer type (v2 API — begin() is on the instance, not chained) ───────
 interface WebGazer {
-  setGazeListener: (fn: (data: { x: number; y: number } | null) => void) => {
-    begin: () => Promise<void>;
-  };
-  showVideo: (v: boolean) => void;
-  showFaceOverlay: (v: boolean) => void;
-  showFaceFeedbackBox: (v: boolean) => void;
-  showPredictionPoints: (v: boolean) => void;
+  setGazeListener: (
+    fn: (data: { x: number; y: number } | null) => void,
+  ) => WebGazer;
+  begin: () => Promise<WebGazer>;
+  end: () => void;
+  showVideo: (v: boolean) => WebGazer;
+  showFaceOverlay: (v: boolean) => WebGazer;
+  showFaceFeedbackBox: (v: boolean) => WebGazer;
+  showPredictionPoints: (v: boolean) => WebGazer;
 }
 
 // ── Gaze nav engine (module-level to avoid closure issues) ─────────────────
@@ -42,10 +52,10 @@ function gazeNavUpdate(
   for (const el of els) {
     const r = el.getBoundingClientRect();
     if (
-      x >= r.left - 24 &&
-      x <= r.right + 24 &&
-      y >= r.top - 24 &&
-      y <= r.bottom + 24
+      x >= r.left - 28 &&
+      x <= r.right + 28 &&
+      y >= r.top - 28 &&
+      y <= r.bottom + 28
     ) {
       hit = el.dataset.gazeNav ?? null;
       break;
@@ -58,44 +68,6 @@ function gazeNavUpdate(
   const progress = _navTarget ? Math.min((now - _navStart) / DWELL_MS, 1) : 0;
   return { target: _navTarget, progress };
 }
-
-// ── Color config (explicit static classes — no template literals) ──────────
-const TRACK_COLORS = {
-  indigo: {
-    num: "text-indigo-500/20",
-    eyebrow: "text-indigo-400",
-    dot: "bg-indigo-500",
-  },
-  violet: {
-    num: "text-violet-500/20",
-    eyebrow: "text-violet-400",
-    dot: "bg-violet-500",
-  },
-  blue: {
-    num: "text-blue-500/20",
-    eyebrow: "text-blue-400",
-    dot: "bg-blue-500",
-  },
-} as const;
-
-const FOUNDER_COLORS = {
-  indigo: {
-    bg: "bg-indigo-500/10",
-    border: "border-indigo-500/20",
-    text: "text-indigo-400",
-  },
-  violet: {
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
-    text: "text-violet-400",
-  },
-} as const;
-
-const CADENCE_COLORS = {
-  indigo: "text-indigo-400",
-  violet: "text-violet-400",
-  blue: "text-blue-400",
-} as const;
 
 const circumference = 2 * Math.PI * 10;
 
@@ -167,65 +139,73 @@ export default function TTSSite() {
   const startGaze = useCallback(async () => {
     if (gazeStartedRef.current) return;
 
+    // Wait for WebGazer to be available on window (up to 8s)
     let waited = 0;
-    while (!webgazerReadyRef.current && waited < 5000) {
-      await new Promise((r) => setTimeout(r, 100));
-      waited += 100;
-      if ((window as Window & { webgazer?: WebGazer }).webgazer)
-        webgazerReadyRef.current = true;
+    while (waited < 8000) {
+      if ((window as Window & { webgazer?: WebGazer }).webgazer) break;
+      await new Promise((r) => setTimeout(r, 150));
+      waited += 150;
     }
 
     const wg = (window as Window & { webgazer?: WebGazer }).webgazer;
     if (!wg) {
-      toast.error("Eye tracking unavailable. Check your connection.");
+      toast.error("WebGazer not loaded. Check your connection and reload.", {
+        id: "gaze",
+      });
       return;
     }
 
     try {
       gazeStartedRef.current = true;
-      toast.loading("Starting eye tracking…", { id: "gaze", duration: 8000 });
+      toast.loading("Requesting camera…", { id: "gaze", duration: 12000 });
 
-      await wg
-        .setGazeListener((data) => {
-          if (!data) return;
-          const now = performance.now();
+      // v2 API: setGazeListener returns the instance; call begin() separately
+      wg.setGazeListener((data) => {
+        if (!data) return;
+        const now = performance.now();
 
-          // Update gaze cursor position directly (avoids React re-render)
-          if (gazeCursorRef.current) {
-            gazeCursorRef.current.style.left = data.x - 12 + "px";
-            gazeCursorRef.current.style.top = data.y - 12 + "px";
-            gazeCursorRef.current.style.opacity = "1";
-          }
+        if (gazeCursorRef.current) {
+          gazeCursorRef.current.style.left = data.x - 12 + "px";
+          gazeCursorRef.current.style.top = data.y - 12 + "px";
+          gazeCursorRef.current.style.opacity = "1";
+        }
 
-          const nav = gazeNavUpdate(data.x, data.y, now);
-          setGazeNavState(nav);
+        const nav = gazeNavUpdate(data.x, data.y, now);
+        setGazeNavState(nav);
 
-          if (nav.progress >= 1 && nav.target && !dwellFiredRef.current) {
-            dwellFiredRef.current = true;
-            scrollTo(nav.target);
-            _navTarget = null;
-            _navStart = 0;
-            setTimeout(() => {
-              dwellFiredRef.current = false;
-            }, 1200);
-          } else if (nav.progress < 0.8) {
+        if (nav.progress >= 1 && nav.target && !dwellFiredRef.current) {
+          dwellFiredRef.current = true;
+          scrollTo(nav.target);
+          _navTarget = null;
+          _navStart = 0;
+          setTimeout(() => {
             dwellFiredRef.current = false;
-          }
-        })
-        .begin();
+          }, 1200);
+        } else if (nav.progress < 0.8) {
+          dwellFiredRef.current = false;
+        }
+      });
+
+      await wg.begin();
 
       wg.showVideo(false);
       wg.showFaceOverlay(false);
       wg.showFaceFeedbackBox(false);
       wg.showPredictionPoints(false);
+      webgazerReadyRef.current = true;
       setGazeActive(true);
-      toast.success("Eye tracking active — look at nav links to navigate", {
+      toast.success("Eye tracking active — look at a nav link for 1 second", {
         id: "gaze",
-        duration: 4000,
+        duration: 5000,
       });
-    } catch {
+    } catch (err) {
+      console.error("[WebGazer] init error:", err);
       gazeStartedRef.current = false;
-      toast.error("Eye tracking failed to start.", { id: "gaze" });
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Unknown error starting eye tracking.";
+      toast.error(`Eye tracking failed: ${msg}`, { id: "gaze" });
     }
   }, [scrollTo]);
 
@@ -234,12 +214,9 @@ export default function TTSSite() {
       <Script
         src="https://webgazer.cs.brown.edu/webgazer.js"
         strategy="afterInteractive"
-        onReady={() => {
-          webgazerReadyRef.current = true;
-        }}
       />
 
-      {/* Custom cursor */}
+      {/* Custom cursor — cardinal dot */}
       <div
         ref={cursorDotRef}
         aria-hidden="true"
@@ -247,7 +224,7 @@ export default function TTSSite() {
           position: "fixed",
           width: 8,
           height: 8,
-          background: "rgba(99,102,241,0.95)",
+          background: C,
           borderRadius: "50%",
           pointerEvents: "none",
           zIndex: 9999,
@@ -261,7 +238,7 @@ export default function TTSSite() {
           position: "fixed",
           width: 32,
           height: 32,
-          border: "1.5px solid rgba(99,102,241,0.35)",
+          border: `1.5px solid ${CBORDER}`,
           borderRadius: "50%",
           pointerEvents: "none",
           zIndex: 9998,
@@ -269,7 +246,7 @@ export default function TTSSite() {
         }}
       />
 
-      {/* Gaze cursor */}
+      {/* Gaze cursor — gold ring */}
       <div
         ref={gazeCursorRef}
         aria-hidden="true"
@@ -278,8 +255,8 @@ export default function TTSSite() {
           width: 24,
           height: 24,
           borderRadius: "50%",
-          border: "2px solid rgba(99,102,241,0.5)",
-          background: "rgba(99,102,241,0.06)",
+          border: `2px solid ${G}`,
+          background: GDIM,
           pointerEvents: "none",
           zIndex: 9001,
           opacity: 0,
@@ -290,11 +267,11 @@ export default function TTSSite() {
       <div style={{ cursor: "none" }}>
         {/* ── NAV ─────────────────────────────────────────────────────── */}
         <nav
-          className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.07]"
+          className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06]"
           style={{
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
-            background: "rgba(9,9,11,0.85)",
+            background: "rgba(9,9,11,0.88)",
           }}
         >
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -303,8 +280,11 @@ export default function TTSSite() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="flex items-center gap-2.5 cursor-pointer"
             >
-              <div className="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-                <Zap size={13} className="text-indigo-400" />
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center"
+                style={{ background: CDIM, border: `1px solid ${CBORDER}` }}
+              >
+                <Zap size={13} style={{ color: C }} />
               </div>
               <span className="font-bold text-white text-sm tracking-tight">
                 TTS
@@ -347,7 +327,7 @@ export default function TTSSite() {
                           cy="12"
                           r="10"
                           fill="none"
-                          stroke="rgba(99,102,241,0.2)"
+                          stroke="rgba(255,204,0,0.2)"
                           strokeWidth="2"
                         />
                         <circle
@@ -355,7 +335,7 @@ export default function TTSSite() {
                           cy="12"
                           r="10"
                           fill="none"
-                          stroke="rgba(99,102,241,0.9)"
+                          stroke={G}
                           strokeWidth="2"
                           strokeDasharray={`${progress * circumference} ${circumference}`}
                           strokeLinecap="round"
@@ -373,14 +353,42 @@ export default function TTSSite() {
               {!gazeActive && (
                 <button
                   onClick={startGaze}
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium hover:bg-indigo-500/15 transition-all cursor-pointer"
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer"
+                  style={{
+                    background: CDIM,
+                    border: `1px solid ${CBORDER}`,
+                    color: C,
+                  }}
                 >
                   <Eye size={12} /> Eye Nav
                 </button>
               )}
+              {gazeActive && (
+                <div
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+                  style={{
+                    background: GDIM,
+                    border: `1px solid ${GBORDER}`,
+                    color: G,
+                  }}
+                >
+                  <Eye size={12} /> Eye Active
+                </div>
+              )}
               <button
                 onClick={() => scrollTo("join")}
-                className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white text-sm font-semibold transition-all duration-150 cursor-pointer shadow-lg shadow-indigo-500/25"
+                className="px-4 py-2 rounded-xl text-white text-sm font-semibold transition-all duration-150 cursor-pointer"
+                style={{
+                  background: C,
+                  boxShadow: `0 4px 20px rgba(204,0,0,0.3)`,
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLButtonElement).style.background =
+                    "#AA0000")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLButtonElement).style.background = C)
+                }
               >
                 Apply
               </button>
@@ -394,13 +402,20 @@ export default function TTSSite() {
           style={{
             background: "#09090b",
             backgroundImage:
-              "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.18), transparent)," +
-              "radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px)",
+              `radial-gradient(ellipse 80% 50% at 50% -10%, rgba(204,0,0,0.15), transparent),` +
+              `radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)`,
             backgroundSize: "100% 100%, 32px 32px",
           }}
         >
           <div className="text-center max-w-5xl mx-auto px-6">
-            <div className="tts-fade inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-10">
+            <div
+              className="tts-fade inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-10"
+              style={{
+                background: CDIM,
+                border: `1px solid ${CBORDER}`,
+                color: C,
+              }}
+            >
               USC Builder Club · Spring 2026
             </div>
 
@@ -409,8 +424,7 @@ export default function TTSSite() {
               <br />
               <span
                 style={{
-                  background:
-                    "linear-gradient(135deg, #a5b4fc 0%, #818cf8 40%, #6366f1 100%)",
+                  background: `linear-gradient(135deg, ${C} 0%, ${G} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}
@@ -423,13 +437,24 @@ export default function TTSSite() {
 
             <p className="tts-fade text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-12 leading-relaxed">
               USC&apos;s builder club for people who want to ship real products,
-              solve real client problems, and learn AI by actually using it.
+              solve real client problems, and learn by actually doing.
             </p>
 
             <div className="tts-fade flex items-center justify-center gap-4 flex-wrap">
               <button
                 onClick={() => scrollTo("join")}
-                className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-semibold text-base transition-all duration-150 cursor-pointer shadow-xl shadow-indigo-500/30"
+                className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-white font-semibold text-base transition-all duration-150 cursor-pointer"
+                style={{
+                  background: C,
+                  boxShadow: `0 8px 32px rgba(204,0,0,0.35)`,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "#AA0000";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background = C;
+                }}
               >
                 Apply Now <ArrowRight size={17} />
               </button>
@@ -449,7 +474,10 @@ export default function TTSSite() {
                 ["3+", "Real clients"],
               ].map(([num, label]) => (
                 <div key={label} className="text-center">
-                  <div className="text-2xl font-black text-white mb-1">
+                  <div
+                    className="text-2xl font-black mb-1"
+                    style={{ color: G }}
+                  >
                     {num}
                   </div>
                   <div className="text-xs text-zinc-600">{label}</div>
@@ -471,7 +499,10 @@ export default function TTSSite() {
         >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <p className="tts-fade text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
+              <p
+                className="tts-fade text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: C }}
+              >
                 What We Are
               </p>
               <h2 className="tts-fade text-4xl md:text-5xl font-bold text-white tracking-tight mb-5">
@@ -484,31 +515,32 @@ export default function TTSSite() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {(
-                [
-                  {
-                    Icon: Code2,
-                    iconBg: "bg-indigo-500/10",
-                    iconColor: "text-indigo-400",
-                    title: "Startup Studio",
-                    body: "Ship real products with real users. Not demo projects or class assignments — live products with actual traction built this semester.",
-                  },
-                  {
-                    Icon: Briefcase,
-                    iconBg: "bg-violet-500/10",
-                    iconColor: "text-violet-400",
-                    title: "Consulting Arm",
-                    body: "Solve real problems for real clients using AI-first workflows. Get strategic reps before you graduate. Real scope, real deliverables.",
-                  },
-                  {
-                    Icon: Users,
-                    iconBg: "bg-blue-500/10",
-                    iconColor: "text-blue-400",
-                    title: "Builder Community",
-                    body: "High-energy, meets consistently, works in public. Treats health, ambition, and creativity as part of the system — not afterthoughts.",
-                  },
-                ] as const
-              ).map(({ Icon, iconBg, iconColor, title, body }) => (
+              {[
+                {
+                  Icon: Code2,
+                  iconBg: CDIM,
+                  iconBorder: CBORDER,
+                  iconColor: C,
+                  title: "Startup Studio",
+                  body: "Ship real products with real users. Not demo projects or class assignments — live products with actual traction built this semester.",
+                },
+                {
+                  Icon: Briefcase,
+                  iconBg: GDIM,
+                  iconBorder: GBORDER,
+                  iconColor: G,
+                  title: "Consulting Arm",
+                  body: "Solve real problems for real clients using AI-first workflows. Get strategic reps before you graduate. Real scope, real deliverables.",
+                },
+                {
+                  Icon: Users,
+                  iconBg: "rgba(255,255,255,0.06)",
+                  iconBorder: "rgba(255,255,255,0.12)",
+                  iconColor: "#e4e4e7",
+                  title: "Builder Community",
+                  body: "High-energy, meets consistently, works in public. Anyone can join — no technical background required, just drive.",
+                },
+              ].map(({ Icon, iconBg, iconBorder, iconColor, title, body }) => (
                 <div
                   key={title}
                   className="tts-fade rounded-2xl p-8 border border-white/[0.07]"
@@ -518,9 +550,13 @@ export default function TTSSite() {
                   }}
                 >
                   <div
-                    className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center mb-6`}
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6"
+                    style={{
+                      background: iconBg,
+                      border: `1px solid ${iconBorder}`,
+                    }}
                   >
-                    <Icon size={22} className={iconColor} />
+                    <Icon size={22} style={{ color: iconColor }} />
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-3">
                     {title}
@@ -538,11 +574,14 @@ export default function TTSSite() {
         <section
           id="tracks"
           className="py-32 px-6"
-          style={{ background: "rgba(99,102,241,0.035)" }}
+          style={{ background: `rgba(204,0,0,0.03)` }}
         >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <p className="tts-fade text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
+              <p
+                className="tts-fade text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: G }}
+              >
                 Pick Your Path
               </p>
               <h2 className="tts-fade text-4xl md:text-5xl font-bold text-white tracking-tight mb-5">
@@ -554,48 +593,59 @@ export default function TTSSite() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {(
-                [
-                  {
-                    num: "01",
-                    colorKey: "indigo" as const,
-                    subtitle: "Product & Startups",
-                    title: "Vibe Coding",
-                    items: [
-                      "Build apps and tools with AI",
-                      "Deploy live products this semester",
-                      "Find real users and iterate",
-                      "6-week arc to a shipped product",
-                    ],
-                  },
-                  {
-                    num: "02",
-                    colorKey: "violet" as const,
-                    subtitle: "Client Work & Strategy",
-                    title: "Consulting",
-                    items: [
-                      "Solve real problems for real clients",
-                      "AI-first research and analysis",
-                      "Build and present deliverables",
-                      "Get strategic reps before you graduate",
-                    ],
-                  },
-                  {
-                    num: "03",
-                    colorKey: "blue" as const,
-                    subtitle: "Career Acceleration",
-                    title: "Community",
-                    items: [
-                      "Apply AI directly to your major",
-                      "Build your network intentionally",
-                      "Speaker series with real operators",
-                      "Career positioning that actually works",
-                    ],
-                  },
-                ] as const
-              ).map(({ num, colorKey, subtitle, title, items }) => {
-                const c = TRACK_COLORS[colorKey];
-                return (
+              {[
+                {
+                  num: "01",
+                  numColor: `rgba(204,0,0,0.2)`,
+                  eyebrowColor: C,
+                  dotBg: C,
+                  subtitle: "Product & Startups",
+                  title: "Vibe Coding",
+                  items: [
+                    "Build apps and tools with AI",
+                    "Deploy live products this semester",
+                    "Find real users and iterate",
+                    "6-week arc to a shipped product",
+                  ],
+                },
+                {
+                  num: "02",
+                  numColor: `rgba(255,204,0,0.2)`,
+                  eyebrowColor: G,
+                  dotBg: G,
+                  subtitle: "Client Work & Strategy",
+                  title: "Consulting",
+                  items: [
+                    "Solve real problems for real clients",
+                    "AI-first research and analysis",
+                    "Build and present deliverables",
+                    "Get strategic reps before you graduate",
+                  ],
+                },
+                {
+                  num: "03",
+                  numColor: "rgba(255,255,255,0.07)",
+                  eyebrowColor: "#a1a1aa",
+                  dotBg: "#71717a",
+                  subtitle: "Career Acceleration",
+                  title: "Community",
+                  items: [
+                    "Apply AI directly to your major",
+                    "Build your network intentionally",
+                    "Speaker series with real operators",
+                    "Career positioning that actually works",
+                  ],
+                },
+              ].map(
+                ({
+                  num,
+                  numColor,
+                  eyebrowColor,
+                  dotBg,
+                  subtitle,
+                  title,
+                  items,
+                }) => (
                   <div
                     key={num}
                     className="tts-fade rounded-2xl p-8 border border-white/[0.07] flex flex-col"
@@ -604,11 +654,15 @@ export default function TTSSite() {
                       backdropFilter: "blur(12px)",
                     }}
                   >
-                    <div className={`text-6xl font-black ${c.num} mb-4`}>
+                    <div
+                      className="text-6xl font-black mb-4"
+                      style={{ color: numColor }}
+                    >
                       {num}
                     </div>
                     <p
-                      className={`text-xs font-semibold uppercase tracking-widest ${c.eyebrow} mb-2`}
+                      className="text-xs font-semibold uppercase tracking-widest mb-2"
+                      style={{ color: eyebrowColor }}
                     >
                       {subtitle}
                     </p>
@@ -622,15 +676,16 @@ export default function TTSSite() {
                           className="flex items-start gap-3 text-sm text-zinc-400"
                         >
                           <div
-                            className={`w-1.5 h-1.5 rounded-full ${c.dot} flex-shrink-0 mt-1.5`}
+                            className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
+                            style={{ background: dotBg }}
                           />
                           {item}
                         </li>
                       ))}
                     </ul>
                   </div>
-                );
-              })}
+                ),
+              )}
             </div>
           </div>
         </section>
@@ -643,7 +698,10 @@ export default function TTSSite() {
         >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <p className="tts-fade text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
+              <p
+                className="tts-fade text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: C }}
+              >
                 Weekly Cadence
               </p>
               <h2 className="tts-fade text-4xl md:text-5xl font-bold text-white tracking-tight mb-5">
@@ -655,28 +713,26 @@ export default function TTSSite() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
-              {(
-                [
-                  {
-                    colorKey: "indigo" as const,
-                    day: "Monday",
-                    label: "General Meeting",
-                    desc: "Full club. Core lesson or live demo, track breakouts, accountability check-in, and next week's goals. Tyler and Caleb both run it.",
-                  },
-                  {
-                    colorKey: "violet" as const,
-                    day: "Tue – Fri",
-                    label: "Workspace Sessions",
-                    desc: "Open co-working. Build your product, work on a client project, get mentorship, or help onboard someone. Always staffed by e-board.",
-                  },
-                  {
-                    colorKey: "blue" as const,
-                    day: "Sunday",
-                    label: "E-board Sync",
-                    desc: "Leadership only. Review wins and problems, plan Monday, check the pipeline, assign the week's owners, protect founder health.",
-                  },
-                ] as const
-              ).map(({ colorKey, day, label, desc }) => (
+              {[
+                {
+                  accentColor: C,
+                  day: "Tuesday",
+                  label: "General Meeting",
+                  desc: "Full club. Core lesson or live demo, track breakouts, accountability check-in, and next week's goals. Tyler and Caleb both run it. 6–7pm.",
+                },
+                {
+                  accentColor: G,
+                  day: "Tue – Fri",
+                  label: "Workspace Sessions",
+                  desc: "Open co-working. Build your product, work on a client project, get mentorship, or help onboard someone. Always staffed by e-board.",
+                },
+                {
+                  accentColor: "#a1a1aa",
+                  day: "Sunday",
+                  label: "E-board Sync",
+                  desc: "Leadership only. Review wins and problems, plan the week, check the pipeline, assign owners, protect founder health.",
+                },
+              ].map(({ accentColor, day, label, desc }) => (
                 <div
                   key={day}
                   className="tts-fade rounded-2xl p-8 border border-white/[0.07]"
@@ -686,7 +742,8 @@ export default function TTSSite() {
                   }}
                 >
                   <p
-                    className={`text-xs font-semibold uppercase tracking-widest ${CADENCE_COLORS[colorKey]} mb-3`}
+                    className="text-xs font-semibold uppercase tracking-widest mb-3"
+                    style={{ color: accentColor }}
                   >
                     {day}
                   </p>
@@ -700,14 +757,18 @@ export default function TTSSite() {
 
             {/* First meeting preview */}
             <div
-              className="tts-fade rounded-2xl border border-indigo-500/20 p-8 md:p-12"
+              className="tts-fade rounded-2xl p-8 md:p-12"
               style={{
-                background: "rgba(99,102,241,0.07)",
+                background: CDIM,
+                border: `1px solid ${CBORDER}`,
                 backdropFilter: "blur(12px)",
               }}
             >
-              <div className="text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
-                First Monday Meeting
+              <div
+                className="text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: C }}
+              >
+                First Meeting
               </div>
               <h3 className="text-2xl font-bold text-white mb-6">
                 What happens Week 1
@@ -722,7 +783,10 @@ export default function TTSSite() {
                   "Leave with a clear next action",
                 ].map((item, i) => (
                   <div key={item} className="flex items-start gap-3">
-                    <span className="text-indigo-400 text-xs font-bold mt-0.5 flex-shrink-0">
+                    <span
+                      className="text-xs font-bold mt-0.5 flex-shrink-0"
+                      style={{ color: G }}
+                    >
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="text-sm text-zinc-300">{item}</span>
@@ -737,11 +801,14 @@ export default function TTSSite() {
         <section
           id="leadership"
           className="py-32 px-6"
-          style={{ background: "rgba(99,102,241,0.03)" }}
+          style={{ background: "rgba(204,0,0,0.025)" }}
         >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <p className="tts-fade text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
+              <p
+                className="tts-fade text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: G }}
+              >
                 Founders
               </p>
               <h2 className="tts-fade text-4xl md:text-5xl font-bold text-white tracking-tight mb-5">
@@ -754,73 +821,75 @@ export default function TTSSite() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-16">
-              {(
-                [
-                  {
-                    colorKey: "indigo" as const,
-                    initials: "CN",
-                    name: "Caleb Newton",
-                    role: "Entrepreneurship Lead",
-                    owns: [
-                      "Product curriculum and technical systems",
-                      "Website, GitHub, and tooling",
-                      "Startup-facing relationships",
-                      "Builder culture and live demos",
-                    ],
-                  },
-                  {
-                    colorKey: "violet" as const,
-                    initials: "TL",
-                    name: "Tyler Larsen",
-                    role: "Consulting Lead",
-                    owns: [
-                      "Consulting curriculum and client pipeline",
-                      "E-board building and people ops",
-                      "Partnerships and cross-club ecosystem",
-                      "Community culture and recruiting flow",
-                    ],
-                  },
-                ] as const
-              ).map(({ colorKey, initials, name, role, owns }) => {
-                const c = FOUNDER_COLORS[colorKey];
-                return (
+              {[
+                {
+                  bg: CDIM,
+                  border: CBORDER,
+                  textColor: C,
+                  initials: "CN",
+                  name: "Caleb Newton",
+                  role: "Entrepreneurship Lead",
+                  owns: [
+                    "Product curriculum and technical systems",
+                    "Website, GitHub, and tooling",
+                    "Startup-facing relationships",
+                    "Builder culture and live demos",
+                  ],
+                },
+                {
+                  bg: GDIM,
+                  border: GBORDER,
+                  textColor: G,
+                  initials: "TL",
+                  name: "Tyler Larsen",
+                  role: "Consulting Lead",
+                  owns: [
+                    "Consulting curriculum and client pipeline",
+                    "E-board building and people ops",
+                    "Partnerships and cross-club ecosystem",
+                    "Community culture and recruiting flow",
+                  ],
+                },
+              ].map(({ bg, border, textColor, initials, name, role, owns }) => (
+                <div
+                  key={name}
+                  className="tts-fade rounded-2xl p-8 border border-white/[0.07]"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    backdropFilter: "blur(12px)",
+                  }}
+                >
                   <div
-                    key={name}
-                    className="tts-fade rounded-2xl p-8 border border-white/[0.07]"
-                    style={{
-                      background: "rgba(255,255,255,0.04)",
-                      backdropFilter: "blur(12px)",
-                    }}
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+                    style={{ background: bg, border: `1px solid ${border}` }}
                   >
-                    <div
-                      className={`w-16 h-16 rounded-2xl ${c.bg} border ${c.border} flex items-center justify-center mb-6`}
+                    <span
+                      className="text-xl font-black"
+                      style={{ color: textColor }}
                     >
-                      <span className={`text-xl font-black ${c.text}`}>
-                        {initials}
-                      </span>
-                    </div>
-                    <p
-                      className={`text-xs font-semibold uppercase tracking-widest ${c.text} mb-2`}
-                    >
-                      {role}
-                    </p>
-                    <h3 className="text-2xl font-bold text-white mb-6">
-                      {name}
-                    </h3>
-                    <ul className="space-y-2.5">
-                      {owns.map((item) => (
-                        <li
-                          key={item}
-                          className="flex items-start gap-3 text-sm text-zinc-400"
-                        >
-                          <div className="w-1 h-1 rounded-full bg-zinc-600 flex-shrink-0 mt-2" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                      {initials}
+                    </span>
                   </div>
-                );
-              })}
+                  <p
+                    className="text-xs font-semibold uppercase tracking-widest mb-2"
+                    style={{ color: textColor }}
+                  >
+                    {role}
+                  </p>
+                  <h3 className="text-2xl font-bold text-white mb-6">{name}</h3>
+                  <ul className="space-y-2.5">
+                    {owns.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-start gap-3 text-sm text-zinc-400"
+                      >
+                        <div className="w-1 h-1 rounded-full bg-zinc-600 flex-shrink-0 mt-2" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
 
             {/* Shared values */}
@@ -862,15 +931,17 @@ export default function TTSSite() {
           style={{ background: "#09090b" }}
         >
           <div className="max-w-2xl mx-auto text-center">
-            <p className="tts-fade text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
+            <p
+              className="tts-fade text-xs font-semibold uppercase tracking-widest mb-4"
+              style={{ color: C }}
+            >
               Spring 2026
             </p>
             <h2 className="tts-fade text-5xl md:text-6xl font-bold text-white tracking-tight mb-6">
               Ready to actually{" "}
               <span
                 style={{
-                  background:
-                    "linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%)",
+                  background: `linear-gradient(135deg, ${C} 0%, ${G} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}
@@ -895,7 +966,18 @@ export default function TTSSite() {
                   onClick={() =>
                     window.open("https://discord.gg/tts", "_blank")
                   }
-                  className="flex items-center justify-center gap-3 w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-semibold text-base transition-all duration-150 cursor-pointer shadow-lg shadow-indigo-500/25"
+                  className="flex items-center justify-center gap-3 w-full py-3.5 rounded-xl text-white font-semibold text-base transition-all duration-150 cursor-pointer"
+                  style={{
+                    background: C,
+                    boxShadow: `0 4px 24px rgba(204,0,0,0.3)`,
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.background =
+                      "#AA0000";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.background = C;
+                  }}
                 >
                   <Globe size={17} /> Join Discord
                 </button>
@@ -925,8 +1007,11 @@ export default function TTSSite() {
         >
           <div className="max-w-7xl mx-auto flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-2.5 text-zinc-500 text-sm">
-              <div className="w-6 h-6 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-                <Zap size={11} className="text-indigo-400" />
+              <div
+                className="w-6 h-6 rounded-lg flex items-center justify-center"
+                style={{ background: CDIM, border: `1px solid ${CBORDER}` }}
+              >
+                <Zap size={11} style={{ color: C }} />
               </div>
               Trojan Technology Solutions · USC
             </div>
