@@ -2,10 +2,10 @@
 
 import dynamic from "next/dynamic";
 
-const VisionWeb = dynamic(() => import("@/components/VisionWeb"), {
+const TTSSite = dynamic(() => import("@/components/TTSSite"), {
   ssr: false,
 });
 
 export default function Home() {
-  return <VisionWeb />;
+  return <TTSSite />;
 }
