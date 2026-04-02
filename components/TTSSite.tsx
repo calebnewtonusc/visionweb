@@ -192,15 +192,15 @@ export default function TTSSite() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState("hero");
   const [heroProgress, setHeroProgress] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const gazeStartedRef = useRef(false);
   const dwellFiredRef = useRef(false);
   const gazeDotRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLDivElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
+  const h1WrapperRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef({ x: -100, y: -100 });
   const ringRef = useRef({ x: -100, y: -100 });
   const rafRef = useRef(0);
@@ -229,24 +229,16 @@ export default function TTSSite() {
     };
   }, []);
 
-  // Scroll: progress bar + hero progress + nav
+  // Scroll: hero progress
   useEffect(() => {
     const handle = () => {
       const scrollY = window.scrollY;
-      const docH = document.documentElement.scrollHeight;
       const winH = window.innerHeight;
-      if (scrollY > 50) setScrolled(true);
-      if (progressBarRef.current) {
-        progressBarRef.current.style.transform = `scaleX(${Math.min(scrollY / (docH - winH), 1)})`;
-      }
       if (heroSectionRef.current) {
         const sect = heroSectionRef.current;
         const scrolled = scrollY - sect.offsetTop;
         const maxScroll = sect.offsetHeight - winH;
-        const prog = Math.max(0, Math.min(1, scrolled / maxScroll));
-        setHeroProgress(prog);
-        const pastShip =
-          prog > 0.6 || scrollY > sect.offsetTop + sect.offsetHeight;
+        setHeroProgress(Math.max(0, Math.min(1, scrolled / maxScroll)));
       }
     };
     window.addEventListener("scroll", handle, { passive: true });
@@ -384,10 +376,17 @@ export default function TTSSite() {
     }
   }, [scrollTo, injectWebGazer]);
 
-  const word2Shown = heroProgress > 0.2;
-  const word3Shown = heroProgress > 0.38;
-  const wordsMorphing = heroProgress > 0.54;
-  const heroContentShown = heroProgress > 0.68;
+  const word2Shown = heroProgress > 0.16;
+  const word3Shown = heroProgress > 0.28;
+  const heroSlideProgress = Math.max(
+    0,
+    Math.min(1, (heroProgress - 0.36) / (0.57 - 0.36)),
+  );
+  const wordsMorphing = heroProgress > 0.62;
+  const heroContentShown = heroProgress > 0.76;
+  const h1WrapperW = h1WrapperRef.current?.offsetWidth ?? 0;
+  const heroContainerW = heroContentRef.current?.clientWidth ?? 0;
+  const slideX = heroSlideProgress * Math.max(0, heroContainerW - h1WrapperW);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -483,72 +482,6 @@ export default function TTSSite() {
       >
         Skip to main content
       </a>
-
-      {/* Progress bar */}
-      <div
-        ref={progressBarRef}
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 2,
-          background: "linear-gradient(90deg,#CC0000,#FFCC00)",
-          transformOrigin: "left",
-          transform: "scaleX(0)",
-          zIndex: 10000,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Nav dots — includes faq */}
-      <div
-        className="tts-nav-dots"
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          right: 16,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 100,
-          display: "flex",
-          flexDirection: "column",
-          gap: 4,
-        }}
-      >
-        {(
-          ["hero", "mission", "tracks", "leadership", "faq", "join"] as const
-        ).map((id) => (
-          <button
-            key={id}
-            aria-label={`Go to ${id}`}
-            onClick={() => scrollTo(id)}
-            style={{
-              width: 32,
-              height: 28,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-            }}
-          >
-            <div
-              style={{
-                width: activeSection === id ? 6 : 4,
-                height: activeSection === id ? 6 : 4,
-                borderRadius: "50%",
-                background:
-                  activeSection === id ? "#CC0000" : "rgba(255,255,255,0.2)",
-                transition: "all 0.2s",
-              }}
-            />
-          </button>
-        ))}
-      </div>
 
       {/* Custom cursor */}
       <div
@@ -660,6 +593,7 @@ export default function TTSSite() {
 
             <div
               className="tts-hero-content"
+              ref={heroContentRef}
               style={{
                 maxWidth: 1200,
                 margin: "0 auto",
@@ -669,173 +603,141 @@ export default function TTSSite() {
                 zIndex: 1,
               }}
             >
-              {/* Badge — semantic, not aria-hidden */}
+              {/* Slide wrapper — tracks scroll right before morph */}
               <div
+                ref={h1WrapperRef}
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 7,
-                  padding: "4px 12px",
-                  borderRadius: 100,
-                  background: "rgba(204,0,0,0.08)",
-                  border: "1px solid rgba(204,0,0,0.2)",
-                  marginBottom: 40,
-                  opacity: word3Shown && !wordsMorphing ? 1 : 0,
-                  transform:
-                    word3Shown && !wordsMorphing
-                      ? "translateY(0)"
-                      : "translateY(8px)",
-                  transition:
-                    "opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)",
-                  pointerEvents: "none",
+                  display: "inline-block",
+                  transform: `translateX(${slideX}px)`,
                 }}
               >
-                <div
+                {/* Morph h1 */}
+                <h1
+                  aria-label="Trojan Technology Solutions"
                   style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: "50%",
-                    background: "#CC0000",
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    color: "#CC0000",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
+                    fontSize: "clamp(60px, 9vw, 112px)",
+                    fontWeight: 900,
+                    letterSpacing: "-0.04em",
+                    lineHeight: 0.9,
+                    margin: 0,
+                    padding: 0,
                   }}
                 >
-                  USC Student Organization · Founded 2023
-                </span>
-              </div>
-
-              {/* Morph h1 */}
-              <h1
-                aria-label="Trojan Technology Solutions"
-                style={{
-                  fontSize: "clamp(60px, 9vw, 112px)",
-                  fontWeight: 900,
-                  letterSpacing: "-0.04em",
-                  lineHeight: 0.9,
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                <span
-                  aria-hidden="true"
-                  style={{ display: "block", position: "relative" }}
-                >
                   <span
-                    style={{
-                      display: "block",
-                      color: "#fff",
-                      opacity: wordsMorphing ? 0 : 1,
-                      transform: wordsMorphing
-                        ? "translateY(0.12em) scale(0.96)"
-                        : "translateY(0) scale(1)",
-                      transition:
-                        "opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1)",
-                    }}
+                    aria-hidden="true"
+                    style={{ display: "block", position: "relative" }}
                   >
-                    Build.
-                  </span>
-                  <span
-                    style={{
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      color: "#fff",
-                      opacity: wordsMorphing ? 1 : 0,
-                      transform: wordsMorphing
-                        ? "translateY(0) scale(1)"
-                        : "translateY(-0.12em) scale(0.96)",
-                      transition:
-                        "opacity 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s",
-                    }}
-                  >
-                    Trojan
-                  </span>
-                </span>
-
-                <span
-                  aria-hidden="true"
-                  style={{ display: "block", position: "relative" }}
-                >
-                  <span
-                    style={{
-                      display: "block",
-                      color: "#fff",
-                      opacity: wordsMorphing ? 0 : word2Shown ? 1 : 0,
-                      transform: wordsMorphing
-                        ? "scale(0.94)"
-                        : word2Shown
-                          ? "translateY(0)"
-                          : "translateY(48px)",
-                      transition:
-                        "opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)",
-                    }}
-                  >
-                    Solve.
-                  </span>
-                  <span
-                    style={{
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      color: "#FFCC00",
-                      opacity: wordsMorphing ? 1 : 0,
-                      transform: wordsMorphing ? "scale(1)" : "scale(0.94)",
-                      transition:
-                        "opacity 0.55s cubic-bezier(0.16,1,0.3,1) 0.18s, transform 0.55s cubic-bezier(0.16,1,0.3,1) 0.18s",
-                    }}
-                  >
-                    Tech
-                  </span>
-                </span>
-
-                <span
-                  aria-hidden="true"
-                  style={{ display: "block", position: "relative" }}
-                >
-                  <span
-                    style={{
-                      display: "block",
-                      color: "#CC0000",
-                      opacity: wordsMorphing ? 0 : word3Shown ? 1 : 0,
-                      transform: wordsMorphing
-                        ? "translateY(-0.12em) scale(0.96)"
-                        : word3Shown
+                    <span
+                      style={{
+                        display: "block",
+                        color: "#fff",
+                        opacity: wordsMorphing ? 0 : 1,
+                        transform: wordsMorphing
+                          ? "translateY(0.12em) scale(0.96)"
+                          : "translateY(0) scale(1)",
+                        transition:
+                          "opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1)",
+                      }}
+                    >
+                      Build.
+                    </span>
+                    <span
+                      style={{
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        color: "#fff",
+                        opacity: wordsMorphing ? 1 : 0,
+                        transform: wordsMorphing
                           ? "translateY(0) scale(1)"
-                          : "translateY(48px) scale(1)",
-                      transition:
-                        "opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)",
-                    }}
-                  >
-                    Ship.
+                          : "translateY(-0.12em) scale(0.96)",
+                        transition:
+                          "opacity 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s",
+                      }}
+                    >
+                      Trojan
+                    </span>
                   </span>
+
                   <span
-                    style={{
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      color: "#CC0000",
-                      opacity: wordsMorphing ? 1 : 0,
-                      transform: wordsMorphing
-                        ? "translateY(0) scale(1)"
-                        : "translateY(0.12em) scale(0.96)",
-                      transition:
-                        "opacity 0.55s cubic-bezier(0.16,1,0.3,1) 0.26s, transform 0.55s cubic-bezier(0.16,1,0.3,1) 0.26s",
-                    }}
+                    aria-hidden="true"
+                    style={{ display: "block", position: "relative" }}
                   >
-                    Solutions
+                    <span
+                      style={{
+                        display: "block",
+                        color: "#fff",
+                        opacity: wordsMorphing ? 0 : word2Shown ? 1 : 0,
+                        transform: wordsMorphing
+                          ? "scale(0.94)"
+                          : word2Shown
+                            ? "translateY(0)"
+                            : "translateY(48px)",
+                        transition:
+                          "opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)",
+                      }}
+                    >
+                      Solve.
+                    </span>
+                    <span
+                      style={{
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        color: "#FFCC00",
+                        opacity: wordsMorphing ? 1 : 0,
+                        transform: wordsMorphing ? "scale(1)" : "scale(0.94)",
+                        transition:
+                          "opacity 0.55s cubic-bezier(0.16,1,0.3,1) 0.18s, transform 0.55s cubic-bezier(0.16,1,0.3,1) 0.18s",
+                      }}
+                    >
+                      Tech
+                    </span>
                   </span>
-                </span>
-              </h1>
+
+                  <span
+                    aria-hidden="true"
+                    style={{ display: "block", position: "relative" }}
+                  >
+                    <span
+                      style={{
+                        display: "block",
+                        color: "#CC0000",
+                        opacity: wordsMorphing ? 0 : word3Shown ? 1 : 0,
+                        transform: wordsMorphing
+                          ? "translateY(-0.12em) scale(0.96)"
+                          : word3Shown
+                            ? "translateY(0) scale(1)"
+                            : "translateY(48px) scale(1)",
+                        transition:
+                          "opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)",
+                      }}
+                    >
+                      Ship.
+                    </span>
+                    <span
+                      style={{
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        color: "#CC0000",
+                        opacity: wordsMorphing ? 1 : 0,
+                        transform: wordsMorphing
+                          ? "translateY(0) scale(1)"
+                          : "translateY(0.12em) scale(0.96)",
+                        transition:
+                          "opacity 0.55s cubic-bezier(0.16,1,0.3,1) 0.26s, transform 0.55s cubic-bezier(0.16,1,0.3,1) 0.26s",
+                      }}
+                    >
+                      Solutions
+                    </span>
+                  </span>
+                </h1>
+              </div>
+              {/* end slide wrapper */}
 
               {/* Content block */}
               <div
@@ -948,94 +850,6 @@ export default function TTSSite() {
                     See the tracks
                   </button>
                 </div>
-
-                {/* Stats */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 48,
-                    paddingTop: 32,
-                    borderTop: "1px solid rgba(255,255,255,0.06)",
-                    flexWrap: "wrap",
-                    rowGap: 24,
-                  }}
-                >
-                  {[
-                    ["3", "Active tracks"],
-                    ["2023", "Founded at USC"],
-                    ["Any major", "No prerequisites"],
-                  ].map(([val, label]) => (
-                    <div key={label}>
-                      <div
-                        style={{
-                          fontSize: 36,
-                          fontWeight: 800,
-                          color: "#fff",
-                          letterSpacing: "-0.03em",
-                          lineHeight: 1,
-                        }}
-                      >
-                        {val}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 12,
-                          color: "#a1a1aa",
-                          marginTop: 5,
-                          letterSpacing: "0.04em",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Scroll hint */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                bottom: 40,
-                left: "50%",
-                transform: "translateX(-50%)",
-                opacity: scrolled || heroProgress > 0.1 ? 0 : 1,
-                transition: "opacity 0.6s ease",
-                pointerEvents: "none",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  color: "rgba(255,255,255,0.3)",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Scroll
-              </span>
-              <div
-                className="tts-scroll-hint"
-                style={{
-                  width: 28,
-                  height: 28,
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <ChevronDown size={14} color="rgba(255,255,255,0.4)" />
               </div>
             </div>
           </div>
@@ -1245,7 +1059,7 @@ export default function TTSSite() {
                       <div
                         className="tts-card"
                         style={{
-                          background: featured ? "#131208" : "#111113",
+                          background: featured ? "#141414" : "#111113",
                           borderRadius: 16,
                           border: featured
                             ? "1px solid rgba(255,204,0,0.2)"
@@ -1297,8 +1111,7 @@ export default function TTSSite() {
                             style={{
                               fontSize: 64,
                               fontWeight: 900,
-                              color: accent,
-                              opacity: 0.12,
+                              color: "rgba(255,255,255,0.12)",
                               letterSpacing: "-0.05em",
                               lineHeight: 1,
                               userSelect: "none",
@@ -1311,8 +1124,8 @@ export default function TTSSite() {
                               width: 40,
                               height: 40,
                               borderRadius: 11,
-                              background: hexToRgba(accent, 0.08),
-                              border: `1px solid ${hexToRgba(accent, 0.2)}`,
+                              background: hexToRgba(accent, 0.15),
+                              border: `1px solid ${hexToRgba(accent, 0.4)}`,
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
@@ -1411,7 +1224,7 @@ export default function TTSSite() {
                             style={{
                               fontSize: 11,
                               fontWeight: 700,
-                              color: "#6b7280",
+                              color: "#9ca3af",
                               letterSpacing: "0.08em",
                               textTransform: "uppercase",
                               marginBottom: 6,
@@ -1937,6 +1750,10 @@ export default function TTSSite() {
                 >
                   <a
                     href={APPLICATION_URL}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open(APPLICATION_URL);
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -1984,6 +1801,10 @@ export default function TTSSite() {
 
                   <a
                     href={PARTNERSHIP_URL}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open(PARTNERSHIP_URL);
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -2312,7 +2133,7 @@ export default function TTSSite() {
           style={{
             background: "#060608",
             borderTop: "1px solid rgba(255,255,255,0.05)",
-            padding: "48px 40px 32px",
+            padding: "28px 40px 20px",
           }}
         >
           <div
@@ -2324,7 +2145,7 @@ export default function TTSSite() {
               alignItems: "flex-start",
               justifyContent: "space-between",
               gap: 40,
-              marginBottom: 40,
+              marginBottom: 20,
             }}
           >
             {/* Brand */}
