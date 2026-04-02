@@ -148,10 +148,12 @@ export default function TTSSite() {
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [heroProgress, setHeroProgress] = useState(0);
+  const [revealProgress, setRevealProgress] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLDivElement>(null);
+  const revealSectionRef = useRef<HTMLDivElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const h1WrapperRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef({ x: -100, y: -100 });
@@ -193,6 +195,12 @@ export default function TTSSite() {
         const maxScroll = sect.offsetHeight - winH;
         setHeroProgress(Math.max(0, Math.min(1, scrolled / maxScroll)));
       }
+      if (revealSectionRef.current) {
+        const sect = revealSectionRef.current;
+        const scrolled = scrollY - sect.offsetTop;
+        const maxScroll = sect.offsetHeight - winH;
+        setRevealProgress(Math.max(0, Math.min(1, scrolled / maxScroll)));
+      }
     };
     window.addEventListener("scroll", handle, { passive: true });
     return () => window.removeEventListener("scroll", handle);
@@ -231,6 +239,12 @@ export default function TTSSite() {
   const heroContainerW = heroContentRef.current?.clientWidth ?? 0;
   const slideX =
     heroSlideProgress * Math.max(0, heroContainerW - 80 - h1WrapperW);
+
+  // Reverse-scroll reveal derived values
+  const revealSlide = Math.max(0, (revealProgress - 0.25) / 0.65);
+  const panelBY = -100 + revealSlide * 100;
+  const panelAScale = 1 - revealSlide * 0.03;
+  const panelABrightness = 1 - revealSlide * 0.25;
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -677,11 +691,69 @@ export default function TTSSite() {
           </div>
         </section>
 
+        {/* ── STATS STRIP ── */}
+        <div
+          style={{
+            background: "#09090b",
+            borderBottom: "1px solid rgba(255,255,255,0.05)",
+            padding: "0 40px",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 1200,
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+            }}
+          >
+            {[
+              { num: "3", label: "tracks to choose" },
+              { num: "6wk", label: "idea to shipped" },
+              { num: "0", label: "prereqs required" },
+              { num: "Free", label: "no dues, ever" },
+            ].map(({ num, label }, i) => (
+              <div
+                key={label}
+                className="tts-fade"
+                style={{
+                  padding: "28px 24px",
+                  borderRight:
+                    i < 3 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                  transitionDelay: `${i * 0.06}s`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "clamp(22px, 2.8vw, 34px)",
+                    fontWeight: 900,
+                    color: "#fff",
+                    letterSpacing: "-0.04em",
+                    lineHeight: 1,
+                  }}
+                >
+                  {num}
+                </div>
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: "#52525b",
+                    marginTop: 4,
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* ── MISSION ── */}
         <section
           id="mission"
           className="tts-section-pad"
-          style={{ background: "#0c0c0f", padding: "120px 40px" }}
+          style={{ background: "#0c0c0f", padding: "80px 40px" }}
         >
           <div
             className="tts-mission-grid"
@@ -690,7 +762,7 @@ export default function TTSSite() {
               margin: "0 auto",
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: 80,
+              gap: 52,
               alignItems: "start",
             }}
           >
@@ -813,10 +885,10 @@ export default function TTSSite() {
         <section
           id="tracks"
           className="tts-section-pad"
-          style={{ background: "#09090b", padding: "120px 40px" }}
+          style={{ background: "#09090b", padding: "80px 40px" }}
         >
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <div style={{ marginBottom: 72 }}>
+            <div style={{ marginBottom: 48 }}>
               <h2
                 className="tts-slide"
                 style={{
@@ -1104,11 +1176,222 @@ export default function TTSSite() {
           </div>
         </section>
 
+        {/* ── REVERSE SCROLL REVEAL ── */}
+        <div
+          ref={revealSectionRef}
+          style={{ height: "220vh", position: "relative" }}
+        >
+          <div
+            style={{
+              position: "sticky",
+              top: 0,
+              height: "100vh",
+              overflow: "hidden",
+            }}
+          >
+            {/* Panel A: large statement (behind) */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "#09090b",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transform: `scale(${panelAScale})`,
+                filter: `brightness(${panelABrightness})`,
+              }}
+            >
+              {/* dot grid bg */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage:
+                    "radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)",
+                  backgroundSize: "36px 36px",
+                  pointerEvents: "none",
+                }}
+              />
+              {/* red glow */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%,-50%)",
+                  width: 700,
+                  height: 700,
+                  borderRadius: "50%",
+                  background:
+                    "radial-gradient(circle, rgba(204,0,0,0.1) 0%, transparent 65%)",
+                  pointerEvents: "none",
+                }}
+              />
+              <div
+                style={{
+                  padding: "0 40px",
+                  maxWidth: 900,
+                  textAlign: "center",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "#CC0000",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginBottom: 28,
+                  }}
+                >
+                  No prerequisites. No application. No catch.
+                </p>
+                <h2
+                  style={{
+                    fontSize: "clamp(52px, 9vw, 112px)",
+                    fontWeight: 900,
+                    color: "#fff",
+                    letterSpacing: "-0.04em",
+                    lineHeight: 0.92,
+                    marginBottom: 36,
+                  }}
+                >
+                  Walk in.
+                  <br />
+                  <span style={{ color: "#CC0000" }}>Ship something.</span>
+                </h2>
+                <p
+                  style={{
+                    fontSize: 16,
+                    color: "#71717a",
+                    lineHeight: 1.7,
+                    maxWidth: 480,
+                    margin: "0 auto",
+                  }}
+                >
+                  TTS runs every semester at USC. Pick a track. Work on a real
+                  project from week one.
+                </p>
+              </div>
+            </div>
+
+            {/* Panel B: slides down from above as you scroll */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "#0d0d10",
+                transform: `translateY(${panelBY}%)`,
+                zIndex: 2,
+                display: "flex",
+                alignItems: "center",
+                borderBottom: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <div
+                style={{
+                  maxWidth: 1200,
+                  margin: "0 auto",
+                  width: "100%",
+                  padding: "0 40px",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "#FFCC00",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginBottom: 16,
+                  }}
+                >
+                  Three ways in
+                </p>
+                <h2
+                  style={{
+                    fontSize: "clamp(28px, 4vw, 56px)",
+                    fontWeight: 900,
+                    color: "#fff",
+                    letterSpacing: "-0.03em",
+                    marginBottom: 44,
+                  }}
+                >
+                  Pick your track.
+                </h2>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: 16,
+                  }}
+                >
+                  {TRACKS.map(({ num, title, tagline, accent, icon: Icon }) => (
+                    <div
+                      key={num}
+                      style={{
+                        padding: "28px 24px",
+                        borderRadius: 14,
+                        background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.07)",
+                        borderTop: `2px solid ${accent}`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 36,
+                          height: 36,
+                          borderRadius: 10,
+                          background: hexToRgba(accent, 0.12),
+                          border: `1px solid ${hexToRgba(accent, 0.35)}`,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: 16,
+                        }}
+                      >
+                        <Icon size={16} color={accent} />
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          letterSpacing: "0.1em",
+                          color: accent,
+                          textTransform: "uppercase",
+                          marginBottom: 8,
+                        }}
+                      >
+                        {title}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: "#fff",
+                          lineHeight: 1.4,
+                          marginBottom: 8,
+                        }}
+                      >
+                        {tagline}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ── LEADERSHIP ── */}
         <section
           id="leadership"
           className="tts-section-pad"
-          style={{ background: "#0c0c0f", padding: "120px 40px" }}
+          style={{ background: "#0c0c0f", padding: "80px 40px" }}
         >
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <h2
@@ -1128,7 +1411,7 @@ export default function TTSSite() {
               style={{
                 fontSize: 15,
                 color: "#a1a1aa",
-                marginBottom: 56,
+                marginBottom: 40,
                 transitionDelay: "0.08s",
               }}
             >
@@ -1331,10 +1614,10 @@ export default function TTSSite() {
         <section
           id="faq"
           className="tts-section-pad"
-          style={{ background: "#09090b", padding: "120px 40px" }}
+          style={{ background: "#09090b", padding: "80px 40px" }}
         >
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
-            <div style={{ marginBottom: 64 }}>
+            <div style={{ marginBottom: 48 }}>
               <h2
                 className="tts-slide"
                 style={{
@@ -1520,7 +1803,7 @@ export default function TTSSite() {
         <section
           id="join"
           className="tts-section-pad"
-          style={{ background: "#0c0c0f", padding: "120px 40px" }}
+          style={{ background: "#0c0c0f", padding: "80px 40px" }}
         >
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <div
