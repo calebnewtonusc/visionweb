@@ -441,11 +441,6 @@ export default function TTSSite() {
           outline-offset: 2px !important;
           border-radius: 4px;
         }
-        @keyframes tts-scroll-bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(6px); }
-        }
-        .tts-scroll-hint { animation: tts-scroll-bounce 2s ease-in-out infinite; }
         @keyframes spin {
           to { transform: rotate(360deg); }
         }
@@ -785,6 +780,7 @@ export default function TTSSite() {
                 >
                   <button
                     onClick={() => scrollTo("join")}
+                    className="tts-apply-pulse"
                     style={{
                       padding: "12px 28px",
                       borderRadius: 10,
@@ -916,12 +912,10 @@ export default function TTSSite() {
                 planning to.
               </p>
               <div
-                className="tts-fade"
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   gap: 14,
-                  transitionDelay: "0.18s",
                 }}
               >
                 {[
@@ -929,10 +923,16 @@ export default function TTSSite() {
                   { c: "#FFCC00", t: "Advise clients this semester" },
                   { c: "#10b981", t: "Open to every major, every year" },
                   { c: "#CC0000", t: "Intensity with purpose, not burnout" },
-                ].map(({ c, t }) => (
+                ].map(({ c, t }, i) => (
                   <div
                     key={t}
-                    style={{ display: "flex", alignItems: "center", gap: 14 }}
+                    className="tts-fade"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 14,
+                      transitionDelay: `${0.18 + i * 0.08}s`,
+                    }}
                   >
                     <Check
                       size={14}
@@ -1535,7 +1535,6 @@ export default function TTSSite() {
 
             {/* Accordion */}
             <div
-              className="tts-fade"
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -1550,7 +1549,9 @@ export default function TTSSite() {
                 return (
                   <div
                     key={q}
+                    className="tts-fade"
                     style={{
+                      transitionDelay: `${i * 0.07}s`,
                       borderBottom:
                         i < FAQ_ITEMS.length - 1
                           ? "1px solid rgba(255,255,255,0.06)"
@@ -1738,14 +1739,12 @@ export default function TTSSite() {
                 </p>
 
                 <div
-                  className="tts-fade"
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     gap: 12,
                     marginBottom: 48,
                     maxWidth: 420,
-                    transitionDelay: "0.14s",
                   }}
                 >
                   <a
@@ -1856,12 +1855,10 @@ export default function TTSSite() {
                 </div>
 
                 <div
-                  className="tts-fade"
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     gap: 12,
-                    transitionDelay: "0.22s",
                   }}
                 >
                   {[
@@ -1869,10 +1866,16 @@ export default function TTSSite() {
                     "Open to all USC majors and class years",
                     "No prior experience or applications",
                     "Live project work from your first week",
-                  ].map((item) => (
+                  ].map((item, i) => (
                     <div
                       key={item}
-                      style={{ display: "flex", alignItems: "center", gap: 10 }}
+                      className="tts-fade"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        transitionDelay: `${0.22 + i * 0.09}s`,
+                      }}
                     >
                       <Check
                         size={14}
@@ -2244,10 +2247,16 @@ export default function TTSSite() {
               <div
                 style={{ display: "flex", flexDirection: "column", gap: 10 }}
               >
-                {["Mission", "Tracks", "Team", "FAQ", "Join"].map((label) => (
+                {[
+                  { label: "Mission", id: "mission" },
+                  { label: "Tracks", id: "tracks" },
+                  { label: "Team", id: "leadership" },
+                  { label: "FAQ", id: "faq" },
+                  { label: "Join", id: "join" },
+                ].map(({ label, id }) => (
                   <button
                     key={label}
-                    onClick={() => scrollTo(label.toLowerCase())}
+                    onClick={() => scrollTo(id)}
                     style={{
                       background: "none",
                       border: "none",
