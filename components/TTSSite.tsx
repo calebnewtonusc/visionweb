@@ -23,40 +23,6 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-// ── Gaze nav engine ──────────────────────────────────────────────────────────
-const DWELL_MS = 1000;
-let _navTarget: string | null = null;
-let _navStart = 0;
-
-function gazeNavUpdate(x: number, y: number, now: number) {
-  const els = Array.from(
-    document.querySelectorAll<HTMLElement>("[data-gaze-nav]"),
-  );
-  let hit: string | null = null;
-  for (const el of els) {
-    const r = el.getBoundingClientRect();
-    if (
-      x >= r.left - 28 &&
-      x <= r.right + 28 &&
-      y >= r.top - 28 &&
-      y <= r.bottom + 28
-    ) {
-      hit = el.dataset.gazeNav ?? null;
-      break;
-    }
-  }
-  if (hit !== _navTarget) {
-    _navTarget = hit;
-    _navStart = now;
-  }
-  return {
-    target: _navTarget,
-    progress: _navTarget ? Math.min((now - _navStart) / DWELL_MS, 1) : 0,
-  };
-}
-
-const ARC = 2 * Math.PI * 10;
-
 // ── Data ─────────────────────────────────────────────────────────────────────
 const TRACKS = [
   {
@@ -173,29 +139,16 @@ const FAQ_ITEMS = [
   },
 ];
 
-const APPLICATION_URL =
-  "mailto:trojantechsolutions@gmail.com?subject=TTS Application";
-const PARTNERSHIP_URL =
-  "mailto:trojantechsolutions@gmail.com?subject=Partnership Inquiry";
 const INSTAGRAM_URL = "https://instagram.com/trojantechsolutions";
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function TTSSite() {
-  const [gazeActive, setGazeActive] = useState(false);
-  const [gazeNav, setGazeNav] = useState<{
-    target: string | null;
-    progress: number;
-  }>({ target: null, progress: 0 });
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState("hero");
   const [heroProgress, setHeroProgress] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const gazeStartedRef = useRef(false);
-  const dwellFiredRef = useRef(false);
-  const gazeDotRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLDivElement>(null);
@@ -262,119 +215,9 @@ export default function TTSSite() {
     return () => obs.disconnect();
   }, []);
 
-  // Active section tracking
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting && e.intersectionRatio >= 0.3)
-            setActiveSection(e.target.id);
-        }),
-      { threshold: 0.3 },
-    );
-    ["hero", "mission", "tracks", "leadership", "faq", "join"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, []);
-
   const scrollTo = useCallback((id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   }, []);
-
-  // WebGazer loads on demand — not on page load
-  const injectWebGazer = useCallback(
-    () =>
-      new Promise<void>((resolve, reject) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((window as any).webgazer) {
-          resolve();
-          return;
-        }
-        const existing = document.querySelector('script[src*="webgazer"]');
-        if (existing) {
-          existing.addEventListener("load", () => resolve());
-          existing.addEventListener("error", () =>
-            reject(new Error("WebGazer failed to load")),
-          );
-          return;
-        }
-        const script = document.createElement("script");
-        script.src = "https://webgazer.cs.brown.edu/webgazer.js";
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error("WebGazer failed to load"));
-        document.head.appendChild(script);
-      }),
-    [],
-  );
-
-  const startGaze = useCallback(async () => {
-    if (gazeStartedRef.current) return;
-    try {
-      toast.loading("Loading eye tracking...", { id: "gaze", duration: 20000 });
-      await injectWebGazer();
-      let waited = 0;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      while (
-        typeof (window as any).webgazer?.setGazeListener !== "function" &&
-        waited < 4000
-      ) {
-        await new Promise((r) => setTimeout(r, 150));
-        waited += 150;
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const wg = (window as any).webgazer;
-      if (typeof wg?.setGazeListener !== "function") {
-        toast.error("WebGazer did not initialize.", { id: "gaze" });
-        return;
-      }
-      gazeStartedRef.current = true;
-      toast.loading("Starting camera...", { id: "gaze", duration: 15000 });
-      if (wg.params) wg.params.saveDataAcrossSessions = false;
-      await wg
-        .setGazeListener((data: { x: number; y: number } | null) => {
-          if (!data) return;
-          const now = performance.now();
-          if (gazeDotRef.current) {
-            gazeDotRef.current.style.transform = `translate(${data.x - 12}px, ${data.y - 12}px)`;
-            gazeDotRef.current.style.opacity = "1";
-          }
-          const nav = gazeNavUpdate(data.x, data.y, now);
-          setGazeNav(nav);
-          if (nav.progress >= 1 && nav.target && !dwellFiredRef.current) {
-            dwellFiredRef.current = true;
-            scrollTo(nav.target);
-            _navTarget = null;
-            _navStart = 0;
-            setTimeout(() => {
-              dwellFiredRef.current = false;
-            }, 1400);
-          } else if (nav.progress < 0.8) {
-            dwellFiredRef.current = false;
-          }
-        })
-        .begin();
-      wg.showVideo(false);
-      wg.showFaceOverlay(false);
-      wg.showFaceFeedbackBox(false);
-      wg.showPredictionPoints(false);
-      setGazeActive(true);
-      toast.success(
-        "Gaze tracking on. Look at a nav link for 1s to navigate.",
-        {
-          id: "gaze",
-          duration: 5000,
-        },
-      );
-    } catch (err) {
-      gazeStartedRef.current = false;
-      toast.error(
-        `Eye tracking failed: ${err instanceof Error ? err.message : String(err)}`,
-        { id: "gaze" },
-      );
-    }
-  }, [scrollTo, injectWebGazer]);
 
   const word2Shown = heroProgress > 0.16;
   const word3Shown = heroProgress > 0.28;
@@ -386,7 +229,8 @@ export default function TTSSite() {
   const heroContentShown = heroProgress > 0.76;
   const h1WrapperW = h1WrapperRef.current?.offsetWidth ?? 0;
   const heroContainerW = heroContentRef.current?.clientWidth ?? 0;
-  const slideX = heroSlideProgress * Math.max(0, heroContainerW - h1WrapperW);
+  const slideX =
+    heroSlideProgress * Math.max(0, heroContainerW - 80 - h1WrapperW);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -511,24 +355,6 @@ export default function TTSSite() {
           zIndex: 9998,
         }}
       />
-      <div
-        ref={gazeDotRef}
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: 24,
-          height: 24,
-          borderRadius: "50%",
-          border: "2px solid #FFCC00",
-          background: "rgba(255,204,0,0.08)",
-          pointerEvents: "none",
-          zIndex: 9001,
-          opacity: 0,
-          transition: "opacity 0.2s",
-        }}
-      />
 
       <div
         className="tts-main"
@@ -641,7 +467,7 @@ export default function TTSSite() {
                         display: "block",
                         position: "absolute",
                         top: 0,
-                        left: 0,
+                        right: 0,
                         color: "#fff",
                         opacity: wordsMorphing ? 1 : 0,
                         transform: wordsMorphing
@@ -680,7 +506,7 @@ export default function TTSSite() {
                         display: "block",
                         position: "absolute",
                         top: 0,
-                        left: 0,
+                        right: 0,
                         color: "#FFCC00",
                         opacity: wordsMorphing ? 1 : 0,
                         transform: wordsMorphing ? "scale(1)" : "scale(0.94)",
@@ -717,7 +543,7 @@ export default function TTSSite() {
                         display: "block",
                         position: "absolute",
                         top: 0,
-                        left: 0,
+                        right: 0,
                         color: "#CC0000",
                         opacity: wordsMorphing ? 1 : 0,
                         transform: wordsMorphing
@@ -1748,11 +1574,7 @@ export default function TTSSite() {
                   }}
                 >
                   <a
-                    href={APPLICATION_URL}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.open(APPLICATION_URL);
-                    }}
+                    href="/apply"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -1799,11 +1621,7 @@ export default function TTSSite() {
                   </a>
 
                   <a
-                    href={PARTNERSHIP_URL}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.open(PARTNERSHIP_URL);
-                    }}
+                    href="/partner"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -2132,243 +1950,128 @@ export default function TTSSite() {
 
         {/* ── FOOTER ── */}
         <footer
-          className="tts-footer-wrap"
           style={{
             background: "#060608",
             borderTop: "1px solid rgba(255,255,255,0.05)",
-            padding: "28px 40px 20px",
+            padding: "0 40px",
           }}
         >
           <div
-            className="tts-footer-cols"
             style={{
               maxWidth: 1200,
               margin: "0 auto",
+              height: 56,
               display: "flex",
-              alignItems: "flex-start",
+              alignItems: "center",
               justifyContent: "space-between",
-              gap: 40,
-              marginBottom: 20,
+              gap: 24,
             }}
           >
             {/* Brand */}
-            <div style={{ maxWidth: 280 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                flexShrink: 0,
+              }}
+            >
               <div
                 style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 5,
+                  background: "rgba(204,0,0,0.08)",
+                  border: "1px solid rgba(204,0,0,0.2)",
                   display: "flex",
                   alignItems: "center",
-                  gap: 8,
-                  marginBottom: 12,
+                  justifyContent: "center",
                 }}
               >
-                <div
-                  style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: 6,
-                    background: "rgba(204,0,0,0.08)",
-                    border: "1px solid rgba(204,0,0,0.2)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Zap size={10} color="#CC0000" />
-                </div>
-                <span
-                  style={{
-                    fontWeight: 700,
-                    color: "#fff",
-                    fontSize: 13,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Trojan Technology Solutions
-                </span>
+                <Zap size={9} color="#CC0000" />
               </div>
-              <p
+              <span
                 style={{
-                  fontSize: 13,
+                  fontSize: 12,
+                  fontWeight: 600,
                   color: "#6b7280",
-                  lineHeight: 1.6,
-                  marginBottom: 16,
+                  letterSpacing: "-0.01em",
                 }}
               >
-                USC&apos;s builder club. Founded 2023. Any major welcome.
-              </p>
+                TTS · USC
+              </span>
+            </div>
+
+            {/* Nav links */}
+            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+              {[
+                { label: "Mission", id: "mission" },
+                { label: "Tracks", id: "tracks" },
+                { label: "Team", id: "leadership" },
+                { label: "FAQ", id: "faq" },
+                { label: "Join", id: "join" },
+              ].map(({ label, id }) => (
+                <button
+                  key={label}
+                  onClick={() => scrollTo(id)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontSize: 12,
+                    color: "#52525b",
+                    cursor: "pointer",
+                    transition: "color 0.15s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.color =
+                      "#a1a1aa";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.color =
+                      "#52525b";
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Right: copyright + instagram */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                flexShrink: 0,
+              }}
+            >
+              <span style={{ fontSize: 11, color: "#3f3f46" }}>
+                © {new Date().getFullYear()} Trojan Technology Solutions
+              </span>
               <a
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="TTS on Instagram (@trojantechsolutions)"
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  fontSize: 12,
-                  color: "#a1a1aa",
+                  fontSize: 11,
+                  color: "#52525b",
                   textDecoration: "none",
-                  padding: "6px 12px",
-                  borderRadius: 8,
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  transition: "all 0.15s",
+                  transition: "color 0.15s",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.color = "#fff";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "rgba(255,255,255,0.2)";
+                  (e.currentTarget as HTMLAnchorElement).style.color =
+                    "#a1a1aa";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLAnchorElement).style.color =
-                    "#a1a1aa";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "rgba(255,255,255,0.08)";
+                    "#52525b";
                 }}
               >
-                <ExternalLink size={12} />
-                Instagram · @trojantechsolutions
+                Instagram
               </a>
             </div>
-
-            {/* Navigation */}
-            <div>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "#6b7280",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  marginBottom: 16,
-                }}
-              >
-                Navigation
-              </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 10 }}
-              >
-                {[
-                  { label: "Mission", id: "mission" },
-                  { label: "Tracks", id: "tracks" },
-                  { label: "Team", id: "leadership" },
-                  { label: "FAQ", id: "faq" },
-                  { label: "Join", id: "join" },
-                ].map(({ label, id }) => (
-                  <button
-                    key={label}
-                    onClick={() => scrollTo(id)}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      fontSize: 13,
-                      color: "#a1a1aa",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "color 0.15s",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.color =
-                        "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.color =
-                        "#a1a1aa";
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "#6b7280",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  marginBottom: 16,
-                }}
-              >
-                Contact
-              </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 10 }}
-              >
-                {[
-                  { label: "Join as a student", href: APPLICATION_URL },
-                  { label: "Partner with TTS", href: PARTNERSHIP_URL },
-                  {
-                    label: "trojantechsolutions@gmail.com",
-                    href: "mailto:trojantechsolutions@gmail.com",
-                  },
-                ].map(({ label, href }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    style={{
-                      fontSize: 13,
-                      color: "#a1a1aa",
-                      textDecoration: "none",
-                      transition: "color 0.15s",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.color =
-                        "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.color =
-                        "#a1a1aa";
-                    }}
-                  >
-                    {label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div
-            style={{
-              maxWidth: 1200,
-              margin: "0 auto",
-              paddingTop: 24,
-              borderTop: "1px solid rgba(255,255,255,0.05)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 12,
-            }}
-          >
-            <div style={{ fontSize: 12, color: "#6b7280" }}>
-              © {new Date().getFullYear()} Trojan Technology Solutions ·
-              University of Southern California
-            </div>
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontSize: 12,
-                color: "#6b7280",
-                textDecoration: "none",
-                transition: "color 0.15s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#a1a1aa";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#6b7280";
-              }}
-            >
-              Instagram
-            </a>
           </div>
         </footer>
       </div>
