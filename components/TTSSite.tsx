@@ -39,7 +39,7 @@ const TRACKS = [
       "Learn by doing, not by watching",
       "No CS background required",
     ],
-    for: "Anyone who wants to make something — any major, any year.",
+    for: "Anyone who wants to make something. Any major, any year.",
   },
   {
     num: "02",
@@ -123,7 +123,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What's the time commitment?",
-    a: "Show up when you can. The weekly meeting is the core. Workspace sessions are optional but encouraged — it's where real momentum happens.",
+    a: "Show up when you can. The weekly meeting is the core. Workspace sessions are optional but encouraged: that's where real momentum happens.",
   },
   {
     q: "Can I join mid-semester?",
@@ -595,8 +595,8 @@ export default function TTSSite() {
                     marginBottom: 8,
                   }}
                 >
-                  A USC builder club where you actually use AI — to ship
-                  products, solve real problems, and get ahead.
+                  A USC builder club where you actually use AI: ship products,
+                  solve real problems, and get ahead.
                 </p>
                 <p
                   style={{
@@ -793,8 +793,8 @@ export default function TTSSite() {
                   transitionDelay: "0.08s",
                 }}
               >
-                Most clubs talk about using AI. TTS is where you actually use it
-                — to build something, solve a real client problem, or get ahead
+                Most clubs talk about using AI. TTS is where you actually use
+                it: build something, solve a real client problem, or get ahead
                 in whatever field you&apos;re going into.
               </p>
               <p
@@ -819,7 +819,7 @@ export default function TTSSite() {
                 }}
               >
                 {[
-                  { c: "#CC0000", t: "Open to every major — no gatekeeping" },
+                  { c: "#CC0000", t: "Open to every major, no gatekeeping" },
                   { c: "#FFCC00", t: "Learn AI tools by actually using them" },
                   {
                     c: "#10b981",
@@ -1563,7 +1563,7 @@ export default function TTSSite() {
                         href={f.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`${f.name} — ${f.linkLabel} (opens in new tab)`}
+                        aria-label={`${f.name}, ${f.linkLabel} (opens in new tab)`}
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
@@ -1986,7 +1986,7 @@ export default function TTSSite() {
                   }}
                 >
                   {[
-                    "Free to join, always — no dues or fees",
+                    "Free to join, always. No dues or fees.",
                     "Open to all USC majors and class years",
                     "No prior experience or applications",
                     "Live project work from your first week",
