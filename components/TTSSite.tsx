@@ -148,7 +148,6 @@ export default function TTSSite() {
   const [heroProgress, setHeroProgress] = useState(0);
   const [revealProgress, setRevealProgress] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [navVisible, setNavVisible] = useState(false);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLDivElement>(null);
@@ -183,14 +182,11 @@ export default function TTSSite() {
     };
   }, []);
 
-  // Scroll: hero progress + navbar visibility
+  // Scroll: hero progress
   useEffect(() => {
     const handle = () => {
       const scrollY = window.scrollY;
       const winH = window.innerHeight;
-      const docH = document.documentElement.scrollHeight;
-      const nearBottom = scrollY + winH >= docH - 200;
-      setNavVisible(scrollY > 80 && !nearBottom);
       if (heroSectionRef.current) {
         const sect = heroSectionRef.current;
         const scrolled = scrollY - sect.offsetTop;
@@ -294,7 +290,6 @@ export default function TTSSite() {
           .tts-panel-b-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
           .tts-hero-h1 { font-size: clamp(44px, 13vw, 80px) !important; }
           .tts-panel-b-inner { padding: 0 20px !important; }
-          .tts-navbar-inner { padding: 0 20px !important; }
         }
         @media (max-width: 480px) {
           .tts-stats-grid { grid-template-columns: 1fr 1fr !important; }
@@ -344,180 +339,6 @@ export default function TTSSite() {
       >
         Skip to main content
       </a>
-
-      {/* ── SCROLL-AWARE NAVBAR ── */}
-      <nav
-        aria-label="Main navigation"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 50,
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          background: "rgba(9,9,11,0.88)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          transform: navVisible ? "translateY(0)" : "translateY(-100%)",
-          opacity: navVisible ? 1 : 0,
-          transition: "transform 0.3s ease, opacity 0.3s ease",
-        }}
-      >
-        <div
-          className="tts-navbar-inner"
-          style={{
-            maxWidth: 1200,
-            margin: "0 auto",
-            padding: "0 40px",
-            height: 56,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
-          }}
-        >
-          {/* Logo */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Back to top"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: 0,
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                width: 22,
-                height: 22,
-                borderRadius: 6,
-                background: "rgba(204,0,0,0.1)",
-                border: "1px solid rgba(204,0,0,0.25)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Zap size={11} color="#CC0000" />
-            </div>
-            <span
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: "#e4e4e7",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              TTS
-            </span>
-          </button>
-
-          {/* Center nav links */}
-          <div
-            className="tts-nav-dots"
-            style={{ display: "flex", alignItems: "center", gap: 2 }}
-          >
-            {[
-              { label: "Mission", id: "mission" },
-              { label: "Tracks", id: "tracks" },
-              { label: "Team", id: "leadership" },
-              { label: "FAQ", id: "faq" },
-            ].map(({ label, id }) => (
-              <button
-                key={label}
-                onClick={() => scrollTo(id)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "6px 12px",
-                  fontSize: 13,
-                  color: "#71717a",
-                  cursor: "pointer",
-                  transition: "color 0.15s",
-                  borderRadius: 8,
-                  fontFamily: "inherit",
-                  minHeight: 44,
-                  display: "flex",
-                  alignItems: "center",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.color =
-                    "#e4e4e7";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.color =
-                    "#71717a";
-                }}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          {/* Right: Instagram + Apply CTA */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              flexShrink: 0,
-            }}
-          >
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="TTS on Instagram (opens in new tab)"
-              style={{
-                fontSize: 13,
-                color: "#71717a",
-                textDecoration: "none",
-                transition: "color 0.15s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#e4e4e7";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#71717a";
-              }}
-            >
-              Instagram
-            </a>
-            <a
-              href="/apply"
-              style={{
-                padding: "7px 16px",
-                borderRadius: 8,
-                background: "#CC0000",
-                color: "#fff",
-                fontSize: 13,
-                fontWeight: 600,
-                textDecoration: "none",
-                transition: "background 0.15s",
-                display: "flex",
-                alignItems: "center",
-                minHeight: 36,
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background =
-                  "#aa0000";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background =
-                  "#CC0000";
-              }}
-            >
-              Apply
-            </a>
-          </div>
-        </div>
-      </nav>
 
       {/* Custom cursor */}
       <div
