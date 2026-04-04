@@ -221,6 +221,9 @@ function AboutContent() {
 // ── Main component ─────────────────────────────────────────────────────────
 export default function VisionWeb() {
   const [started, setStarted] = useState(false);
+  const [permState, setPermState] = useState<
+    "unknown" | "prompt" | "granted" | "denied"
+  >("unknown");
   const [ready, setReady] = useState(false);
   const [gazePos, setGazePos] = useState<GazePoint>({ x: -100, y: -100 });
   const [dwellProgress, setDwellProgress] = useState(0);
@@ -422,10 +425,12 @@ export default function VisionWeb() {
 
   // ── Camera init — getUserMedia MUST be the first call (no state/toast before it) ──
   const handleStart = useCallback(async () => {
-    // getUserMedia is FIRST — nothing before it that could break the user-gesture chain
     if (!navigator?.mediaDevices?.getUserMedia) {
       setStarted(true);
       setCameraError(true);
+      setCameraErrorDetail(
+        "NotSupportedError: mediaDevices.getUserMedia unavailable. Are you on HTTPS?",
+      );
       return;
     }
 
@@ -438,15 +443,12 @@ export default function VisionWeb() {
     } catch (err) {
       const errName = err instanceof Error ? err.name : "UnknownError";
       const errMsg = err instanceof Error ? err.message : String(err);
-      // Show the raw error so we know exactly what browser said
       setStarted(true);
       setCameraError(true);
-      // Store error detail for display
       setCameraErrorDetail(`${errName}: ${errMsg}`);
       return;
     }
 
-    // Stream acquired — now safe to update state
     setStarted(true);
 
     if (videoRef.current) {
@@ -454,7 +456,7 @@ export default function VisionWeb() {
       await videoRef.current.play();
     }
 
-    toast.success("Camera ready", { id: "vw-init" });
+    toast.success("Camera ready");
     setReady(true);
     setPanels([
       {
@@ -471,17 +473,29 @@ export default function VisionWeb() {
         y: 100,
         content: "gestures",
       },
-      {
-        id: "focus",
-        title: "System Status",
-        x: 820,
-        y: 100,
-        content: "focus",
-      },
+      { id: "focus", title: "System Status", x: 820, y: 100, content: "focus" },
     ]);
     startGaze();
     startHands();
   }, [startGaze, startHands]);
+
+  // ── Check permission state on mount — show denied UI before user clicks ──
+  useEffect(() => {
+    if (!navigator?.permissions?.query) return;
+    navigator.permissions
+      .query({ name: "camera" as PermissionName })
+      .then((status) => {
+        const state = status.state as "prompt" | "granted" | "denied";
+        setPermState(state);
+        if (state === "granted") handleStart();
+        status.onchange = () => {
+          setPermState(status.state as "prompt" | "granted" | "denied");
+        };
+      })
+      .catch(() => setPermState("unknown"));
+    // handleStart is stable — safe to omit from deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ── Cleanup only on unmount ────────────────────────────────────────────────
   useEffect(() => {
@@ -636,22 +650,61 @@ export default function VisionWeb() {
               ))}
             </div>
 
-            {/* CTA */}
-            <button
-              onClick={handleStart}
-              className="w-full py-3.5 rounded-2xl font-semibold text-white text-sm transition-all duration-200 cursor-pointer active:scale-[0.98]"
-              style={{
-                background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-                boxShadow:
-                  "0 4px 24px rgba(99,102,241,0.4), inset 0 1px 0 rgba(255,255,255,0.12)",
-              }}
-            >
-              Start VisionWeb
-            </button>
-
-            <p className="mt-4 text-[11px] text-zinc-600">
-              Camera access required. Your feed never leaves your browser.
-            </p>
+            {/* CTA — adapts to permission state */}
+            {permState === "denied" ? (
+              <div className="w-full space-y-3">
+                <div className="rounded-xl p-4 bg-red-500/[0.08] border border-red-500/20 text-left">
+                  <p className="text-red-400 text-xs font-semibold mb-1">
+                    Camera access blocked
+                  </p>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    You previously denied camera access for this site. To fix
+                    it:
+                  </p>
+                  <ol className="mt-2 space-y-1 text-xs text-zinc-400 list-decimal list-inside">
+                    <li>
+                      Click the{" "}
+                      <span className="text-white font-medium">
+                        camera icon
+                      </span>{" "}
+                      in your browser address bar
+                    </li>
+                    <li>
+                      Set camera to{" "}
+                      <span className="text-white font-medium">Allow</span>
+                    </li>
+                    <li>Click the button below</li>
+                  </ol>
+                </div>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="w-full py-3.5 rounded-2xl font-semibold text-white text-sm transition-all duration-200 cursor-pointer active:scale-[0.98] bg-zinc-800 hover:bg-zinc-700 border border-zinc-700"
+                >
+                  Reload after allowing camera
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={handleStart}
+                  className="w-full py-3.5 rounded-2xl font-semibold text-white text-sm transition-all duration-200 cursor-pointer active:scale-[0.98]"
+                  style={{
+                    background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                    boxShadow:
+                      "0 4px 24px rgba(99,102,241,0.4), inset 0 1px 0 rgba(255,255,255,0.12)",
+                  }}
+                >
+                  {permState === "granted"
+                    ? "Launch VisionWeb"
+                    : "Start VisionWeb"}
+                </button>
+                <p className="mt-4 text-[11px] text-zinc-600">
+                  {permState === "granted"
+                    ? "Camera already authorized. Launching now."
+                    : "Camera access required. Your feed never leaves your browser."}
+                </p>
+              </>
+            )}
           </div>
         </div>
       )}
