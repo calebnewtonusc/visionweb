@@ -578,13 +578,6 @@ export default function VisionWeb() {
       .catch(() => setPermState("unknown"));
   }, []);
 
-  // ── Cleanup only on unmount ────────────────────────────────────────────────
-  useEffect(() => {
-    return () => {
-      cancelAnimationFrame(animIdRef.current);
-    };
-  }, []);
-
   const closePanel = useCallback((id: string) => {
     setPanels((p) => p.filter((panel) => panel.id !== id));
   }, []);
