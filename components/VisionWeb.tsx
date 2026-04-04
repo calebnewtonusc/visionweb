@@ -299,13 +299,10 @@ export default function VisionWeb() {
           setGazeListener: (
             fn: (d: { x: number; y: number } | null) => void,
           ) => { begin: () => Promise<void> };
-          setVideoElement: (el: HTMLVideoElement) => void;
           showVideo: (v: boolean) => void;
           showFaceOverlay: (v: boolean) => void;
           showFaceFeedbackBox: (v: boolean) => void;
           showPredictionPoints: (v: boolean) => void;
-          setCameraConstraints: (c: Record<string, unknown>) => void;
-          pause: () => void;
           end: () => void;
         }
       | undefined;
@@ -318,11 +315,9 @@ export default function VisionWeb() {
     try {
       gazeStartedRef.current = true;
 
-      // CRITICAL: Share our existing video stream with WebGazer so it does NOT
-      // call getUserMedia a second time (which would cause "No stream" errors)
-      if (videoRef.current) {
-        wg.setVideoElement(videoRef.current);
-      }
+      // WebGazer will call its own getUserMedia — that's fine, camera permission
+      // is already granted so it won't show a dialog. Do NOT call setVideoElement;
+      // it does not exist on the Brown CDN build of WebGazer.
 
       // Hide all WebGazer visual elements BEFORE begin()
       wg.showVideo(false);
@@ -373,27 +368,30 @@ export default function VisionWeb() {
     handsStartedRef.current = true;
 
     try {
-      const { GestureRecognizer, FilesetResolver } = await import(
+      // Use HandLandmarker (simpler than GestureRecognizer — all we need is
+      // landmarks for PinchDetector) and tasks-vision@0.10.14 which fixed the
+      // "e.x is not a function" WebGL init bug present in 0.10.3
+      const { HandLandmarker, FilesetResolver } = await import(
         // @ts-expect-error CDN dynamic import
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs"
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs"
       );
       const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm",
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm",
       );
 
       const modelPath =
-        "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task";
+        "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
 
       // Try GPU first — falls back to CPU if WebGL/GPU delegate unavailable
       let rec: unknown;
       try {
-        rec = await GestureRecognizer.createFromOptions(vision, {
+        rec = await HandLandmarker.createFromOptions(vision, {
           baseOptions: { modelAssetPath: modelPath, delegate: "GPU" },
           runningMode: "VIDEO",
           numHands: 2,
         });
       } catch {
-        rec = await GestureRecognizer.createFromOptions(vision, {
+        rec = await HandLandmarker.createFromOptions(vision, {
           baseOptions: { modelAssetPath: modelPath, delegate: "CPU" },
           runningMode: "VIDEO",
           numHands: 2,
@@ -423,7 +421,7 @@ export default function VisionWeb() {
         try {
           const results = (
             gestureRecRef.current as {
-              recognizeForVideo: (
+              detectForVideo: (
                 v: HTMLVideoElement,
                 t: number,
               ) => {
@@ -431,7 +429,7 @@ export default function VisionWeb() {
                 handednesses?: { categoryName: string }[][];
               };
             }
-          ).recognizeForVideo(video, now);
+          ).detectForVideo(video, now);
 
           if (results.landmarks) {
             results.landmarks.forEach((lm, i) => {
