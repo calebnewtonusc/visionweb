@@ -256,6 +256,9 @@ export default function VisionWeb() {
   // Initialize to center of screen so outlier rejection doesn't block the
   // first real gaze samples (which would look like 1000px+ jumps from -100,-100)
   const gazeSmoothedRef = useRef({ x: -1, y: -1 }); // -1 = uninitialized sentinel
+  // Viewport size at calibration time — used to scale predictions when the
+  // window is resized after calibration (WebGazer stores raw pixel coords)
+  const calibViewportRef = useRef({ w: 0, h: 0 });
   const streamRef = useRef<MediaStream | null>(null);
   const startingRef = useRef(false);
 
@@ -348,13 +351,25 @@ export default function VisionWeb() {
 
       wg.setGazeListener((data) => {
         if (!data) return;
-        // Discard known-bad outputs (top-left corner default, out of bounds)
-        if (data.x < 30 && data.y < 30) return;
-        if (data.x > window.innerWidth + 200) return;
-        if (data.y > window.innerHeight + 200) return;
 
-        const clampedX = Math.max(0, Math.min(data.x, window.innerWidth));
-        const clampedY = Math.max(0, Math.min(data.y, window.innerHeight));
+        // Scale prediction from calibration viewport → current viewport.
+        // WebGazer stores training samples as raw clientX/clientY pixels.
+        // If the window was resized or the page is viewed at a different size,
+        // predictions are in the OLD pixel space and must be rescaled.
+        // calibViewportRef is 0,0 until calibration completes — skip scaling
+        // during calibration itself (those frames are just noise anyway).
+        const cw = calibViewportRef.current.w;
+        const ch = calibViewportRef.current.h;
+        const scaledX = cw > 0 ? data.x * (window.innerWidth / cw) : data.x;
+        const scaledY = ch > 0 ? data.y * (window.innerHeight / ch) : data.y;
+
+        // Discard known-bad outputs (top-left corner default, out of bounds)
+        if (scaledX < 30 && scaledY < 30) return;
+        if (scaledX > window.innerWidth + 200) return;
+        if (scaledY > window.innerHeight + 200) return;
+
+        const clampedX = Math.max(0, Math.min(scaledX, window.innerWidth));
+        const clampedY = Math.max(0, Math.min(scaledY, window.innerHeight));
 
         // Seed smoothed position on first real sample — prevents the
         // uninitialized sentinel (-1,-1) from making every first real point
@@ -686,7 +701,13 @@ export default function VisionWeb() {
             if ("dataTimestep" in p) p.dataTimestep = 0;
           }
         }
-        // Also reset smoothed position so it seeds fresh from next real sample
+        // Store viewport size at calibration time — predictions are in these
+        // pixel coordinates and must be scaled if the window is later resized
+        calibViewportRef.current = {
+          w: window.innerWidth,
+          h: window.innerHeight,
+        };
+        // Reset smoothed position so it seeds fresh from next real sample
         gazeSmoothedRef.current = { x: -1, y: -1 };
         setCalibrating(false);
         setGazeActive(true);
