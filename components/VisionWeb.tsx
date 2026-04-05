@@ -322,10 +322,20 @@ export default function VisionWeb() {
     try {
       gazeStartedRef.current = true;
 
+      // Clear any stale calibration data from previous sessions stored in
+      // localStorage — this is the primary cause of the top-left default.
+      // WebGazer persists regression weights across page loads; bad old data
+      // means bad predictions immediately.
+      try {
+        Object.keys(localStorage)
+          .filter((k) => k.toLowerCase().includes("webgazer"))
+          .forEach((k) => localStorage.removeItem(k));
+      } catch {
+        // localStorage blocked (private mode) — continue anyway
+      }
+
       // If this CDN build has setVideoElement (v2.1+), use it to share our
       // existing stream so WebGazer doesn't call getUserMedia a second time.
-      // If the method doesn't exist, WebGazer gets its own stream — that's fine
-      // since camera permission is already granted.
       const wgAny = wg as unknown as Record<string, unknown>;
       if (typeof wgAny.setVideoElement === "function" && videoRef.current) {
         (wgAny.setVideoElement as (v: HTMLVideoElement) => void)(
@@ -336,18 +346,17 @@ export default function VisionWeb() {
       await wg
         .setGazeListener((data) => {
           if (!data) return;
-          // Filter out top-left junk — WebGazer outputs (0,0) or near-zero
-          // before it has any calibration data. Ignore these.
-          if (data.x < 20 && data.y < 20) return;
-          // Also clamp to viewport so cursor never goes off-screen
+          // Ignore top-left junk — WebGazer outputs near-(0,0) when it has
+          // no calibration data or loses the face. Filter aggressively.
+          if (data.x < 30 && data.y < 30) return;
+          if (data.x > window.innerWidth + 100) return;
+          if (data.y > window.innerHeight + 100) return;
+
           const clampedX = Math.max(0, Math.min(data.x, window.innerWidth));
           const clampedY = Math.max(0, Math.min(data.y, window.innerHeight));
 
-          calibSamplesRef.current++;
-
           const now = performance.now();
-          // EMA smoothing — alpha 0.12 gives a smooth, usable cursor
-          // (0.25 was too jumpy — every raw WebGazer jitter was visible)
+          // EMA alpha 0.12 — smooth without visible lag
           const alpha = 0.12;
           gazeSmoothedRef.current.x +=
             alpha * (clampedX - gazeSmoothedRef.current.x);
@@ -376,9 +385,8 @@ export default function VisionWeb() {
       wg.showFaceOverlay(false);
       wg.showFaceFeedbackBox(false);
       wg.showPredictionPoints(false);
-
-      setGazeActive(true);
-      toast.success("Eye tracking active");
+      // gazeActive is set to true by handleCalibDot after calibration completes,
+      // not here — cursor should only show after the model is trained
     } catch (err) {
       gazeStartedRef.current = false;
       const msg = err instanceof Error ? err.message : String(err);
@@ -589,9 +597,11 @@ export default function VisionWeb() {
     ]);
     // Start hands immediately — no calibration needed
     startHands();
-    // Show calibration screen first, then start eye tracking after
+    // Start WebGazer NOW so its built-in click listeners are active during
+    // calibration. Each dot click will be captured as training data automatically.
     setCalibrating(true);
-  }, [startHands]);
+    startGaze();
+  }, [startHands, startGaze]);
 
   // ── Check permission state on mount — show denied UI before user clicks ──
   useEffect(() => {
@@ -623,28 +633,24 @@ export default function VisionWeb() {
     { x: "90%", y: "85%" },
   ];
 
-  const handleCalibDot = useCallback(
-    (idx: number, e: React.MouseEvent) => {
-      // Record this click as a calibration sample for WebGazer
-      const wg = (window as unknown as Record<string, unknown>).webgazer as
-        | { recordScreenPosition?: (x: number, y: number) => void }
-        | undefined;
-      wg?.recordScreenPosition?.(e.clientX, e.clientY);
-
-      setCalibDots((prev) => {
-        const next = [...prev];
-        next[idx] = true;
-        const allDone = next.every(Boolean);
-        if (allDone) {
-          // All dots clicked — start WebGazer and enter main app
-          setCalibrating(false);
-          startGaze();
-        }
-        return next;
-      });
-    },
-    [startGaze],
-  );
+  const handleCalibDot = useCallback((idx: number, _e: React.MouseEvent) => {
+    // WebGazer's begin() adds its own document click listener that records
+    // every click as a training sample automatically — we do NOT call
+    // recordScreenPosition manually because that was double-counting and
+    // could pass wrong coordinates. Just let the natural click propagate.
+    setCalibDots((prev) => {
+      const next = [...prev];
+      next[idx] = true;
+      const allDone = next.every(Boolean);
+      if (allDone) {
+        setCalibrating(false);
+        // Model is now trained on 9 screen positions — activate cursor
+        setGazeActive(true);
+        toast.success("Eye tracking active");
+      }
+      return next;
+    });
+  }, []);
 
   const closePanel = useCallback((id: string) => {
     setPanels((p) => p.filter((panel) => panel.id !== id));
