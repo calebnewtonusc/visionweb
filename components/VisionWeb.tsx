@@ -310,6 +310,7 @@ export default function VisionWeb() {
           showFaceOverlay: (v: boolean) => void;
           showFaceFeedbackBox: (v: boolean) => void;
           showPredictionPoints: (v: boolean) => void;
+          stopLearning: () => void;
           end: () => void;
         }
       | undefined;
@@ -346,22 +347,42 @@ export default function VisionWeb() {
       await wg
         .setGazeListener((data) => {
           if (!data) return;
-          // Ignore top-left junk — WebGazer outputs near-(0,0) when it has
-          // no calibration data or loses the face. Filter aggressively.
+          // Discard known-bad outputs
           if (data.x < 30 && data.y < 30) return;
-          if (data.x > window.innerWidth + 100) return;
-          if (data.y > window.innerHeight + 100) return;
+          if (data.x > window.innerWidth + 200) return;
+          if (data.y > window.innerHeight + 200) return;
 
           const clampedX = Math.max(0, Math.min(data.x, window.innerWidth));
           const clampedY = Math.max(0, Math.min(data.y, window.innerHeight));
 
+          // Outlier rejection — if this prediction jumps more than 400px from
+          // the current smoothed position in one frame, it's noise. Ignore it.
+          const jumpDist = Math.hypot(
+            clampedX - gazeSmoothedRef.current.x,
+            clampedY - gazeSmoothedRef.current.y,
+          );
+          if (jumpDist > 400) return;
+
           const now = performance.now();
-          // EMA alpha 0.12 — smooth without visible lag
-          const alpha = 0.12;
-          gazeSmoothedRef.current.x +=
-            alpha * (clampedX - gazeSmoothedRef.current.x);
-          gazeSmoothedRef.current.y +=
-            alpha * (clampedY - gazeSmoothedRef.current.y);
+          // Adaptive smoothing: small movements get heavy damping (stable),
+          // large movements get lighter damping (responsive to intentional looks).
+          // Dead zone < 40px: alpha 0.06 (barely moves — filters micro-jitter)
+          // 40-150px: lerp alpha 0.06 → 0.18
+          // > 150px: alpha 0.18 (follows intentional gaze shifts quickly)
+          const dist = Math.hypot(
+            clampedX - gazeSmoothedRef.current.x,
+            clampedY - gazeSmoothedRef.current.y,
+          );
+          const t = Math.min(Math.max((dist - 40) / 110, 0), 1);
+          const alpha = 0.06 + t * 0.12;
+          // Hard cap: smoothed cursor moves at most 40px per sample regardless
+          const maxStep = 40;
+          const rawDx = alpha * (clampedX - gazeSmoothedRef.current.x);
+          const rawDy = alpha * (clampedY - gazeSmoothedRef.current.y);
+          const stepDist = Math.hypot(rawDx, rawDy);
+          const scale = stepDist > maxStep ? maxStep / stepDist : 1;
+          gazeSmoothedRef.current.x += rawDx * scale;
+          gazeSmoothedRef.current.y += rawDy * scale;
           const sx = gazeSmoothedRef.current.x;
           const sy = gazeSmoothedRef.current.y;
           setGazePos({ x: sx, y: sy });
@@ -643,8 +664,13 @@ export default function VisionWeb() {
       next[idx] = true;
       const allDone = next.every(Boolean);
       if (allDone) {
+        // Freeze the regression model — stop learning from live use so it
+        // never drifts away from calibrated weights during the session
+        const wg = (window as unknown as Record<string, unknown>).webgazer as
+          | { stopLearning?: () => void }
+          | undefined;
+        wg?.stopLearning?.();
         setCalibrating(false);
-        // Model is now trained on 9 screen positions — activate cursor
         setGazeActive(true);
         toast.success("Eye tracking active");
       }
