@@ -237,7 +237,7 @@ export default function VisionWeb() {
   const [cameraError, setCameraError] = useState(false);
   const [cameraErrorDetail, setCameraErrorDetail] = useState("");
   const [calibrating, setCalibrating] = useState(false);
-  const [calibDots, setCalibDots] = useState<number[]>(Array(9).fill(0));
+  const [calibDots, setCalibDots] = useState<number[]>(Array(25).fill(0));
   const CALIB_CLICKS_NEEDED = 3;
   const dwellFiredRef = useRef(false);
   const calibSamplesRef = useRef(0);
@@ -670,18 +670,14 @@ export default function VisionWeb() {
       .catch(() => setPermState("unknown"));
   }, []);
 
-  // Calibration dot positions — 3x3 grid covering the viewport
-  const CALIB_POSITIONS = [
-    { x: "10%", y: "15%" },
-    { x: "50%", y: "15%" },
-    { x: "90%", y: "15%" },
-    { x: "10%", y: "50%" },
-    { x: "50%", y: "50%" },
-    { x: "90%", y: "50%" },
-    { x: "10%", y: "85%" },
-    { x: "50%", y: "85%" },
-    { x: "90%", y: "85%" },
-  ];
+  // Calibration dot positions — 5x5 grid covering the viewport.
+  // More points = better regression fit, especially at screen edges/corners
+  // where accuracy degrades most on 9-point grids.
+  const CALIB_POSITIONS = (() => {
+    const xs = ["6%", "25%", "50%", "75%", "94%"];
+    const ys = ["6%", "25%", "50%", "75%", "94%"];
+    return ys.flatMap((y) => xs.map((x) => ({ x, y })));
+  })();
 
   const handleCalibDot = useCallback((idx: number, _e: React.MouseEvent) => {
     // WebGazer's begin() adds its own document click listener that records
@@ -1085,29 +1081,31 @@ export default function VisionWeb() {
                 <div
                   style={{ display: "flex", gap: 6, justifyContent: "center" }}
                 >
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        width: 24,
-                        height: 4,
-                        borderRadius: 2,
-                        background:
-                          calibDots[i] >= CALIB_CLICKS_NEEDED
-                            ? "#34d399"
-                            : i === activeIdx
-                              ? "#6366f1"
-                              : "rgba(255,255,255,0.1)",
-                        transition: "background 0.3s ease",
-                      }}
-                    />
-                  ))}
+                  {Array.from({ length: CALIB_POSITIONS.length }).map(
+                    (_, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          width: 12,
+                          height: 4,
+                          borderRadius: 2,
+                          background:
+                            calibDots[i] >= CALIB_CLICKS_NEEDED
+                              ? "#34d399"
+                              : i === activeIdx
+                                ? "#6366f1"
+                                : "rgba(255,255,255,0.1)",
+                          transition: "background 0.3s ease",
+                        }}
+                      />
+                    ),
+                  )}
                 </div>
                 <p style={{ color: "#52525b", fontSize: 11, marginTop: 10 }}>
                   {doneCount === 0
                     ? "Start with the glowing dot"
-                    : doneCount < 9
-                      ? `${9 - doneCount} dots remaining`
+                    : doneCount < CALIB_POSITIONS.length
+                      ? `${CALIB_POSITIONS.length - doneCount} dots remaining`
                       : "All done!"}
                 </p>
               </div>
