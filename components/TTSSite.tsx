@@ -2145,31 +2145,14 @@ export default function TTSSite() {
             }}
           >
             {/* Brand */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                flexShrink: 0,
-              }}
-            >
+            <div style={{ flexShrink: 0 }}>
               <Image
                 src="/ttslogo2026.png"
                 alt="TTS"
-                width={24}
-                height={24}
-                style={{ borderRadius: 6, objectFit: "contain" }}
+                width={40}
+                height={40}
+                style={{ objectFit: "contain", display: "block" }}
               />
-              <span
-                style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: "#6b7280",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                TTS · USC
-              </span>
             </div>
 
             {/* Nav links */}
