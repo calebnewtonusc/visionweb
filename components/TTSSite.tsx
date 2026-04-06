@@ -75,23 +75,6 @@ const TRACKS = [
 
 const FOUNDERS = [
   {
-    id: "caleb",
-    name: "Caleb Newton",
-    role: "Co-President",
-    focus: "USC Innovation · Iovine & Young",
-    headshot: "/img/caleb_shot.jpg",
-    position: "center 15%",
-    link: "https://calebnewton.me/",
-    linkLabel: "Personal site",
-    accent: "#CC0000",
-    owns: [
-      "Product curriculum and AI systems",
-      "Website, codebase, and internal tooling",
-      "Startup relationships and builder culture",
-      "Technical execution and live demos",
-    ],
-  },
-  {
     id: "tyler",
     name: "Tyler Larsen",
     role: "Co-President",
@@ -106,6 +89,23 @@ const FOUNDERS = [
       "E-board building and people operations",
       "Partnerships and cross-club ecosystem",
       "Community culture and recruiting",
+    ],
+  },
+  {
+    id: "caleb",
+    name: "Caleb Newton",
+    role: "Co-President",
+    focus: "USC Innovation · Iovine & Young",
+    headshot: "/img/caleb_shot.jpg",
+    position: "center 15%",
+    link: "https://calebnewton.me/",
+    linkLabel: "Personal site",
+    accent: "#CC0000",
+    owns: [
+      "Product curriculum and AI systems",
+      "Website, codebase, and internal tooling",
+      "Startup relationships and builder culture",
+      "Technical execution and live demos",
     ],
   },
 ];
@@ -148,24 +148,6 @@ const CABINET: {
   placeholder?: boolean;
 }[] = [
   {
-    name: "Esrom Dawit",
-    role: "External Affairs",
-    initials: "ED",
-    accent: "#CC0000",
-    link: "https://www.linkedin.com/in/esrom-dawit-4780302b2/",
-    headshot: "/img/esrom_shot.jpeg",
-    position: "center top",
-  },
-  {
-    name: "Gabriel Oliveri",
-    role: "Lead of Engineering",
-    initials: "GO",
-    accent: "#CC0000",
-    link: "https://www.linkedin.com/in/gabriel-oliveri/",
-    headshot: "/img/gabriel_shot.jpeg",
-    position: "center top",
-  },
-  {
     name: "Ephrem Adugna",
     role: "Co-lead of Entrepreneurship",
     initials: "EA",
@@ -175,12 +157,12 @@ const CABINET: {
     position: "center top",
   },
   {
-    name: "Annabelle Forbes",
-    role: "Social Chair",
-    initials: "AF",
+    name: "Malakai Carey",
+    role: "Lead of Music",
+    initials: "MC",
     accent: "#CC0000",
-    link: "https://www.linkedin.com/in/annabelle-forbes-9b381838b/",
-    headshot: "/img/annabelle_shot.jpeg",
+    link: "https://www.linkedin.com/in/malakai-carey-11187038a/",
+    headshot: "/img/malakai_shot.jpeg",
     position: "center top",
   },
   {
@@ -193,6 +175,24 @@ const CABINET: {
     position: "center top",
   },
   {
+    name: "Esrom Dawit",
+    role: "External Affairs",
+    initials: "ED",
+    accent: "#CC0000",
+    link: "https://www.linkedin.com/in/esrom-dawit-4780302b2/",
+    headshot: "/img/esrom_shot.jpeg",
+    position: "center top",
+  },
+  {
+    name: "Annabelle Forbes",
+    role: "Social Chair",
+    initials: "AF",
+    accent: "#CC0000",
+    link: "https://www.linkedin.com/in/annabelle-forbes-9b381838b/",
+    headshot: "/img/annabelle_shot.jpeg",
+    position: "center top",
+  },
+  {
     name: "Jet Jadeja",
     role: "Lead of Web3",
     initials: "JJ",
@@ -202,12 +202,12 @@ const CABINET: {
     position: "center top",
   },
   {
-    name: "Malakai Carey",
-    role: "Lead of Music",
-    initials: "MC",
+    name: "Gabriel Oliveri",
+    role: "Lead of Engineering",
+    initials: "GO",
     accent: "#CC0000",
-    link: "https://www.linkedin.com/in/malakai-carey-11187038a/",
-    headshot: "/img/malakai_shot.jpeg",
+    link: "https://www.linkedin.com/in/gabriel-oliveri/",
+    headshot: "/img/gabriel_shot.jpeg",
     position: "center top",
   },
   {
@@ -256,6 +256,7 @@ const BOARD: {
   link: string;
   headshot: string | null;
   position?: string;
+  companies: string[];
 }[] = [
   {
     name: "Matthew Kim",
@@ -265,6 +266,7 @@ const BOARD: {
     link: "https://www.linkedin.com/in/matthewkiiim",
     headshot: "/img/matthew_shot.jpeg",
     position: "center top",
+    companies: [],
   },
   {
     name: "Kevin Sangmuah",
@@ -274,6 +276,7 @@ const BOARD: {
     link: "https://www.linkedin.com/in/kevin-sangmuah-4a780a221",
     headshot: "/img/kevin_shot.jpeg",
     position: "center top",
+    companies: [],
   },
 ];
 
@@ -297,9 +300,6 @@ export default function TTSSite() {
   const mouseRef = useRef({ x: -100, y: -100 });
   const ringRef = useRef({ x: -100, y: -100 });
   const rafRef = useRef(0);
-  const velRef = useRef({ skew: 0, lastY: 0 });
-  const mainRef = useRef<HTMLDivElement>(null);
-
   // Custom cursor
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -357,27 +357,10 @@ export default function TTSSite() {
     );
     document
       .querySelectorAll(
-        ".tts-fade, .tts-slide, .tts-from-left, .tts-from-right, .tts-scale, .tts-curtain, .tts-perspective, .tts-highlight, .tts-counter",
+        ".tts-fade, .tts-slide, .tts-from-left, .tts-from-right, .tts-scale, .tts-curtain, .tts-highlight, .tts-counter",
       )
       .forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, []);
-
-  // Velocity skew on scroll
-  useEffect(() => {
-    let raf = 0;
-    const loop = () => {
-      const y = window.scrollY;
-      const velocity = (y - velRef.current.lastY) * 0.06;
-      velRef.current.skew += (velocity - velRef.current.skew) * 0.09;
-      velRef.current.lastY = y;
-      if (mainRef.current) {
-        mainRef.current.style.transform = `skewY(${velRef.current.skew.toFixed(3)}deg)`;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
   }, []);
 
   const scrollTo = useCallback((id: string) => {
@@ -537,15 +520,12 @@ export default function TTSSite() {
       />
 
       <div
-        ref={mainRef}
         className="tts-main"
         style={{
           cursor: "none",
           background: "#09090b",
           minHeight: "100vh",
           fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-          transformOrigin: "center top",
-          willChange: "transform",
         }}
       >
         {/* ── HERO ── */}
@@ -2037,7 +2017,7 @@ export default function TTSSite() {
           >
             {/* Origin story quote */}
             <div
-              className="tts-perspective"
+              className="tts-fade"
               style={{
                 marginBottom: 64,
                 padding: "24px 28px",
@@ -2125,156 +2105,197 @@ export default function TTSSite() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
                   gap: 20,
-                  maxWidth: 640,
+                  maxWidth: 560,
                 }}
               >
                 {BOARD.map((person, i) => (
-                  <div
+                  <a
                     key={person.name}
+                    href={person.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${person.name}, ${person.role}`}
                     className={i === 0 ? "tts-from-left" : "tts-from-right"}
-                    style={{ transitionDelay: `${i * 0.12}s` }}
+                    style={{
+                      transitionDelay: `${i * 0.12}s`,
+                      display: "block",
+                      textDecoration: "none",
+                      borderRadius: 16,
+                      overflow: "hidden",
+                      background: "#111113",
+                      border: "1px solid rgba(255,204,0,0.1)",
+                      transition:
+                        "transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.transform =
+                        "translateY(-6px) scale(1.02)";
+                      (e.currentTarget as HTMLAnchorElement).style.boxShadow =
+                        "0 20px 60px rgba(255,204,0,0.15)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                        "rgba(255,204,0,0.4)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.transform =
+                        "translateY(0) scale(1)";
+                      (e.currentTarget as HTMLAnchorElement).style.boxShadow =
+                        "none";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                        "rgba(255,204,0,0.1)";
+                    }}
                   >
+                    {/* Portrait photo */}
                     <div
                       style={{
-                        background: "#111113",
-                        borderRadius: 16,
-                        border: "1px solid rgba(255,204,0,0.1)",
+                        position: "relative",
+                        width: "100%",
+                        aspectRatio: "3/4",
                         overflow: "hidden",
-                        transition: "border-color 0.2s, transform 0.2s",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(255,204,0,0.35)";
-                        (e.currentTarget as HTMLDivElement).style.transform =
-                          "translateY(-3px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(255,204,0,0.1)";
-                        (e.currentTarget as HTMLDivElement).style.transform =
-                          "translateY(0)";
                       }}
                     >
-                      {/* Photo */}
+                      {/* Accent bar */}
                       <div
                         style={{
-                          position: "relative",
-                          width: "100%",
-                          aspectRatio: "4/5",
-                          overflow: "hidden",
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          height: 3,
+                          background: "#FFCC00",
+                          zIndex: 2,
                         }}
-                      >
-                        {person.headshot ? (
-                          <Image
-                            src={person.headshot}
-                            alt={person.name}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 300px"
-                            style={{
-                              objectFit: "cover",
-                              objectPosition: person.position ?? "center top",
-                            }}
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              background: "rgba(255,204,0,0.05)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: 40,
-                                fontWeight: 800,
-                                color: "rgba(255,204,0,0.2)",
-                              }}
-                            >
-                              {person.initials}
-                            </span>
-                          </div>
-                        )}
+                      />
+                      {person.headshot ? (
+                        <Image
+                          src={person.headshot}
+                          alt={person.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 280px"
+                          style={{
+                            objectFit: "cover",
+                            objectPosition: person.position ?? "center top",
+                          }}
+                        />
+                      ) : (
                         <div
                           style={{
                             position: "absolute",
                             inset: 0,
-                            background:
-                              "linear-gradient(to top, rgba(9,9,11,0.92) 0%, transparent 55%)",
-                          }}
-                        />
-                        {/* Name pinned to bottom of photo */}
-                        <div
-                          style={{
-                            position: "absolute",
-                            bottom: 18,
-                            left: 20,
-                            right: 20,
+                            background: "rgba(255,204,0,0.05)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
                         >
-                          <div
+                          <span
+                            style={{
+                              fontSize: 48,
+                              fontWeight: 900,
+                              color: "rgba(255,204,0,0.2)",
+                            }}
+                          >
+                            {person.initials}
+                          </span>
+                        </div>
+                      )}
+                      {/* Gradient overlay */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background:
+                            "linear-gradient(to top, rgba(9,9,11,0.95) 0%, rgba(9,9,11,0.3) 45%, transparent 70%)",
+                        }}
+                      />
+                      {/* Name pinned to bottom */}
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          padding: "18px 18px 16px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 800,
+                            color: "#fff",
+                            letterSpacing: "-0.02em",
+                            lineHeight: 1.2,
+                            marginBottom: 4,
+                          }}
+                        >
+                          {person.name}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            color: "#FFCC00",
+                            letterSpacing: "0.06em",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {person.role}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Company logo strip */}
+                    <div
+                      style={{
+                        padding: "12px 18px",
+                        borderTop: "1px solid rgba(255,204,0,0.07)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        minHeight: 48,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {person.companies.length > 0 ? (
+                        person.companies.map((co) => (
+                          <span
+                            key={co}
                             style={{
                               fontSize: 11,
                               fontWeight: 700,
-                              color: "#FFCC00",
-                              letterSpacing: "0.08em",
-                              textTransform: "uppercase",
-                              marginBottom: 4,
+                              color: "#71717a",
+                              background: "rgba(255,255,255,0.04)",
+                              border: "1px solid rgba(255,255,255,0.07)",
+                              borderRadius: 6,
+                              padding: "3px 8px",
+                              letterSpacing: "0.04em",
                             }}
                           >
-                            {person.role} · {person.title}
-                          </div>
-                          <div
-                            style={{
-                              fontSize: 20,
-                              fontWeight: 800,
-                              color: "#fff",
-                              letterSpacing: "-0.02em",
-                              lineHeight: 1.1,
-                            }}
-                          >
-                            {person.name}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Footer */}
-                      <div style={{ padding: "16px 20px" }}>
-                        <a
-                          href={person.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${person.name} LinkedIn`}
+                            {co}
+                          </span>
+                        ))
+                      ) : (
+                        <span
                           style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 5,
-                            fontSize: 12,
-                            fontWeight: 600,
-                            color: "#FFCC00",
-                            textDecoration: "none",
-                            transition: "opacity 0.15s",
-                          }}
-                          onMouseEnter={(e) => {
-                            (
-                              e.currentTarget as HTMLAnchorElement
-                            ).style.opacity = "0.7";
-                          }}
-                          onMouseLeave={(e) => {
-                            (
-                              e.currentTarget as HTMLAnchorElement
-                            ).style.opacity = "1";
+                            fontSize: 11,
+                            color: "#3f3f46",
+                            fontStyle: "italic",
                           }}
                         >
-                          LinkedIn <ExternalLink size={11} />
-                        </a>
-                      </div>
+                          LinkedIn{" "}
+                          <ExternalLink
+                            size={10}
+                            style={{
+                              display: "inline",
+                              verticalAlign: "middle",
+                              marginLeft: 3,
+                            }}
+                          />
+                        </span>
+                      )}
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -2744,7 +2765,7 @@ export default function TTSSite() {
 
               {/* Email capture */}
               <div
-                className="tts-perspective"
+                className="tts-fade"
                 style={{ paddingTop: 8, transitionDelay: "0.15s" }}
               >
                 <div
