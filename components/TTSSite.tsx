@@ -2021,8 +2021,9 @@ export default function TTSSite() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                  gap: 16,
+                  gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+                  gap: 20,
+                  maxWidth: 640,
                 }}
               >
                 {BOARD.map((person, i) => (
@@ -2035,186 +2036,139 @@ export default function TTSSite() {
                       style={{
                         background: "#111113",
                         borderRadius: 16,
-                        border: "1px solid rgba(255,204,0,0.12)",
-                        padding: "28px 24px",
+                        border: "1px solid rgba(255,204,0,0.1)",
+                        overflow: "hidden",
                         transition: "border-color 0.2s, transform 0.2s",
                       }}
                       onMouseEnter={(e) => {
                         (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(255,204,0,0.3)";
+                          "rgba(255,204,0,0.35)";
                         (e.currentTarget as HTMLDivElement).style.transform =
-                          "translateY(-2px)";
+                          "translateY(-3px)";
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(255,204,0,0.12)";
+                          "rgba(255,204,0,0.1)";
                         (e.currentTarget as HTMLDivElement).style.transform =
                           "translateY(0)";
                       }}
                     >
-                      {person.headshot && (
-                        <div
-                          style={{
-                            position: "relative",
-                            width: "100%",
-                            aspectRatio: "16/9",
-                            overflow: "hidden",
-                            borderRadius: 10,
-                            marginBottom: 20,
-                          }}
-                        >
+                      {/* Photo */}
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          aspectRatio: "4/5",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {person.headshot ? (
                           <Image
                             src={person.headshot}
                             alt={person.name}
                             fill
-                            sizes="(max-width: 768px) 100vw, 400px"
+                            sizes="(max-width: 768px) 100vw, 300px"
                             style={{
                               objectFit: "cover",
                               objectPosition: person.position ?? "center top",
                             }}
                           />
+                        ) : (
                           <div
                             style={{
-                              position: "absolute",
-                              inset: 0,
-                              background:
-                                "linear-gradient(to top, rgba(9,9,11,0.7) 0%, transparent 50%)",
-                            }}
-                          />
-                        </div>
-                      )}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: 16,
-                          marginBottom: 20,
-                        }}
-                      >
-                        {!person.headshot && (
-                          <div
-                            style={{
-                              width: 52,
-                              height: 52,
-                              borderRadius: 14,
-                              background: "rgba(255,204,0,0.1)",
-                              border: "1px solid rgba(255,204,0,0.25)",
+                              width: "100%",
+                              height: "100%",
+                              background: "rgba(255,204,0,0.05)",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              flexShrink: 0,
                             }}
                           >
                             <span
                               style={{
-                                fontSize: 16,
+                                fontSize: 40,
                                 fontWeight: 800,
-                                color: "#FFCC00",
-                                letterSpacing: "-0.02em",
+                                color: "rgba(255,204,0,0.2)",
                               }}
                             >
                               {person.initials}
                             </span>
                           </div>
                         )}
-                        <div>
+                        <div
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            background:
+                              "linear-gradient(to top, rgba(9,9,11,0.92) 0%, transparent 55%)",
+                          }}
+                        />
+                        {/* Name pinned to bottom of photo */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: 18,
+                            left: 20,
+                            right: 20,
+                          }}
+                        >
                           <div
                             style={{
-                              fontSize: 17,
+                              fontSize: 11,
+                              fontWeight: 700,
+                              color: "#FFCC00",
+                              letterSpacing: "0.08em",
+                              textTransform: "uppercase",
+                              marginBottom: 4,
+                            }}
+                          >
+                            {person.role} · {person.title}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 20,
                               fontWeight: 800,
                               color: "#fff",
                               letterSpacing: "-0.02em",
-                              lineHeight: 1.2,
+                              lineHeight: 1.1,
                             }}
                           >
                             {person.name}
                           </div>
-                          <div
-                            style={{
-                              fontSize: 12,
-                              color: "#FFCC00",
-                              fontWeight: 600,
-                              marginTop: 3,
-                            }}
-                          >
-                            {person.role}
-                          </div>
-                          <div
-                            style={{
-                              fontSize: 11,
-                              color: "#52525b",
-                              marginTop: 2,
-                              fontWeight: 500,
-                            }}
-                          >
-                            {person.title}
-                          </div>
                         </div>
                       </div>
 
-                      {/* Placeholder company logo row */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div
+                      {/* Footer */}
+                      <div style={{ padding: "16px 20px" }}>
+                        <a
+                          href={person.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${person.name} LinkedIn`}
                           style={{
-                            fontSize: 10,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 5,
+                            fontSize: 12,
                             fontWeight: 600,
-                            color: "#3f3f46",
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            marginBottom: 10,
+                            color: "#FFCC00",
+                            textDecoration: "none",
+                            transition: "opacity 0.15s",
+                          }}
+                          onMouseEnter={(e) => {
+                            (
+                              e.currentTarget as HTMLAnchorElement
+                            ).style.opacity = "0.7";
+                          }}
+                          onMouseLeave={(e) => {
+                            (
+                              e.currentTarget as HTMLAnchorElement
+                            ).style.opacity = "1";
                           }}
                         >
-                          Experience
-                        </div>
-                        <div style={{ display: "flex", gap: 8 }}>
-                          {[0, 1, 2, 3].map((j) => (
-                            <div
-                              key={j}
-                              style={{
-                                width: 36,
-                                height: 36,
-                                borderRadius: 8,
-                                background: "rgba(255,255,255,0.02)",
-                                border: "1px dashed rgba(255,255,255,0.08)",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <span style={{ fontSize: 14, color: "#3f3f46" }}>
-                                ?
-                              </span>
-                            </div>
-                          ))}
-                        </div>
+                          LinkedIn <ExternalLink size={11} />
+                        </a>
                       </div>
-
-                      <a
-                        href={person.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${person.name} LinkedIn`}
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 5,
-                          fontSize: 12,
-                          fontWeight: 600,
-                          color: "#FFCC00",
-                          textDecoration: "none",
-                          transition: "opacity 0.15s",
-                        }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLAnchorElement).style.opacity =
-                            "0.7";
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLAnchorElement).style.opacity =
-                            "1";
-                        }}
-                      >
-                        LinkedIn <ExternalLink size={11} />
-                      </a>
                     </div>
                   </div>
                 ))}
