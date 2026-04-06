@@ -282,6 +282,34 @@ const BOARD: {
 
 const INSTAGRAM_URL = "https://instagram.com/trojantechsolutions";
 
+// ── Marquee separator ─────────────────────────────────────────────────────────
+function Marquee({
+  items,
+  reverse,
+  accentColor = "#CC0000",
+}: {
+  items: string[];
+  reverse?: boolean;
+  accentColor?: string;
+}) {
+  const doubled = [...items, ...items];
+  return (
+    <div className="tts-marquee-wrap" aria-hidden="true">
+      <div className={`tts-marquee-inner${reverse ? " rev" : ""}`}>
+        {doubled.map((item, i) => (
+          <span key={i} className="tts-marquee-item">
+            {item}
+            <span
+              className="tts-marquee-dot"
+              style={{ background: accentColor + "80" }}
+            />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function TTSSite() {
   const [email, setEmail] = useState("");
@@ -348,16 +376,43 @@ export default function TTSSite() {
 
   // Scroll reveal for animation classes
   useEffect(() => {
+    const scramble = (el: Element) => {
+      const original = el.textContent ?? "";
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let frame = 0;
+      const total = 22;
+      const iv = setInterval(() => {
+        el.textContent = original
+          .split("")
+          .map((ch, i) => {
+            if (ch === " " || ch === "\n") return ch;
+            if (frame / total > i / original.length) return ch;
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join("");
+        if (++frame > total) {
+          el.textContent = original;
+          clearInterval(iv);
+        }
+      }, 38);
+    };
+
     const obs = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add("tts-visible");
+          if (e.isIntersecting) {
+            e.target.classList.add("tts-visible");
+            if (e.target.classList.contains("tts-scramble")) {
+              scramble(e.target);
+              obs.unobserve(e.target);
+            }
+          }
         }),
       { threshold: 0.08 },
     );
     document
       .querySelectorAll(
-        ".tts-fade, .tts-slide, .tts-from-left, .tts-from-right, .tts-scale, .tts-curtain, .tts-highlight, .tts-counter",
+        ".tts-fade, .tts-slide, .tts-from-left, .tts-from-right, .tts-scale, .tts-curtain, .tts-highlight, .tts-counter, .tts-line-reveal, .tts-cascade, .tts-tilt-left, .tts-tilt-right, .tts-tilt-up, .tts-scramble",
       )
       .forEach((el) => obs.observe(el));
     return () => obs.disconnect();
@@ -849,19 +904,26 @@ export default function TTSSite() {
           >
             <div>
               <h2
-                className="tts-from-left"
                 style={{
                   fontSize: "clamp(28px, 3.5vw, 46px)",
                   fontWeight: 900,
                   color: "#fff",
                   letterSpacing: "-0.03em",
-                  lineHeight: 1.1,
+                  lineHeight: 1.15,
                   marginBottom: 32,
                 }}
               >
-                The club that
-                <br />
-                <span style={{ color: "#CC0000" }}>actually lets you in.</span>
+                <span className="tts-line-reveal">
+                  <span>The club that</span>
+                </span>
+                <span
+                  className="tts-line-reveal"
+                  style={{ transitionDelay: "0.12s" }}
+                >
+                  <span style={{ color: "#CC0000" }}>
+                    actually lets you in.
+                  </span>
+                </span>
               </h2>
               <p
                 className="tts-fade"
@@ -950,6 +1012,19 @@ export default function TTSSite() {
           </div>
         </section>
 
+        <Marquee
+          items={[
+            "No application",
+            "Any major",
+            "Any year",
+            "Show up and build",
+            "Real projects",
+            "AI-first",
+            "Live products",
+            "Open to all",
+          ]}
+        />
+
         {/* ── TRACKS ── */}
         <section
           id="tracks"
@@ -959,7 +1034,6 @@ export default function TTSSite() {
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <div style={{ marginBottom: 48 }}>
               <h2
-                className="tts-slide"
                 style={{
                   fontSize: "clamp(28px, 4vw, 52px)",
                   fontWeight: 900,
@@ -967,7 +1041,9 @@ export default function TTSSite() {
                   letterSpacing: "-0.03em",
                 }}
               >
-                Three ways in
+                <span className="tts-line-reveal">
+                  <span>Three ways in</span>
+                </span>
               </h2>
               <p
                 className="tts-fade"
@@ -1009,16 +1085,16 @@ export default function TTSSite() {
                 ) => {
                   const animClass =
                     i === 0
-                      ? "tts-from-left"
+                      ? "tts-tilt-left"
                       : i === 1
-                        ? "tts-scale"
-                        : "tts-from-right";
+                        ? "tts-tilt-up"
+                        : "tts-tilt-right";
                   return (
                     <div
                       key={num}
-                      className={`${animClass} tts-stack-card`}
+                      className={animClass}
                       style={{
-                        transitionDelay: `${i * 0.1}s`,
+                        transitionDelay: `${i * 0.12}s`,
                         display: "flex",
                         flexDirection: "column",
                       }}
@@ -1030,7 +1106,7 @@ export default function TTSSite() {
                           borderRadius: 16,
                           border: featured
                             ? "1px solid rgba(255,204,0,0.2)"
-                            : "1px solid rgba(255,255,255,0.07)",
+                            : "1px solid rgba(255,255,255,0.12)",
                           borderTop: `3px solid ${accent}`,
                           padding: featured ? "40px 28px 32px" : "32px 28px",
                           display: "flex",
@@ -1040,9 +1116,29 @@ export default function TTSSite() {
                             ? "0 0 0 1px rgba(255,204,0,0.08), 0 24px 64px rgba(0,0,0,0.4)"
                             : "none",
                           position: "relative",
-                          overflow: "visible",
+                          overflow: "hidden",
                         }}
                       >
+                        {/* Ghost track number */}
+                        <div
+                          aria-hidden="true"
+                          style={{
+                            position: "absolute",
+                            bottom: -16,
+                            right: -8,
+                            fontSize: 160,
+                            fontWeight: 900,
+                            lineHeight: 1,
+                            color: accent,
+                            opacity: 0.05,
+                            letterSpacing: "-0.06em",
+                            pointerEvents: "none",
+                            userSelect: "none",
+                            zIndex: 0,
+                          }}
+                        >
+                          {num}
+                        </div>
                         {/* Featured badge — inside the card, above the border */}
                         {featured && (
                           <div
@@ -1142,7 +1238,7 @@ export default function TTSSite() {
                         <div
                           style={{
                             height: 1,
-                            background: "rgba(255,255,255,0.06)",
+                            background: "rgba(255,255,255,0.1)",
                             marginBottom: 20,
                           }}
                         />
@@ -1184,7 +1280,7 @@ export default function TTSSite() {
                           style={{
                             marginTop: 24,
                             paddingTop: 20,
-                            borderTop: "1px solid rgba(255,255,255,0.06)",
+                            borderTop: "1px solid rgba(255,255,255,0.1)",
                           }}
                         >
                           <div
@@ -1421,7 +1517,7 @@ export default function TTSSite() {
                     display: "flex",
                     flexDirection: "column",
                     gap: 0,
-                    borderLeft: "1px solid rgba(255,255,255,0.07)",
+                    borderLeft: "1px solid rgba(255,255,255,0.12)",
                     paddingLeft: 48,
                   }}
                 >
@@ -1447,7 +1543,7 @@ export default function TTSSite() {
                       style={{
                         padding: "28px 0",
                         borderBottom:
-                          i < 2 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                          i < 2 ? "1px solid rgba(255,255,255,0.1)" : "none",
                       }}
                     >
                       <div
@@ -1478,7 +1574,7 @@ export default function TTSSite() {
                       <div
                         style={{
                           fontSize: 13,
-                          color: "#52525b",
+                          color: "#71717a",
                           lineHeight: 1.6,
                           maxWidth: 320,
                         }}
@@ -1493,6 +1589,21 @@ export default function TTSSite() {
           </div>
         </div>
 
+        <Marquee
+          reverse
+          accentColor="#FFCC00"
+          items={[
+            "Building",
+            "Consulting",
+            "Growing",
+            "Biotech",
+            "Web3",
+            "Music Tech",
+            "Engineering",
+            "Strategy",
+          ]}
+        />
+
         {/* ── LEADERSHIP ── */}
         <section
           id="leadership"
@@ -1501,7 +1612,6 @@ export default function TTSSite() {
         >
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <h2
-              className="tts-slide"
               style={{
                 fontSize: "clamp(28px, 4vw, 52px)",
                 fontWeight: 900,
@@ -1510,7 +1620,9 @@ export default function TTSSite() {
                 marginBottom: 12,
               }}
             >
-              Meet the presidents
+              <span className="tts-line-reveal">
+                <span>Meet the presidents</span>
+              </span>
             </h2>
             <p
               className="tts-fade"
@@ -1543,7 +1655,7 @@ export default function TTSSite() {
                     style={{
                       background: "#111113",
                       borderRadius: 16,
-                      border: "1px solid rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.1)",
                       overflow: "hidden",
                     }}
                   >
@@ -1589,6 +1701,7 @@ export default function TTSSite() {
                           {f.role} · {f.focus}
                         </div>
                         <h3
+                          className="tts-scramble"
                           style={{
                             fontSize: 20,
                             fontWeight: 800,
@@ -1716,6 +1829,19 @@ export default function TTSSite() {
           </div>
         </section>
 
+        <Marquee
+          items={[
+            "USC Trojans",
+            "Trojan Technology Solutions",
+            "Fight On",
+            "Ship fast",
+            "Learn by doing",
+            "Real deliverables",
+            "Student-led",
+            "AI-powered",
+          ]}
+        />
+
         {/* ── CABINET ── */}
         <section
           id="cabinet"
@@ -1816,9 +1942,9 @@ export default function TTSSite() {
                   target={member.link ? "_blank" : undefined}
                   rel="noopener noreferrer"
                   aria-label={`${member.name}, ${member.role}`}
-                  className="tts-scale"
+                  className="tts-cascade"
                   style={{
-                    transitionDelay: `${i * 0.07}s`,
+                    transitionDelay: `${i * 0.08}s`,
                     display: "block",
                     textDecoration: "none",
                     borderRadius: 16,
@@ -1826,7 +1952,7 @@ export default function TTSSite() {
                     position: "relative",
                     aspectRatio: "3/4",
                     background: "#111113",
-                    border: `1px solid rgba(255,255,255,0.07)`,
+                    border: `1px solid rgba(255,255,255,0.12)`,
                     transition:
                       "transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.2s",
                   }}
@@ -1844,7 +1970,7 @@ export default function TTSSite() {
                     (e.currentTarget as HTMLAnchorElement).style.boxShadow =
                       "none";
                     (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                      "rgba(255,255,255,0.07)";
+                      "rgba(255,255,255,0.12)";
                   }}
                 >
                   {/* Photo */}
@@ -1957,13 +2083,13 @@ export default function TTSSite() {
                 style={{
                   height: 1,
                   flex: 1,
-                  background: "rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.1)",
                 }}
               />
               <span
                 style={{
                   fontSize: 12,
-                  color: "#52525b",
+                  color: "#71717a",
                   fontWeight: 500,
                   whiteSpace: "nowrap",
                 }}
@@ -1974,7 +2100,7 @@ export default function TTSSite() {
                 style={{
                   height: 1,
                   flex: 1,
-                  background: "rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.1)",
                 }}
               />
             </div>
@@ -2094,7 +2220,7 @@ export default function TTSSite() {
                 style={{
                   fontSize: 11,
                   fontWeight: 700,
-                  color: "#52525b",
+                  color: "#71717a",
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
                   marginBottom: 20,
@@ -2266,7 +2392,7 @@ export default function TTSSite() {
                               fontWeight: 700,
                               color: "#71717a",
                               background: "rgba(255,255,255,0.04)",
-                              border: "1px solid rgba(255,255,255,0.07)",
+                              border: "1px solid rgba(255,255,255,0.12)",
                               borderRadius: 6,
                               padding: "3px 8px",
                               letterSpacing: "0.04em",
@@ -2279,7 +2405,7 @@ export default function TTSSite() {
                         <span
                           style={{
                             fontSize: 11,
-                            color: "#3f3f46",
+                            color: "#71717a",
                             fontStyle: "italic",
                           }}
                         >
@@ -2306,7 +2432,7 @@ export default function TTSSite() {
                 style={{
                   fontSize: 11,
                   fontWeight: 700,
-                  color: "#52525b",
+                  color: "#71717a",
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
                   marginBottom: 20,
@@ -2331,7 +2457,7 @@ export default function TTSSite() {
                       style={{
                         background: "transparent",
                         borderRadius: 14,
-                        border: "1px dashed rgba(255,255,255,0.07)",
+                        border: "1px dashed rgba(255,255,255,0.12)",
                         padding: "20px",
                         opacity: 0.4,
                       }}
@@ -2356,7 +2482,7 @@ export default function TTSSite() {
                             flexShrink: 0,
                           }}
                         >
-                          <span style={{ fontSize: 14, color: "#3f3f46" }}>
+                          <span style={{ fontSize: 14, color: "#71717a" }}>
                             ?
                           </span>
                         </div>
@@ -2365,7 +2491,7 @@ export default function TTSSite() {
                             style={{
                               width: 80,
                               height: 10,
-                              background: "rgba(255,255,255,0.07)",
+                              background: "rgba(255,255,255,0.12)",
                               borderRadius: 4,
                               marginBottom: 6,
                             }}
@@ -2389,7 +2515,7 @@ export default function TTSSite() {
                               height: 28,
                               borderRadius: 6,
                               background: "rgba(255,255,255,0.02)",
-                              border: "1px dashed rgba(255,255,255,0.06)",
+                              border: "1px dashed rgba(255,255,255,0.1)",
                             }}
                           />
                         ))}
@@ -2402,7 +2528,7 @@ export default function TTSSite() {
                 className="tts-fade"
                 style={{
                   fontSize: 13,
-                  color: "#3f3f46",
+                  color: "#71717a",
                   marginTop: 20,
                   fontStyle: "italic",
                 }}
@@ -2412,6 +2538,21 @@ export default function TTSSite() {
             </div>
           </div>
         </section>
+
+        <Marquee
+          reverse
+          accentColor="#FFCC00"
+          items={[
+            "OG Co-Founders",
+            "Board of Advisors",
+            "Alumni network",
+            "Growing fast",
+            "Spring 2024",
+            "Fall 2024",
+            "Spring 2025",
+            "Building the next class",
+          ]}
+        />
 
         {/* ── FAQ ── */}
         <section
@@ -2451,7 +2592,7 @@ export default function TTSSite() {
                 display: "flex",
                 flexDirection: "column",
                 gap: 0,
-                border: "1px solid rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.12)",
                 borderRadius: 12,
                 overflow: "hidden",
               }}
@@ -2461,12 +2602,12 @@ export default function TTSSite() {
                 return (
                   <div
                     key={q}
-                    className="tts-fade"
+                    className="tts-from-right"
                     style={{
                       transitionDelay: `${i * 0.07}s`,
                       borderBottom:
                         i < FAQ_ITEMS.length - 1
-                          ? "1px solid rgba(255,255,255,0.06)"
+                          ? "1px solid rgba(255,255,255,0.1)"
                           : "none",
                     }}
                   >
@@ -2606,13 +2747,41 @@ export default function TTSSite() {
           </div>
         </section>
 
+        <Marquee
+          items={[
+            "Join TTS",
+            "Any major",
+            "Any year",
+            "No application",
+            "Walk in any week",
+            "Ship something real",
+            "Start this semester",
+            "Fight On",
+          ]}
+        />
+
         {/* ── JOIN ── */}
         <section
           id="join"
           className="tts-section-pad"
-          style={{ background: "#0c0c0f", padding: "80px 40px" }}
+          style={{
+            background: "#0c0c0f",
+            padding: "80px 40px",
+            position: "relative",
+            overflow: "hidden",
+          }}
         >
-          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          {/* Pulsing glow */}
+          <div className="tts-join-glow" aria-hidden="true" />
+
+          <div
+            style={{
+              maxWidth: 1200,
+              margin: "0 auto",
+              position: "relative",
+              zIndex: 1,
+            }}
+          >
             <div
               className="tts-join-grid"
               style={{
@@ -2624,19 +2793,24 @@ export default function TTSSite() {
             >
               <div>
                 <h2
-                  className="tts-slide"
                   style={{
                     fontSize: "clamp(28px, 4vw, 52px)",
                     fontWeight: 900,
                     color: "#fff",
                     letterSpacing: "-0.03em",
-                    lineHeight: 1.05,
+                    lineHeight: 1.15,
                     marginBottom: 20,
                   }}
                 >
-                  Start this
-                  <br />
-                  <span style={{ color: "#CC0000" }}>semester.</span>
+                  <span className="tts-line-reveal">
+                    <span>Start this</span>
+                  </span>
+                  <span
+                    className="tts-line-reveal"
+                    style={{ transitionDelay: "0.12s" }}
+                  >
+                    <span style={{ color: "#CC0000" }}>semester.</span>
+                  </span>
                 </h2>
                 <p
                   className="tts-fade"
@@ -2772,7 +2946,7 @@ export default function TTSSite() {
                   style={{
                     background: "#111113",
                     borderRadius: 16,
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    border: "1px solid rgba(255,255,255,0.12)",
                     padding: "32px",
                   }}
                 >
@@ -3083,7 +3257,7 @@ export default function TTSSite() {
                 flexShrink: 0,
               }}
             >
-              <span style={{ fontSize: 11, color: "#3f3f46" }}>
+              <span style={{ fontSize: 11, color: "#71717a" }}>
                 © {new Date().getFullYear()} Trojan Technology Solutions
               </span>
               <a
@@ -3092,7 +3266,7 @@ export default function TTSSite() {
                 rel="noopener noreferrer"
                 style={{
                   fontSize: 11,
-                  color: "#52525b",
+                  color: "#71717a",
                   textDecoration: "none",
                   transition: "color 0.15s",
                 }}

@@ -399,6 +399,152 @@ video[id^="webgazer"] {
   transform: translateY(0);
 }
 
+/* ── Line-by-line heading reveal ─────────────────────────────────────────── */
+.tts-line-reveal {
+  overflow: hidden;
+  display: block;
+  line-height: inherit;
+}
+.tts-line-reveal > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tts-line-reveal.tts-visible > span {
+  transform: translateY(0);
+}
+
+/* ── Cascade — waterfall from above ─────────────────────────────────────── */
+.tts-cascade {
+  opacity: 0;
+  transform: translateY(-48px) scale(0.97);
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tts-cascade.tts-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Tilt entrances — track cards ────────────────────────────────────────── */
+.tts-tilt-left {
+  opacity: 0;
+  transform: rotate(-7deg) translateX(-48px) scale(0.93);
+  transform-origin: bottom left;
+  transition:
+    opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.82s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tts-tilt-left.tts-visible {
+  opacity: 1;
+  transform: rotate(0deg) translateX(0) scale(1);
+}
+.tts-tilt-right {
+  opacity: 0;
+  transform: rotate(7deg) translateX(48px) scale(0.93);
+  transform-origin: bottom right;
+  transition:
+    opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.82s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tts-tilt-right.tts-visible {
+  opacity: 1;
+  transform: rotate(0deg) translateX(0) scale(1);
+}
+.tts-tilt-up {
+  opacity: 0;
+  transform: translateY(72px) scale(0.9);
+  transition:
+    opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tts-tilt-up.tts-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Horizontal marquee separator ────────────────────────────────────────── */
+@keyframes tts-marquee-fwd {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes tts-marquee-rev {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.tts-marquee-wrap {
+  overflow: hidden;
+  padding: 13px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.015);
+  user-select: none;
+  pointer-events: none;
+}
+.tts-marquee-inner {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: tts-marquee-fwd 32s linear infinite;
+}
+.tts-marquee-inner.rev {
+  animation: tts-marquee-rev 32s linear infinite;
+}
+.tts-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 28px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.14);
+}
+.tts-marquee-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(204, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+/* ── Join section pulsing glow ───────────────────────────────────────────── */
+@keyframes tts-join-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+.tts-join-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(204, 0, 0, 0.14) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  animation: tts-join-breathe 5s ease-in-out infinite;
+}
+
 /* Prefers-reduced-motion: disable all scroll animations */
 @media (prefers-reduced-motion: reduce) {
   .tts-fade,
@@ -407,14 +553,20 @@ video[id^="webgazer"] {
   .tts-from-right,
   .tts-scale,
   .tts-curtain,
-  .tts-perspective {
+  .tts-line-reveal > span,
+  .tts-cascade,
+  .tts-tilt-left,
+  .tts-tilt-right,
+  .tts-tilt-up {
     transition: none !important;
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
   }
-  .tts-apply-pulse {
+  .tts-apply-pulse,
+  .tts-marquee-inner,
+  .tts-join-glow {
     animation: none !important;
   }
   .tts-check-appear {
