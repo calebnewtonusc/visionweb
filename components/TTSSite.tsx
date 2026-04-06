@@ -995,7 +995,15 @@ export default function TTSSite() {
                   data-speedx={speedx}
                   data-rotate={rotate}
                   aria-hidden="true"
-                  style={{ top, left, right, bottom, color }}
+                  style={{
+                    top,
+                    left,
+                    right,
+                    bottom,
+                    color,
+                    opacity: Math.min(1, heroSlideProgress * 5),
+                    transition: "opacity 0.4s ease",
+                  }}
                 >
                   <Icon size={size} />
                 </div>
