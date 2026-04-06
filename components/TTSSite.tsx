@@ -22,6 +22,13 @@ import {
   BarChart2,
   Music,
   Network,
+  Users,
+  Star,
+  Layers,
+  Award,
+  Lightbulb,
+  BookOpen,
+  Target,
 } from "lucide-react";
 // ── Utilities ────────────────────────────────────────────────────────────────
 function hexToRgba(hex: string, alpha: number): string {
@@ -328,30 +335,40 @@ function SplitText({
   );
 }
 
-// ── Marquee separator ─────────────────────────────────────────────────────────
-function Marquee({
-  items,
-  reverse,
-  accentColor = "#CC0000",
+// ── Wave divider ───────────────────────────────────────────────────────────────
+function WaveDivider({
+  chips,
+  reverse = false,
 }: {
-  items: string[];
+  chips: Array<{ Icon: React.ElementType; label: string; color?: string }>;
   reverse?: boolean;
-  accentColor?: string;
 }) {
-  const doubled = [...items, ...items];
   return (
-    <div className="tts-marquee-wrap" aria-hidden="true">
-      <div className={`tts-marquee-inner${reverse ? " rev" : ""}`}>
-        {doubled.map((item, i) => (
-          <span key={i} className="tts-marquee-item">
-            {item}
-            <span
-              className="tts-marquee-dot"
-              style={{ background: accentColor + "80" }}
-            />
-          </span>
-        ))}
-      </div>
+    <div className="tts-wave-divider" aria-hidden="true">
+      <div className="tts-wave-line" />
+      {chips.map(({ Icon, label, color = "rgba(255,255,255,0.55)" }, i) => {
+        const total = chips.length;
+        const xPct = (i / (total - 1)) * 84 + 8;
+        const sinVal =
+          Math.sin((i / (total - 1)) * Math.PI) * (reverse ? -1 : 1);
+        const yOffset = sinVal * 24;
+        return (
+          <div
+            key={i}
+            className="tts-wave-chip"
+            style={{
+              left: `${xPct}%`,
+              top: `calc(50% + ${yOffset}px)`,
+              animationDelay: `${(i % 4) * 0.65}s`,
+              borderColor: `${color}35`,
+              color,
+            }}
+          >
+            <Icon size={13} />
+            <span>{label}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -526,17 +543,21 @@ export default function TTSSite() {
     return () => window.removeEventListener("scroll", handle);
   }, []);
 
-  // Floating parallax icons
+  // Floating parallax icons — Y + X drift, preserves rotation
   useEffect(() => {
     const handle = () => {
       floatRefs.current.forEach((el) => {
         if (!el) return;
-        const speed = parseFloat(el.dataset.speed ?? "0.08");
+        const speedY = parseFloat(el.dataset.speed ?? "0.08");
+        const speedX = parseFloat(el.dataset.speedx ?? "0");
+        const rotate = el.dataset.rotate ?? "0";
         const rect = el.parentElement?.getBoundingClientRect();
         if (!rect) return;
         const centerOffset =
           rect.top + rect.height / 2 - window.innerHeight / 2;
-        el.style.transform = `translateY(${centerOffset * speed}px)`;
+        const yShift = centerOffset * speedY;
+        const xShift = centerOffset * speedX;
+        el.style.transform = `translateY(${yShift}px) translateX(${xShift}px) rotate(${rotate}deg)`;
       });
     };
     window.addEventListener("scroll", handle, { passive: true });
@@ -774,6 +795,101 @@ export default function TTSSite() {
                 pointerEvents: "none",
               }}
             />
+
+            {/* Floating parallax icons — hero */}
+            {[
+              {
+                Icon: Code,
+                top: "10%",
+                left: "6%",
+                size: 38,
+                speed: "0.06",
+                speedx: "0.02",
+                rotate: -12,
+                color: "#CC0000",
+              },
+              {
+                Icon: Rocket,
+                top: "15%",
+                right: "7%",
+                size: 44,
+                speed: "0.10",
+                speedx: "-0.03",
+                rotate: 14,
+                color: "#FFCC00",
+              },
+              {
+                Icon: Brain,
+                bottom: "20%",
+                left: "8%",
+                size: 34,
+                speed: "0.08",
+                speedx: "0.025",
+                rotate: 8,
+                color: "rgba(255,255,255,0.35)",
+              },
+              {
+                Icon: Cpu,
+                top: "55%",
+                right: "5%",
+                size: 50,
+                speed: "0.04",
+                speedx: "-0.02",
+                rotate: -6,
+                color: "#CC0000",
+              },
+              {
+                Icon: GitBranch,
+                bottom: "10%",
+                right: "12%",
+                size: 30,
+                speed: "0.13",
+                speedx: "0.04",
+                rotate: 20,
+                color: "rgba(255,255,255,0.35)",
+              },
+              {
+                Icon: Zap,
+                top: "70%",
+                left: "4%",
+                size: 28,
+                speed: "0.11",
+                speedx: "-0.025",
+                rotate: -18,
+                color: "#FFCC00",
+              },
+            ].map(
+              (
+                {
+                  Icon,
+                  top,
+                  left,
+                  right,
+                  bottom,
+                  size,
+                  speed,
+                  speedx,
+                  rotate,
+                  color,
+                },
+                idx,
+              ) => (
+                <div
+                  key={`hero-float-${idx}`}
+                  ref={(el) => {
+                    if (el) floatRefs.current[idx + 20] = el;
+                  }}
+                  className="tts-float-icon"
+                  data-speed={speed}
+                  data-speedx={speedx}
+                  data-rotate={rotate}
+                  aria-hidden="true"
+                  style={{ top, left, right, bottom, color }}
+                >
+                  <Icon size={size} />
+                </div>
+              ),
+            )}
             {/* Red glow */}
             <div
               aria-hidden="true"
@@ -1173,16 +1289,19 @@ export default function TTSSite() {
           </div>
         </section>
 
-        <Marquee
-          items={[
-            "No application",
-            "Any major",
-            "Any year",
-            "Show up and build",
-            "Real projects",
-            "AI-first",
-            "Live products",
-            "Open to all",
+        <WaveDivider
+          chips={[
+            { Icon: Users, label: "Open to all", color: "#CC0000" },
+            {
+              Icon: Layers,
+              label: "Any major",
+              color: "rgba(255,255,255,0.6)",
+            },
+            { Icon: Zap, label: "AI-first", color: "#FFCC00" },
+            { Icon: Code, label: "Real code", color: "#CC0000" },
+            { Icon: Brain, label: "Deep work", color: "rgba(255,255,255,0.6)" },
+            { Icon: Rocket, label: "Ship live", color: "#10b981" },
+            { Icon: Globe, label: "Any year", color: "rgba(255,255,255,0.6)" },
           ]}
         />
 
@@ -1304,13 +1423,13 @@ export default function TTSSite() {
                   }}
                   className="tts-float-icon"
                   data-speed={speed}
+                  data-rotate={rotate}
                   aria-hidden="true"
                   style={{
                     top,
                     left,
                     right,
                     bottom,
-                    transform: `rotate(${rotate}deg)`,
                     color,
                   }}
                 >
@@ -1911,18 +2030,24 @@ export default function TTSSite() {
           </div>
         </div>
 
-        <Marquee
+        <WaveDivider
           reverse
-          accentColor="#FFCC00"
-          items={[
-            "Building",
-            "Consulting",
-            "Growing",
-            "Biotech",
-            "Web3",
-            "Music Tech",
-            "Engineering",
-            "Strategy",
+          chips={[
+            { Icon: Hammer, label: "Build", color: "#CC0000" },
+            {
+              Icon: Terminal,
+              label: "Engineer",
+              color: "rgba(255,255,255,0.6)",
+            },
+            { Icon: Briefcase, label: "Consult", color: "#FFCC00" },
+            {
+              Icon: BarChart2,
+              label: "Analyze",
+              color: "rgba(255,255,255,0.6)",
+            },
+            { Icon: TrendingUp, label: "Grow", color: "#10b981" },
+            { Icon: Cpu, label: "Automate", color: "rgba(255,255,255,0.6)" },
+            { Icon: Music, label: "Music tech", color: "#CC0000" },
           ]}
         />
 
@@ -2151,16 +2276,23 @@ export default function TTSSite() {
           </div>
         </section>
 
-        <Marquee
-          items={[
-            "USC Trojans",
-            "Trojan Technology Solutions",
-            "Fight On",
-            "Ship fast",
-            "Learn by doing",
-            "Real deliverables",
-            "Student-led",
-            "AI-powered",
+        <WaveDivider
+          chips={[
+            { Icon: Globe, label: "USC", color: "#CC0000" },
+            { Icon: Network, label: "Network", color: "rgba(255,255,255,0.6)" },
+            { Icon: Star, label: "Excellence", color: "#FFCC00" },
+            {
+              Icon: Lightbulb,
+              label: "Innovate",
+              color: "rgba(255,255,255,0.6)",
+            },
+            { Icon: Award, label: "Leadership", color: "#CC0000" },
+            {
+              Icon: GitBranch,
+              label: "Collaborate",
+              color: "rgba(255,255,255,0.6)",
+            },
+            { Icon: Rocket, label: "Launch", color: "#10b981" },
           ]}
         />
 
@@ -2253,13 +2385,13 @@ export default function TTSSite() {
                 }}
                 className="tts-float-icon"
                 data-speed={speed}
+                data-rotate={rotate}
                 aria-hidden="true"
                 style={{
                   top,
                   left,
                   right,
                   bottom,
-                  transform: `rotate(${rotate}deg)`,
                   color: idx % 2 === 0 ? "#CC0000" : "#FFCC00",
                 }}
               >
@@ -2924,18 +3056,20 @@ export default function TTSSite() {
           </div>
         </section>
 
-        <Marquee
+        <WaveDivider
           reverse
-          accentColor="#FFCC00"
-          items={[
-            "OG Co-Founders",
-            "Board of Advisors",
-            "Alumni network",
-            "Growing fast",
-            "Spring 2024",
-            "Fall 2024",
-            "Spring 2025",
-            "Building the next class",
+          chips={[
+            { Icon: Users, label: "Founders", color: "#CC0000" },
+            { Icon: Award, label: "Advisors", color: "#FFCC00" },
+            { Icon: BookOpen, label: "Alumni", color: "rgba(255,255,255,0.6)" },
+            { Icon: Target, label: "Mentors", color: "#CC0000" },
+            {
+              Icon: Layers,
+              label: "Community",
+              color: "rgba(255,255,255,0.6)",
+            },
+            { Icon: Star, label: "Legacy", color: "#FFCC00" },
+            { Icon: Globe, label: "Network", color: "rgba(255,255,255,0.6)" },
           ]}
         />
 
@@ -3131,16 +3265,15 @@ export default function TTSSite() {
           </div>
         </section>
 
-        <Marquee
-          items={[
-            "Join TTS",
-            "Any major",
-            "Any year",
-            "No application",
-            "Walk in any week",
-            "Ship something real",
-            "Start this semester",
-            "Fight On",
+        <WaveDivider
+          chips={[
+            { Icon: Zap, label: "Join TTS", color: "#CC0000" },
+            { Icon: Users, label: "Any major", color: "rgba(255,255,255,0.6)" },
+            { Icon: Globe, label: "Any year", color: "#FFCC00" },
+            { Icon: Layers, label: "No app", color: "rgba(255,255,255,0.6)" },
+            { Icon: Code, label: "Build things", color: "#CC0000" },
+            { Icon: Rocket, label: "Ship live", color: "#10b981" },
+            { Icon: Brain, label: "Fight on", color: "rgba(255,255,255,0.6)" },
           ]}
         />
 
@@ -3157,6 +3290,101 @@ export default function TTSSite() {
         >
           {/* Pulsing glow */}
           <div className="tts-join-glow" aria-hidden="true" />
+
+          {/* Floating parallax icons — join section */}
+          {[
+            {
+              Icon: Zap,
+              top: "12%",
+              left: "3%",
+              size: 40,
+              speed: "0.09",
+              speedx: "0.03",
+              rotate: -16,
+              color: "#CC0000",
+            },
+            {
+              Icon: Users,
+              top: "18%",
+              right: "4%",
+              size: 36,
+              speed: "0.07",
+              speedx: "-0.02",
+              rotate: 10,
+              color: "rgba(255,255,255,0.3)",
+            },
+            {
+              Icon: Rocket,
+              bottom: "15%",
+              left: "5%",
+              size: 44,
+              speed: "0.05",
+              speedx: "0.015",
+              rotate: 22,
+              color: "#FFCC00",
+            },
+            {
+              Icon: Globe,
+              bottom: "20%",
+              right: "6%",
+              size: 32,
+              speed: "0.11",
+              speedx: "-0.03",
+              rotate: -8,
+              color: "#CC0000",
+            },
+            {
+              Icon: Star,
+              top: "60%",
+              left: "2%",
+              size: 26,
+              speed: "0.13",
+              speedx: "0.04",
+              rotate: 14,
+              color: "rgba(255,255,255,0.3)",
+            },
+            {
+              Icon: Award,
+              top: "50%",
+              right: "3%",
+              size: 34,
+              speed: "0.06",
+              speedx: "-0.025",
+              rotate: -20,
+              color: "#FFCC00",
+            },
+          ].map(
+            (
+              {
+                Icon,
+                top,
+                left,
+                right,
+                bottom,
+                size,
+                speed,
+                speedx,
+                rotate,
+                color,
+              },
+              idx,
+            ) => (
+              <div
+                key={`join-float-${idx}`}
+                ref={(el) => {
+                  if (el) floatRefs.current[idx + 30] = el;
+                }}
+                className="tts-float-icon"
+                data-speed={speed}
+                data-speedx={speedx}
+                data-rotate={rotate}
+                aria-hidden="true"
+                style={{ top, left, right, bottom, color }}
+              >
+                <Icon size={size} />
+              </div>
+            ),
+          )}
 
           <div
             style={{
