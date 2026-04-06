@@ -610,14 +610,14 @@ export default function TTSSite() {
   const slideX =
     heroSlideProgress * Math.max(0, heroContainerW - 80 - h1WrapperW);
 
-  // Reveal section: three-phase choreography
-  // Phase 1 (0→0.38): "Real work" slides in from RIGHT
-  // Phase 2 (0.42→0.72): "Real work" exits DOWN
-  // Phase 3 (0.50→1.0):  "Walk in" slides in from TOP
-  const revealSlide = Math.max(0, (revealProgress - 0.15) / 0.85);
-  const realWorkEnterP = Math.max(0, Math.min(1, revealSlide / 0.38));
-  const realWorkExitP = Math.max(0, Math.min(1, (revealSlide - 0.42) / 0.3));
-  const walkInEnterP = Math.max(0, Math.min(1, (revealSlide - 0.5) / 0.5));
+  // Reveal section: three-phase choreography — no lead gap, fires immediately
+  // Phase 1 (0→0.30): "Real work" slides in from RIGHT
+  // Phase 2 (0.32→0.60): "Real work" exits DOWN
+  // Phase 3 (0.45→1.0):  "Walk in" slides in from TOP
+  const revealSlide = revealProgress;
+  const realWorkEnterP = Math.max(0, Math.min(1, revealSlide / 0.3));
+  const realWorkExitP = Math.max(0, Math.min(1, (revealSlide - 0.32) / 0.28));
+  const walkInEnterP = Math.max(0, Math.min(1, (revealSlide - 0.45) / 0.55));
   const panelRealWorkX = (1 - realWorkEnterP) * 100;
   const panelRealWorkY = realWorkExitP * 100;
   const panelWalkInY = -100 + walkInEnterP * 100;
