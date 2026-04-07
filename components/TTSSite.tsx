@@ -1548,13 +1548,12 @@ export default function TTSSite() {
                   position: "absolute",
                   top: 0,
                   left: 40,
-                  maxWidth: 480,
+                  // Expand right edge during scale so text isn't constrained
+                  maxWidth: heroScaleProgress > 0 ? `calc(100% - 80px)` : 480,
                   opacity: heroContentShown ? 1 : 0,
                   transform: heroContentShown
-                    ? `translateY(0) scale(${heroScaleVal})`
+                    ? "translateY(0)"
                     : "translateY(20px)",
-                  transformOrigin: "left center",
-                  willChange: "transform",
                   transition:
                     heroScaleProgress > 0
                       ? "none"
@@ -1567,9 +1566,9 @@ export default function TTSSite() {
               >
                 <p
                   style={{
-                    fontSize: 18,
+                    fontSize: 18 + heroScaleEased * 54,
                     color: "#d4d4d8",
-                    lineHeight: 1.65,
+                    lineHeight: 1.65 - heroScaleEased * 0.55,
                     marginBottom: 8,
                   }}
                 >
@@ -1583,6 +1582,8 @@ export default function TTSSite() {
                     gap: 12,
                     marginBottom: 72,
                     flexWrap: "wrap",
+                    opacity: Math.max(0, 1 - heroScaleProgress / 0.2),
+                    pointerEvents: heroScaleProgress > 0.1 ? "none" : "auto",
                   }}
                 >
                   <a
