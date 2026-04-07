@@ -726,7 +726,7 @@ function DotRowDivider({
   topColor?: string;
   bottomColor?: string;
 }) {
-  const gradRef = useRef<SVGLinearGradientElement>(null);
+  const waveRef = useRef<HTMLDivElement>(null);
   const COLS = 70;
   const ROWS = 5;
   const GAP = 28;
@@ -735,20 +735,16 @@ function DotRowDivider({
 
   useEffect(() => {
     const handle = () => {
-      if (!gradRef.current) return;
-      // Bright zone travels rightward as user scrolls — dots stay static
-      const x1 = window.scrollY * 0.45 - 300;
-      const x2 = x1 + 1000;
-      gradRef.current.setAttribute("x1", String(x1));
-      gradRef.current.setAttribute("x2", String(x2));
+      if (!waveRef.current) return;
+      // Spotlight div moves right as user scrolls — dots never move
+      waveRef.current.style.transform = `translateX(${window.scrollY * 0.45 - 500}px)`;
     };
     window.addEventListener("scroll", handle, { passive: true });
     handle();
     return () => window.removeEventListener("scroll", handle);
   }, []);
 
-  type DotDatum = { x: number; y: number; fill: string; r: number };
-  const dotData: DotDatum[] = [];
+  const dots: React.ReactNode[] = [];
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS + 2; col++) {
       const x = col * GAP;
@@ -757,18 +753,17 @@ function DotRowDivider({
       const isRed = sum % 7 === 0;
       const isGold = sum % 13 === 0;
       const isBright = sum % 19 === 0;
-      dotData.push({
-        x,
-        y,
-        fill: isRed
-          ? "#CC0000"
-          : isGold
-            ? "#FFCC00"
-            : isBright
-              ? "#fff"
-              : "rgba(255,255,255,0.55)",
-        r: isRed ? 3 : isGold ? 2.5 : isBright ? 2 : 1.5,
-      });
+      const fill = isRed
+        ? "rgba(204,0,0,0.55)"
+        : isGold
+          ? "rgba(255,204,0,0.40)"
+          : isBright
+            ? "rgba(255,255,255,0.22)"
+            : "rgba(255,255,255,0.10)";
+      const r = isRed ? 3 : isGold ? 2.5 : isBright ? 2 : 1.5;
+      dots.push(
+        <circle key={`${row}-${col}`} cx={x} cy={y} r={r} fill={fill} />,
+      );
     }
   }
 
@@ -783,44 +778,31 @@ function DotRowDivider({
         flexShrink: 0,
       }}
     >
+      {/* Static dot grid */}
       <svg
         width={W}
         height={H}
         viewBox={`0 0 ${W} ${H}`}
         style={{ position: "absolute", top: 0, left: 0 }}
       >
-        <defs>
-          <linearGradient
-            id="dot-wave-grad"
-            ref={gradRef}
-            gradientUnits="userSpaceOnUse"
-            x1="-300"
-            y1="0"
-            x2="700"
-            y2="0"
-          >
-            <stop offset="0%" stopColor="black" />
-            <stop offset="18%" stopColor="white" />
-            <stop offset="82%" stopColor="white" />
-            <stop offset="100%" stopColor="black" />
-          </linearGradient>
-          <mask id="dot-wave-mask">
-            <rect x="0" y="0" width={W} height={H} fill="url(#dot-wave-grad)" />
-          </mask>
-        </defs>
-        {/* Always-visible dim base — dots exist even outside the wave */}
-        <g opacity="0.18">
-          {dotData.map((d, i) => (
-            <circle key={`b${i}`} cx={d.x} cy={d.y} r={d.r} fill={d.fill} />
-          ))}
-        </g>
-        {/* Bright lit layer — only visible where wave mask passes */}
-        <g mask="url(#dot-wave-mask)">
-          {dotData.map((d, i) => (
-            <circle key={`f${i}`} cx={d.x} cy={d.y} r={d.r} fill={d.fill} />
-          ))}
-        </g>
+        {dots}
       </svg>
+      {/* Moving spotlight — screen blend illuminates dots as it passes without moving them */}
+      <div
+        ref={waveRef}
+        style={{
+          position: "absolute",
+          top: "-10%",
+          left: 0,
+          width: 900,
+          height: "120%",
+          background:
+            "radial-gradient(ellipse 450px 80px at center, rgba(204,0,0,0.55) 0%, rgba(220,80,0,0.30) 45%, transparent 100%)",
+          mixBlendMode: "screen",
+          pointerEvents: "none",
+          willChange: "transform",
+        }}
+      />
       {/* Left/right edge fades */}
       <div
         style={{
