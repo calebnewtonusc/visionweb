@@ -320,9 +320,10 @@ function SplitText({
           key={i}
           style={{
             display: "inline-block",
-            overflow: "hidden",
             verticalAlign: "bottom",
             lineHeight: "inherit",
+            paddingBottom: "0.15em",
+            marginBottom: "-0.15em",
           }}
         >
           <span
@@ -456,6 +457,7 @@ export default function TTSSite() {
   const [joinActive, setJoinActive] = useState(false);
   const [joinScrollProg, setJoinScrollProg] = useState(0);
   const [missionActive, setMissionActive] = useState(false);
+  const [footerVisible, setFooterVisible] = useState(false);
   const joinSectionRef = useRef<HTMLElement>(null);
   const joinScrollRef = useRef<HTMLElement>(null);
   const missionSectionRef = useRef<HTMLElement>(null);
@@ -520,6 +522,9 @@ export default function TTSSite() {
         const maxScroll = sect.offsetHeight - winH;
         setJoinScrollProg(Math.max(0, Math.min(1, scrolled / maxScroll)));
       }
+      const docH = document.documentElement.scrollHeight;
+      const nearBottom = scrollY + winH >= docH - 160;
+      setFooterVisible(nearBottom);
     };
     window.addEventListener("scroll", handle, { passive: true });
     return () => window.removeEventListener("scroll", handle);
@@ -1333,7 +1338,15 @@ export default function TTSSite() {
         </section>
 
         {/* Gradient: Hero → Mission */}
-        <div aria-hidden="true" style={{ height: 80, background: 'linear-gradient(to bottom, #09090b 0%, #0c0c0f 100%)', pointerEvents: 'none', flexShrink: 0 }} />
+        <div
+          aria-hidden="true"
+          style={{
+            height: 80,
+            background: "linear-gradient(to bottom, #09090b 0%, #0c0c0f 100%)",
+            pointerEvents: "none",
+            flexShrink: 0,
+          }}
+        />
 
         {/* ── MISSION ── */}
         <section
@@ -1582,7 +1595,15 @@ export default function TTSSite() {
         </section>
 
         {/* Gradient: Mission → Tracks */}
-        <div aria-hidden="true" style={{ height: 80, background: 'linear-gradient(to bottom, #0c0c0f 0%, #09090b 100%)', pointerEvents: 'none', flexShrink: 0 }} />
+        <div
+          aria-hidden="true"
+          style={{
+            height: 80,
+            background: "linear-gradient(to bottom, #0c0c0f 0%, #09090b 100%)",
+            pointerEvents: "none",
+            flexShrink: 0,
+          }}
+        />
 
         {/* Wave 1 — before tracks */}
         <WaveDivider
@@ -1643,7 +1664,7 @@ export default function TTSSite() {
                   fontWeight: 900,
                   color: "#fff",
                   letterSpacing: "-0.04em",
-                  lineHeight: 0.93,
+                  lineHeight: 1.05,
                   marginBottom: 20,
                 }}
               >
@@ -2265,7 +2286,7 @@ export default function TTSSite() {
                     fontWeight: 900,
                     color: "#fff",
                     letterSpacing: "-0.04em",
-                    lineHeight: 0.92,
+                    lineHeight: 1.0,
                     marginBottom: 36,
                   }}
                 >
@@ -2291,7 +2312,13 @@ export default function TTSSite() {
         </div>
 
         {/* Wave 2 — after reveal */}
-        <WaveDivider reverse amplitude={30} speed={8} topColor="#09090b" bottomColor="#000" />
+        <WaveDivider
+          reverse
+          amplitude={30}
+          speed={8}
+          topColor="#09090b"
+          bottomColor="#000"
+        />
 
         {/* ── LEADERSHIP ── */}
         <section
@@ -2715,7 +2742,12 @@ export default function TTSSite() {
         </section>
 
         {/* Wave 3 — before cabinet */}
-        <WaveDivider amplitude={36} speed={12} topColor="#000" bottomColor="#09090b" />
+        <WaveDivider
+          amplitude={36}
+          speed={12}
+          topColor="#000"
+          bottomColor="#09090b"
+        />
 
         {/* ── CABINET ── */}
         <section
@@ -3524,7 +3556,13 @@ export default function TTSSite() {
         </section>
 
         {/* Wave 4 — before FAQ */}
-        <WaveDivider reverse amplitude={20} speed={7} topColor="#0c0c0f" bottomColor="#09090b" />
+        <WaveDivider
+          reverse
+          amplitude={20}
+          speed={7}
+          topColor="#0c0c0f"
+          bottomColor="#09090b"
+        />
 
         {/* ── FAQ ── */}
         <section
@@ -3925,7 +3963,12 @@ export default function TTSSite() {
         </section>
 
         {/* Wave 5 — before join */}
-        <WaveDivider amplitude={28} speed={9} topColor="#09090b" bottomColor="#0a0508" />
+        <WaveDivider
+          amplitude={28}
+          speed={9}
+          topColor="#09090b"
+          bottomColor="#0a0508"
+        />
 
         {/* ── JOIN — scroll-driven cinematic ── */}
         <section
@@ -4653,128 +4696,127 @@ export default function TTSSite() {
               );
             })()}
           </div>
-
         </section>
 
         {/* ── FOOTER ── */}
         <footer
+          style={{
+            background: "transparent",
+            padding: "32px 40px 28px",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          {/* Floating nav pills */}
+          <div
             style={{
-              background: "transparent",
-              padding: "32px 40px 28px",
-              position: "relative",
-              zIndex: 2,
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              marginBottom: 28,
             }}
           >
-            {/* Floating nav pills */}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 8,
-                marginBottom: 28,
-              }}
-            >
-              {[
-                { label: "Mission", id: "mission" },
-                { label: "Tracks", id: "tracks" },
-                { label: "Team", id: "leadership" },
-                { label: "E-Board", id: "cabinet" },
-                { label: "Alumni", id: "alumni" },
-                { label: "FAQ", id: "faq" },
-                { label: "Join", id: "join" },
-              ].map(({ label, id }) => (
-                <button
-                  key={label}
-                  onClick={() => scrollTo(id)}
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: 100,
-                    padding: "8px 18px",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: "#a1a1aa",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    whiteSpace: "nowrap",
-                    fontFamily: "inherit",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                    letterSpacing: "0.02em",
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLButtonElement;
-                    el.style.background = "rgba(255,255,255,0.08)";
-                    el.style.borderColor = "rgba(255,255,255,0.22)";
-                    el.style.color = "#ffffff";
-                    el.style.transform = "translateY(-2px)";
-                    el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.4)";
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLButtonElement;
-                    el.style.background = "rgba(255,255,255,0.04)";
-                    el.style.borderColor = "rgba(255,255,255,0.1)";
-                    el.style.color = "#a1a1aa";
-                    el.style.transform = "translateY(0)";
-                    el.style.boxShadow = "none";
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+            {[
+              { label: "Mission", id: "mission" },
+              { label: "Tracks", id: "tracks" },
+              { label: "Team", id: "leadership" },
+              { label: "E-Board", id: "cabinet" },
+              { label: "Alumni", id: "alumni" },
+              { label: "FAQ", id: "faq" },
+              { label: "Join", id: "join" },
+            ].map(({ label, id }) => (
+              <button
+                key={label}
+                onClick={() => scrollTo(id)}
                 style={{
-                  background: "rgba(204,0,0,0.08)",
-                  border: "1px solid rgba(204,0,0,0.2)",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                   borderRadius: 100,
                   padding: "8px 18px",
                   fontSize: 12,
                   fontWeight: 600,
-                  color: "#CC0000",
+                  color: "#a1a1aa",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
                   whiteSpace: "nowrap",
-                  textDecoration: "none",
+                  fontFamily: "inherit",
                   backdropFilter: "blur(8px)",
                   WebkitBackdropFilter: "blur(8px)",
                   letterSpacing: "0.02em",
-                  display: "inline-flex",
-                  alignItems: "center",
                 }}
                 onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = "rgba(204,0,0,0.16)";
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "rgba(255,255,255,0.08)";
+                  el.style.borderColor = "rgba(255,255,255,0.22)";
+                  el.style.color = "#ffffff";
                   el.style.transform = "translateY(-2px)";
-                  el.style.boxShadow = "0 8px 24px rgba(204,0,0,0.2)";
+                  el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.4)";
                 }}
                 onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLAnchorElement;
-                  el.style.background = "rgba(204,0,0,0.08)";
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "rgba(255,255,255,0.04)";
+                  el.style.borderColor = "rgba(255,255,255,0.1)";
+                  el.style.color = "#a1a1aa";
                   el.style.transform = "translateY(0)";
                   el.style.boxShadow = "none";
                 }}
               >
-                Instagram
-              </a>
-            </div>
-
-            {/* Copyright */}
-            <p
+                {label}
+              </button>
+            ))}
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                textAlign: "center",
-                fontSize: 11,
-                color: "#3f3f46",
-                margin: 0,
-                letterSpacing: "0.04em",
+                background: "rgba(204,0,0,0.08)",
+                border: "1px solid rgba(204,0,0,0.2)",
+                borderRadius: 100,
+                padding: "8px 18px",
+                fontSize: 12,
+                fontWeight: 600,
+                color: "#CC0000",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                whiteSpace: "nowrap",
+                textDecoration: "none",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                letterSpacing: "0.02em",
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "rgba(204,0,0,0.16)";
+                el.style.transform = "translateY(-2px)";
+                el.style.boxShadow = "0 8px 24px rgba(204,0,0,0.2)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "rgba(204,0,0,0.08)";
+                el.style.transform = "translateY(0)";
+                el.style.boxShadow = "none";
               }}
             >
-              © {new Date().getFullYear()} Trojan Technology Solutions · USC
-            </p>
+              Instagram
+            </a>
+          </div>
+
+          {/* Copyright */}
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: 11,
+              color: "#3f3f46",
+              margin: 0,
+              letterSpacing: "0.04em",
+            }}
+          >
+            © {new Date().getFullYear()} Trojan Technology Solutions · USC
+          </p>
         </footer>
       </div>
     </>
