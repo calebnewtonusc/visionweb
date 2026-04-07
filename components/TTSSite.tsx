@@ -632,9 +632,9 @@ export default function TTSSite() {
         });
       }
 
-      // Section exit: whole sticky container slides left in final 22% of scroll
+      // Section exit: starts only after Growing (card 3) fully lands at p≈0.88
       if (trackStickyRef.current) {
-        const exitP = easeOut(Math.max(0, Math.min(1, (p - 0.78) / 0.22)));
+        const exitP = easeOut(Math.max(0, Math.min(1, (p - 0.88) / 0.12)));
         trackStickyRef.current.style.transform = `translateX(${-exitP * 100}%)`;
         setTrackExitProg(exitP);
       }
@@ -2164,27 +2164,21 @@ export default function TTSSite() {
                 >
                   {[
                     {
-                      stat: "0",
-                      countTo: 0,
-                      suffix: "",
-                      label: "Applications required",
-                      sub: "Any major. Any year. First meeting this week.",
+                      stat: "Week 1",
+                      label: "You ship something",
+                      sub: "Building track members deploy a live product in the first session. Not the end of the semester.",
                     },
                     {
-                      stat: "7+",
-                      countTo: 7,
-                      suffix: "+",
-                      label: "Active tracks",
-                      sub: "Consulting, engineering, entrepreneurship, biotech, music tech, Web3.",
+                      stat: "Real",
+                      label: "Client work every semester",
+                      sub: "Live engagements with actual organizations. Consulting track delivers real decks.",
                     },
                     {
-                      stat: "1",
-                      countTo: 1,
-                      suffix: "",
-                      label: "Semester to ship something real",
-                      sub: "Not a class project. A live product or delivered client deck.",
+                      stat: "Yours",
+                      label: "Everything you build",
+                      sub: "Goes on your resume. Never stays in a classroom.",
                     },
-                  ].map(({ stat, countTo, suffix, label, sub }, i) => (
+                  ].map(({ stat, label, sub }, i) => (
                     <div
                       key={label}
                       style={{
@@ -2194,8 +2188,6 @@ export default function TTSSite() {
                       }}
                     >
                       <div
-                        data-count-to={countTo}
-                        data-count-suffix={suffix}
                         style={{
                           fontSize: "clamp(40px, 5vw, 64px)",
                           fontWeight: 900,
@@ -3178,25 +3170,88 @@ export default function TTSSite() {
         >
           {/* Floating parallax icons — alumni section */}
           {[
-            { Icon: Star, top: "8%", right: "6%", size: 56, speed: "0.08", speedx: "-0.02", rotate: 20, color: "rgba(255,204,0,0.35)" },
-            { Icon: Award, top: "22%", left: "4%", size: 72, speed: "0.10", speedx: "0.03", rotate: -15, color: "rgba(255,255,255,0.15)" },
-            { Icon: Users, bottom: "25%", right: "5%", size: 48, speed: "0.06", speedx: "-0.02", rotate: 8, color: "rgba(204,0,0,0.35)" },
-            { Icon: Globe, bottom: "12%", left: "6%", size: 38, speed: "0.05", speedx: "0.02", rotate: 30, color: "rgba(255,255,255,0.18)" },
-            { Icon: Network, top: "55%", right: "8%", size: 32, speed: "0.04", speedx: "-0.01", rotate: -10, color: "rgba(255,204,0,0.25)" },
-          ].map(({ Icon, top, left, right, bottom, size, speed, speedx, rotate, color }, idx) => (
-            <div
-              key={idx}
-              ref={(el) => { if (el) floatRefs.current[idx + 90] = el; }}
-              className="tts-float-icon"
-              data-speed={speed}
-              data-speedx={speedx}
-              data-rotate={rotate}
-              aria-hidden="true"
-              style={{ top, left, right, bottom, color }}
-            >
-              <Icon size={size} />
-            </div>
-          ))}
+            {
+              Icon: Star,
+              top: "8%",
+              right: "6%",
+              size: 56,
+              speed: "0.08",
+              speedx: "-0.02",
+              rotate: 20,
+              color: "rgba(255,204,0,0.35)",
+            },
+            {
+              Icon: Award,
+              top: "22%",
+              left: "4%",
+              size: 72,
+              speed: "0.10",
+              speedx: "0.03",
+              rotate: -15,
+              color: "rgba(255,255,255,0.15)",
+            },
+            {
+              Icon: Users,
+              bottom: "25%",
+              right: "5%",
+              size: 48,
+              speed: "0.06",
+              speedx: "-0.02",
+              rotate: 8,
+              color: "rgba(204,0,0,0.35)",
+            },
+            {
+              Icon: Globe,
+              bottom: "12%",
+              left: "6%",
+              size: 38,
+              speed: "0.05",
+              speedx: "0.02",
+              rotate: 30,
+              color: "rgba(255,255,255,0.18)",
+            },
+            {
+              Icon: Network,
+              top: "55%",
+              right: "8%",
+              size: 32,
+              speed: "0.04",
+              speedx: "-0.01",
+              rotate: -10,
+              color: "rgba(255,204,0,0.25)",
+            },
+          ].map(
+            (
+              {
+                Icon,
+                top,
+                left,
+                right,
+                bottom,
+                size,
+                speed,
+                speedx,
+                rotate,
+                color,
+              },
+              idx,
+            ) => (
+              <div
+                key={idx}
+                ref={(el) => {
+                  if (el) floatRefs.current[idx + 90] = el;
+                }}
+                className="tts-float-icon"
+                data-speed={speed}
+                data-speedx={speedx}
+                data-rotate={rotate}
+                aria-hidden="true"
+                style={{ top, left, right, bottom, color }}
+              >
+                <Icon size={size} />
+              </div>
+            ),
+          )}
           {/* Gold glow bottom-left */}
           <div
             aria-hidden="true"
@@ -3808,7 +3863,9 @@ export default function TTSSite() {
                         background: "transparent",
                         border: "none",
                         borderBottom: "1px solid rgba(255,255,255,0.06)",
-                        borderLeft: isActive ? "3px solid #CC0000" : "3px solid transparent",
+                        borderLeft: isActive
+                          ? "3px solid #CC0000"
+                          : "3px solid transparent",
                         paddingLeft: isActive ? 16 : 16,
                         cursor: "pointer",
                         textAlign: "left",
@@ -3856,10 +3913,19 @@ export default function TTSSite() {
                     transitionDelay: "0.15s",
                   }}
                 >
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 4 }}>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: "#fff",
+                      marginBottom: 4,
+                    }}
+                  >
                     Still have a question?
                   </div>
-                  <div style={{ fontSize: 12, color: "#71717a", marginBottom: 14 }}>
+                  <div
+                    style={{ fontSize: 12, color: "#71717a", marginBottom: 14 }}
+                  >
                     We&apos;re a real club with real people. Just reach out.
                   </div>
                   <a
@@ -3880,12 +3946,16 @@ export default function TTSSite() {
                       boxShadow: "0 4px 20px rgba(204,0,0,0.3)",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.background = "#aa0000";
-                      (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-1px)";
+                      (e.currentTarget as HTMLAnchorElement).style.background =
+                        "#aa0000";
+                      (e.currentTarget as HTMLAnchorElement).style.transform =
+                        "translateY(-1px)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.background = "#CC0000";
-                      (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+                      (e.currentTarget as HTMLAnchorElement).style.background =
+                        "#CC0000";
+                      (e.currentTarget as HTMLAnchorElement).style.transform =
+                        "translateY(0)";
                     }}
                   >
                     <Mail size={13} /> Email us
@@ -4258,7 +4328,8 @@ export default function TTSSite() {
                       style={{
                         fontSize: "clamp(60px, 11vw, 130px)",
                         fontWeight: 900,
-                        color,
+                        color: "transparent",
+                        WebkitTextStroke: `2px ${color}`,
                         letterSpacing: "-0.04em",
                         lineHeight: 0.95,
                         opacity: Math.max(
@@ -4343,9 +4414,9 @@ export default function TTSSite() {
                           maxWidth: 480,
                         }}
                       >
-                        Walk in any week. No application, no waitlist, no
-                        interview. Pick a direction and start building,
-                        consulting, or learning AI tools right away.
+                        This is the rep room that SEP, BTG, and BPX assume you
+                        already have. Show up with nothing and leave with a
+                        portfolio, a network, and a real deliverable.
                       </p>
 
                       <div
