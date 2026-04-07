@@ -1018,6 +1018,11 @@ export default function TTSSite() {
               scramble(e.target);
               obs.unobserve(e.target);
             }
+          } else {
+            // Reverse on scroll back — remove class so CSS transitions play in reverse
+            if (!e.target.classList.contains("tts-scramble")) {
+              e.target.classList.remove("tts-visible");
+            }
           }
         }),
       { threshold: 0.08 },
@@ -1315,8 +1320,23 @@ export default function TTSSite() {
           .tts-hero-h1 { font-size: clamp(44px, 13vw, 80px) !important; }
           .tts-panel-b-inner { padding: 0 20px !important; }
           .tts-panel-b-stats { border-left: none !important; padding-left: 0 !important; border-top: 1px solid rgba(255,255,255,0.1) !important; padding-top: 32px !important; }
-          .tts-track-title { left: 20px !important; width: clamp(120px, 30vw, 220px) !important; }
+          .tts-track-title { left: 16px !important; width: clamp(100px, 25vw, 180px) !important; }
           .tts-join-phase3-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          /* Mission sticky inner container */
+          .tts-mission-inner { padding: 0 20px !important; }
+          /* Presidents section header */
+          .tts-presidents-header { padding: 0 20px 48px !important; }
+          /* Leadership contact tagline */
+          .tts-leadership-contact { padding: 40px 20px 0 !important; }
+          /* Floating footer pills bar */
+          .tts-footer-pills { padding: 12px 16px 20px !important; }
+          /* Track cards: shrink left offset so cards aren't microscopic */
+          .tts-track-cards { left: clamp(110px, 24vw, 460px) !important; right: 12px !important; }
+          .track-card { min-width: 220px !important; }
+          /* Hide floating decorative icons — they overlap content at 375px */
+          .tts-float-icon { display: none !important; }
+          /* "Walk out different" reveal section inner padding */
+          .tts-panel-b-reveal { padding: 0 20px !important; }
         }
         @media (max-width: 480px) {
           .tts-stats-grid { grid-template-columns: 1fr 1fr !important; }
@@ -2246,6 +2266,7 @@ export default function TTSSite() {
           }}
         >
           <div
+            className="tts-mission-inner"
             style={{
               position: "sticky",
               top: 0,
@@ -2678,6 +2699,7 @@ export default function TTSSite() {
             {/* Cards — flex row, each slides in from right with gravity bounce */}
             <div
               ref={trackInnerRef}
+              className="tts-track-cards"
               style={{
                 position: "absolute",
                 left: "clamp(140px, 28vw, 460px)",
@@ -3363,6 +3385,7 @@ export default function TTSSite() {
 
                 return (
                   <div
+                    className="tts-panel-b-reveal"
                     style={{
                       padding: "0 48px",
                       maxWidth: 1100,
@@ -3788,6 +3811,7 @@ export default function TTSSite() {
 
           {/* Section header */}
           <div
+            className="tts-presidents-header"
             style={{
               textAlign: "center",
               padding: "0 40px 72px",
@@ -4015,7 +4039,7 @@ export default function TTSSite() {
 
           {/* Bottom tagline */}
           <div
-            className="tts-fade"
+            className="tts-fade tts-leadership-contact"
             style={{
               textAlign: "center",
               padding: "60px 40px 0",
@@ -6668,6 +6692,7 @@ export default function TTSSite() {
 
         {/* ── FOOTER — fixed floating pills, appear near page bottom ── */}
         <footer
+          className="tts-footer-pills"
           style={{
             position: "fixed",
             bottom: 0,
