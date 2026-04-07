@@ -1531,84 +1531,94 @@ export default function TTSSite() {
           const ulScale = eraseP > 0 ? 1 - eraseP : drawP;
           const ulOrigin = eraseP > 0 ? "right" : "left";
           return (
-            /* Overlay: left-side ONLY — underline draws/erases here.
-               Right-side stats live on the real Panel A beneath, visible as this fades. */
+            /* Overlay: same 2-col grid as real Panel A — left col has underline animation,
+               right col is empty (stats animate in through the fading overlay beneath).
+               Identical grid = identical column width = identical text wrapping. */
             <div
-              className="tts-panel-b-inner"
+              className="tts-panel-b-grid tts-panel-b-inner"
               style={{
                 maxWidth: 1400,
                 margin: "0 auto",
                 width: "100%",
                 padding: "0 80px",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 100,
+                alignItems: "center",
               }}
             >
-              <p
-                style={{
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: "#CC0000",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  marginBottom: 24,
-                }}
-              >
-                Why it works
-              </p>
-              <h2
-                style={{
-                  fontSize: "clamp(48px, 6vw, 88px)",
-                  fontWeight: 900,
-                  color: "#fff",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1.0,
-                  marginBottom: 32,
-                }}
-              >
-                Real work.
-                <br />
-                <span style={{ color: "#CC0000" }}>
-                  <span
-                    style={{ position: "relative", display: "inline-block" }}
-                  >
-                    Not
+              {/* Left column — mirrors real Panel A exactly */}
+              <div>
+                <p
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: "#CC0000",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginBottom: 24,
+                  }}
+                >
+                  Why it works
+                </p>
+                <h2
+                  style={{
+                    fontSize: "clamp(48px, 6vw, 88px)",
+                    fontWeight: 900,
+                    color: "#fff",
+                    letterSpacing: "-0.03em",
+                    lineHeight: 1.0,
+                    marginBottom: 32,
+                  }}
+                >
+                  Real work.
+                  <br />
+                  <span style={{ color: "#CC0000" }}>
+                    <span
+                      style={{ position: "relative", display: "inline-block" }}
+                    >
+                      Not
+                      <span
+                        style={{
+                          position: "absolute",
+                          bottom: -4,
+                          left: 0,
+                          right: 0,
+                          height: 4,
+                          background: "#CC0000",
+                          boxShadow: "0 0 10px rgba(204,0,0,0.7)",
+                          borderRadius: 2,
+                          transformOrigin: ulOrigin,
+                          transform: `scaleX(${ulScale})`,
+                        }}
+                      />
+                    </span>{" "}
                     <span
                       style={{
-                        position: "absolute",
-                        bottom: -4,
-                        left: 0,
-                        right: 0,
-                        height: 4,
-                        background: "#CC0000",
-                        boxShadow: "0 0 10px rgba(204,0,0,0.7)",
-                        borderRadius: 2,
-                        transformOrigin: ulOrigin,
-                        transform: `scaleX(${ulScale})`,
+                        color: "transparent",
+                        WebkitTextStroke: "2px #fff",
                       }}
-                    />
-                  </span>{" "}
-                  <span
-                    style={{
-                      color: "transparent",
-                      WebkitTextStroke: "2px #fff",
-                    }}
-                  >
-                    just
-                  </span>{" "}
-                  classes.
-                </span>
-              </h2>
-              <p
-                style={{
-                  fontSize: 18,
-                  color: "#71717a",
-                  lineHeight: 1.8,
-                  maxWidth: 480,
-                }}
-              >
-                Build the portfolio and skills here, then use them to land SEP,
-                BTG, BPX, or whatever comes next. TTS is the rep room those
-                clubs assume you already have.
-              </p>
+                    >
+                      just
+                    </span>{" "}
+                    classes.
+                  </span>
+                </h2>
+                <p
+                  style={{
+                    fontSize: 18,
+                    color: "#71717a",
+                    lineHeight: 1.8,
+                    maxWidth: 480,
+                  }}
+                >
+                  Build the portfolio and skills here, then use them to land
+                  SEP, BTG, BPX, or whatever comes next. TTS is the rep room
+                  those clubs assume you already have.
+                </p>
+              </div>
+              {/* Right column — intentionally empty; stats in real Panel A show through */}
+              <div />
             </div>
           );
         })()}
@@ -3126,7 +3136,36 @@ export default function TTSSite() {
                         Real work.
                         <br />
                         <span style={{ color: "#CC0000" }}>
-                          Not just classes.
+                          <span
+                            style={{
+                              position: "relative",
+                              display: "inline-block",
+                            }}
+                          >
+                            Not
+                            {/* underline fully erased by the time this is visible */}
+                            <span
+                              style={{
+                                position: "absolute",
+                                bottom: -4,
+                                left: 0,
+                                right: 0,
+                                height: 4,
+                                background: "#CC0000",
+                                borderRadius: 2,
+                                transform: "scaleX(0)",
+                              }}
+                            />
+                          </span>{" "}
+                          <span
+                            style={{
+                              color: "transparent",
+                              WebkitTextStroke: "2px #fff",
+                            }}
+                          >
+                            just
+                          </span>{" "}
+                          classes.
                         </span>
                       </h2>
                       <p
