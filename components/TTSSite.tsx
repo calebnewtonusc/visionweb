@@ -589,11 +589,15 @@ function DiagonalSlashDivider({
       // Map vt: winH (entering) → -H (fully exited) to translateX: -900 → +900
       const clamped = Math.max(-H, Math.min(winH, vt));
       const progress = 1 - (clamped + H) / (winH + H); // 0 when entering, 1 when exited
-      const tx = -900 + progress * 1800; // full sweep across container
+      // SVG is left:-50% width:200% so the visible portion is the center third.
+      // Need to translate by >1.5× viewport width to push the line fully off both sides.
+      const winW = window.innerWidth;
+      const sweep = winW * 3.2;
+      const tx = -sweep / 2 + progress * sweep;
       if (svgRef.current)
         svgRef.current.style.transform = `translateX(${tx}px)`;
       if (glowRef.current)
-        glowRef.current.style.transform = `translateX(${-tx * 0.6}px)`;
+        glowRef.current.style.transform = `translateX(${-tx * 0.5}px)`;
     };
     window.addEventListener("scroll", handle, { passive: true });
     handle();
@@ -1123,6 +1127,22 @@ export default function TTSSite() {
     window.addEventListener("scroll", handle, { passive: true });
     handle();
     return () => window.removeEventListener("scroll", handle);
+  }, []);
+
+  // Randomize icon angles once on mount so every page load looks different.
+  // RAF delay ensures refs are fully populated, then re-fires scroll so the
+  // handler picks up the new angles before the user sees the static defaults.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      floatRefs.current.forEach((el) => {
+        if (!el) return;
+        const sign = Math.random() > 0.5 ? 1 : -1;
+        const mag = 8 + Math.floor(Math.random() * 77); // 8–85 degrees
+        el.dataset.rotate = String(sign * mag);
+      });
+      window.dispatchEvent(new Event("scroll"));
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Hero outline: measure the text block dimensions for the SVG stroke
@@ -3070,7 +3090,17 @@ export default function TTSSite() {
                       alignItems: "center",
                     }}
                   >
-                    <div>
+                    {/* Left column waits until overlay is fully gone (0.46) before appearing.
+                        Right-side stats are visible through the fading overlay; left side only
+                        appears after overlay opacity reaches 0, eliminating all ghost overlap. */}
+                    <div
+                      style={{
+                        opacity: Math.max(
+                          0,
+                          Math.min(1, (revealProgress - 0.46) / 0.1),
+                        ),
+                      }}
+                    >
                       <p
                         style={{
                           fontSize: 12,
@@ -3096,37 +3126,7 @@ export default function TTSSite() {
                         Real work.
                         <br />
                         <span style={{ color: "#CC0000" }}>
-                          <span
-                            style={{
-                              position: "relative",
-                              display: "inline-block",
-                            }}
-                          >
-                            Not
-                            <span
-                              style={{
-                                position: "absolute",
-                                bottom: -4,
-                                left: 0,
-                                right: 0,
-                                height: 4,
-                                background: "#CC0000",
-                                boxShadow: "0 0 10px rgba(204,0,0,0.7)",
-                                borderRadius: 2,
-                                transformOrigin: ulOrigin,
-                                transform: `scaleX(${ulScale})`,
-                              }}
-                            />
-                          </span>{" "}
-                          <span
-                            style={{
-                              color: "transparent",
-                              WebkitTextStroke: "2px #fff",
-                            }}
-                          >
-                            just
-                          </span>{" "}
-                          classes.
+                          Not just classes.
                         </span>
                       </h2>
                       <p
@@ -3319,18 +3319,16 @@ export default function TTSSite() {
                 const pill2 = ep(0.82, 0.15);
                 const pillPs = [pill0, pill1, pill2];
 
-                // Dwell parallax
+                // Dwell parallax — each element gets its OWN Y velocity so they
+                // disperse vertically. Upper elements rocket up, lower elements fall down.
                 const dwellP = Math.max(
                   0,
                   Math.min(1, (revealProgress - 0.74) / 0.26),
                 );
-                // Much larger travel amounts — content floats dramatically upward on dwell
-                const contentDrift = dwellP * -200;
-                const eyebrowDrift = dwellP * -80;
-                const walkInDrift = dwellP * -60;
+                const d = dwellP; // shorthand
                 // "different." glow intensifies massively as you dwell
-                const diffGlow = 80 + dwellP * 280;
-                const diffGlowOpacity = 0.3 + dwellP * 0.55;
+                const diffGlow = 80 + d * 280;
+                const diffGlowOpacity = 0.3 + d * 0.55;
 
                 return (
                   <div
@@ -3341,14 +3339,14 @@ export default function TTSSite() {
                       position: "relative",
                       zIndex: 1,
                       textAlign: "center",
-                      transform: `translateY(${contentDrift}px)`,
+                      // No container-level drift — each element disperses independently
                     }}
                   >
-                    {/* Eyebrow — rockets up from far below */}
+                    {/* Eyebrow — rockets up farthest */}
                     <div
                       style={{
-                        opacity: eyebrowP,
-                        transform: `translateY(${(1 - eyebrowP) * 100 + eyebrowDrift}px) scale(${0.7 + eyebrowP * 0.3})`,
+                        opacity: eyebrowP * (1 - d * 0.9),
+                        transform: `translateY(${(1 - eyebrowP) * 100 + d * -320}px) scale(${0.7 + eyebrowP * 0.3})`,
                         marginBottom: 36,
                       }}
                     >
@@ -3382,11 +3380,11 @@ export default function TTSSite() {
                       </span>
                     </div>
 
-                    {/* "Walk in." — springs from below, vanishes aggressively on dwell */}
+                    {/* "Walk in." — shoots up fast, disappears on dwell */}
                     <p
                       style={{
-                        opacity: walkInP * (1 - dwellP * 0.85),
-                        transform: `translateY(${(1 - walkInP) * 120 + walkInDrift}px) scale(${0.65 + walkInP * 0.35})`,
+                        opacity: walkInP * (1 - d * 0.95),
+                        transform: `translateY(${(1 - walkInP) * 200 + d * -240}px) scale(${0.65 + walkInP * 0.35})`,
                         fontSize: "clamp(22px, 3vw, 38px)",
                         fontWeight: 700,
                         color: "rgba(255,255,255,0.55)",
@@ -4502,8 +4500,8 @@ export default function TTSSite() {
           style={{
             position: "relative",
             height: 220,
-            background:
-              "linear-gradient(to bottom, #09090b 0%, #0b0b0e 50%, #0c0c0f 100%)",
+            marginTop: -200,
+            background: "transparent",
             overflow: "visible",
             flexShrink: 0,
           }}
@@ -5701,7 +5699,7 @@ export default function TTSSite() {
           ref={joinScrollRef}
           id="join"
           style={{
-            height: "clamp(160vh, 200vh, 240vh)",
+            height: "clamp(300vh, 360vh, 420vh)",
             position: "relative",
             background: "#0a0508",
           }}
@@ -5936,12 +5934,12 @@ export default function TTSSite() {
               ),
             )}
 
-            {/* ── PHASE 1: Zero stat (progress 0 → 0.35) ── */}
+            {/* ── PHASE 1: Zero stat (progress 0 → 0.20) ── */}
             {(() => {
               const p = joinScrollProg;
-              const inP = Math.max(0, Math.min(1, p / 0.08));
+              const inP = Math.max(0, Math.min(1, p / 0.06));
               const inEased = 1 - Math.pow(1 - inP, 3);
-              const outP = Math.max(0, Math.min(1, (p - 0.28) / 0.12));
+              const outP = Math.max(0, Math.min(1, (p - 0.15) / 0.07));
               const outEased = 1 - Math.pow(1 - outP, 3);
               const op = inEased * (1 - outEased);
 
@@ -5960,13 +5958,14 @@ export default function TTSSite() {
                 >
                   <div
                     style={{
-                      fontSize: "clamp(100px, 20vw, 260px)",
+                      fontSize: "clamp(100px, 20vw, 280px)",
                       fontWeight: 900,
                       lineHeight: 1,
                       textAlign: "center",
                       color: "transparent",
                       WebkitTextStroke: "3px rgba(255,255,255,0.85)",
                       letterSpacing: 0,
+                      transform: `scale(${0.7 + inEased * 0.3})`,
                     }}
                   >
                     0
@@ -5998,12 +5997,93 @@ export default function TTSSite() {
               );
             })()}
 
-            {/* ── PHASE 2: Track trio (progress 0.3 → 0.65) ── */}
+            {/* ── PHASE 2: The gap is real (progress 0.18 → 0.38) ── */}
             {(() => {
               const p = joinScrollProg;
-              const inP = Math.max(0, Math.min(1, (p - 0.28) / 0.12));
+              const inP = Math.max(0, Math.min(1, (p - 0.18) / 0.08));
               const inEased = 1 - Math.pow(1 - inP, 3);
-              const outP = Math.max(0, Math.min(1, (p - 0.57) / 0.12));
+              const outP = Math.max(0, Math.min(1, (p - 0.32) / 0.07));
+              const outEased = 1 - Math.pow(1 - outP, 3);
+              const op = inEased * (1 - outEased);
+              return (
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: op,
+                    transform: `translateY(${(1 - inEased) * 60 - outEased * 60}px)`,
+                    pointerEvents: "none",
+                    padding: "0 clamp(24px, 8vw, 120px)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "clamp(11px, 1.1vw, 14px)",
+                      fontWeight: 700,
+                      color: "#CC0000",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      marginBottom: 28,
+                      opacity: Math.max(0, Math.min(1, (p - 0.2) / 0.06)),
+                    }}
+                  >
+                    The hard truth
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "clamp(38px, 6.5vw, 96px)",
+                      fontWeight: 900,
+                      color: "transparent",
+                      WebkitTextStroke: "2px rgba(255,255,255,0.80)",
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1.0,
+                      marginBottom: 32,
+                    }}
+                  >
+                    SEP. BTG. BPX.
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "clamp(20px, 2.8vw, 42px)",
+                      fontWeight: 700,
+                      color: "#fff",
+                      lineHeight: 1.35,
+                      maxWidth: 780,
+                      opacity: Math.max(0, Math.min(1, (p - 0.22) / 0.06)),
+                    }}
+                  >
+                    They don&apos;t teach you.
+                    <br />
+                    <span style={{ color: "#CC0000" }}>
+                      They select for you.
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "clamp(13px, 1.4vw, 18px)",
+                      color: "rgba(255,255,255,0.35)",
+                      marginTop: 20,
+                      letterSpacing: "0.06em",
+                      opacity: Math.max(0, Math.min(1, (p - 0.25) / 0.06)),
+                    }}
+                  >
+                    TTS is the rep room they assume you already have.
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* ── PHASE 3: Track trio (progress 0.36 → 0.56) ── */}
+            {(() => {
+              const p = joinScrollProg;
+              const inP = Math.max(0, Math.min(1, (p - 0.36) / 0.09));
+              const inEased = 1 - Math.pow(1 - inP, 3);
+              const outP = Math.max(0, Math.min(1, (p - 0.5) / 0.07));
               const outEased = 1 - Math.pow(1 - outP, 3);
               const op = inEased * (1 - outEased);
               return (
@@ -6029,7 +6109,7 @@ export default function TTSSite() {
                     <div
                       key={word}
                       style={{
-                        fontSize: "clamp(60px, 11vw, 130px)",
+                        fontSize: "clamp(60px, 11vw, 140px)",
                         fontWeight: 900,
                         color: "transparent",
                         WebkitTextStroke: `2px ${color}`,
@@ -6037,9 +6117,9 @@ export default function TTSSite() {
                         lineHeight: 0.95,
                         opacity: Math.max(
                           0,
-                          Math.min(1, (p - 0.28 - delay) / 0.1),
+                          Math.min(1, (p - 0.36 - delay) / 0.08),
                         ),
-                        transform: `translateX(${(1 - Math.max(0, Math.min(1, (p - 0.28 - delay) / 0.1))) * 60}px)`,
+                        transform: `translateX(${(1 - Math.max(0, Math.min(1, (p - 0.36 - delay) / 0.08))) * 80}px)`,
                       }}
                     >
                       {word}
@@ -6047,11 +6127,11 @@ export default function TTSSite() {
                   ))}
                   <div
                     style={{
-                      marginTop: 28,
+                      marginTop: 32,
                       fontSize: "clamp(13px, 1.4vw, 18px)",
                       color: "rgba(255,255,255,0.35)",
                       letterSpacing: "0.1em",
-                      opacity: Math.max(0, Math.min(1, (p - 0.38) / 0.1)),
+                      opacity: Math.max(0, Math.min(1, (p - 0.46) / 0.06)),
                     }}
                   >
                     Three tracks · One club · Zero gatekeeping
@@ -6060,10 +6140,138 @@ export default function TTSSite() {
               );
             })()}
 
-            {/* ── PHASE 3: Full CTA (progress 0.62 → 1.0) ── */}
+            {/* ── PHASE 4: Leave different (progress 0.54 → 0.72) ── */}
             {(() => {
               const p = joinScrollProg;
-              const inP = Math.max(0, Math.min(1, (p - 0.6) / 0.18));
+              const inP = Math.max(0, Math.min(1, (p - 0.54) / 0.09));
+              const inEased = 1 - Math.pow(1 - inP, 3);
+              const outP = Math.max(0, Math.min(1, (p - 0.66) / 0.07));
+              const outEased = 1 - Math.pow(1 - outP, 3);
+              const op = inEased * (1 - outEased);
+              return (
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: op,
+                    transform: `translateY(${(1 - inEased) * 50 - outEased * 50}px)`,
+                    pointerEvents: "none",
+                    padding: "0 clamp(24px, 6vw, 100px)",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "clamp(42px, 7vw, 110px)",
+                      fontWeight: 900,
+                      color: "#fff",
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1.0,
+                      textAlign: "center",
+                      marginBottom: 48,
+                    }}
+                  >
+                    Leave{" "}
+                    <span
+                      style={{
+                        color: "transparent",
+                        WebkitTextStroke: "2px #CC0000",
+                      }}
+                    >
+                      different.
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 20,
+                      width: "100%",
+                      maxWidth: 520,
+                    }}
+                  >
+                    {[
+                      { label: "A real portfolio", delay: 0, color: "#CC0000" },
+                      {
+                        label: "A real network",
+                        delay: 0.05,
+                        color: "#FFCC00",
+                      },
+                      {
+                        label: "Real client experience",
+                        delay: 0.1,
+                        color: "#10b981",
+                      },
+                    ].map(({ label, delay, color }) => {
+                      const itemP = Math.max(
+                        0,
+                        Math.min(1, (p - 0.56 - delay) / 0.07),
+                      );
+                      const itemEased = 1 - Math.pow(1 - itemP, 3);
+                      return (
+                        <div
+                          key={label}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 16,
+                            opacity: itemEased,
+                            transform: `translateX(${(1 - itemEased) * 48}px)`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              border: `2px solid ${color}`,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                              boxShadow: `0 0 12px ${color}66`,
+                            }}
+                          >
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
+                              fill="none"
+                            >
+                              <path
+                                d="M2 7l3.5 3.5L12 3"
+                                stroke={color}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </div>
+                          <span
+                            style={{
+                              fontSize: "clamp(18px, 2.2vw, 30px)",
+                              fontWeight: 700,
+                              color: "#fff",
+                              letterSpacing: "-0.01em",
+                            }}
+                          >
+                            {label}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* ── PHASE 5: Full CTA (progress 0.73 → 1.0) ── */}
+            {(() => {
+              const p = joinScrollProg;
+              const inP = Math.max(0, Math.min(1, (p - 0.73) / 0.14));
               const inEased = 1 - Math.pow(1 - inP, 3);
               const op = inEased;
               const yShift = (1 - inEased) * 80;
