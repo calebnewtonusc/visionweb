@@ -3906,7 +3906,7 @@ export default function TTSSite() {
               position: "sticky",
               top: 0,
               height: "100vh",
-              overflow: "hidden",
+              overflow: "visible",
             }}
           >
             {/* Deep red glow — intensifies through scroll */}
@@ -4091,11 +4091,11 @@ export default function TTSSite() {
                 >
                   <div
                     style={{
-                      fontSize: "clamp(140px, 24vw, 300px)",
+                      fontSize: "clamp(100px, 20vw, 260px)",
                       fontWeight: 900,
                       color: "#fff",
                       letterSpacing: "-0.06em",
-                      lineHeight: 0.85,
+                      lineHeight: 1,
                       textAlign: "center",
                       background:
                         "linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)",
