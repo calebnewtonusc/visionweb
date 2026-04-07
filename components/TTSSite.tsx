@@ -33,6 +33,8 @@ import {
   Flame,
   Compass,
   Trophy,
+  Guitar,
+  FlaskConical,
 } from "lucide-react";
 // ── Utilities ────────────────────────────────────────────────────────────────
 function hexToRgba(hex: string, alpha: number): string {
@@ -1093,6 +1095,7 @@ export default function TTSSite() {
                 padding: "0 40px",
                 position: "relative",
                 zIndex: 1,
+                minHeight: "3em",
               }}
             >
               {/* Slide wrapper — tracks scroll right before morph */}
@@ -1231,10 +1234,13 @@ export default function TTSSite() {
               </div>
               {/* end slide wrapper */}
 
-              {/* Content block */}
+              {/* Content block — absolutely positioned at top so it aligns with first line of heading */}
               <div
                 style={{
-                  marginTop: 12,
+                  position: "absolute",
+                  top: 0,
+                  left: 40,
+                  maxWidth: 480,
                   opacity: heroContentShown ? 1 : 0,
                   transform: heroContentShown
                     ? "translateY(0)"
@@ -1249,7 +1255,6 @@ export default function TTSSite() {
                     fontSize: 18,
                     color: "#d4d4d8",
                     lineHeight: 1.65,
-                    maxWidth: 480,
                     marginBottom: 8,
                   }}
                 >
@@ -2872,6 +2877,26 @@ export default function TTSSite() {
               rotate: 16,
               color: "rgba(255,204,0,0.3)",
             },
+            {
+              Icon: Guitar,
+              bottom: "20%",
+              left: "6%",
+              size: 56,
+              speed: "0.09",
+              speedx: "0.03",
+              rotate: -25,
+              color: "rgba(255,204,0,0.4)",
+            },
+            {
+              Icon: FlaskConical,
+              top: "15%",
+              right: "8%",
+              size: 48,
+              speed: "0.07",
+              speedx: "-0.02",
+              rotate: 15,
+              color: "rgba(16,185,129,0.4)",
+            },
           ].map(
             (
               {
@@ -3151,6 +3176,27 @@ export default function TTSSite() {
             overflow: "visible",
           }}
         >
+          {/* Floating parallax icons — alumni section */}
+          {[
+            { Icon: Star, top: "8%", right: "6%", size: 56, speed: "0.08", speedx: "-0.02", rotate: 20, color: "rgba(255,204,0,0.35)" },
+            { Icon: Award, top: "22%", left: "4%", size: 72, speed: "0.10", speedx: "0.03", rotate: -15, color: "rgba(255,255,255,0.15)" },
+            { Icon: Users, bottom: "25%", right: "5%", size: 48, speed: "0.06", speedx: "-0.02", rotate: 8, color: "rgba(204,0,0,0.35)" },
+            { Icon: Globe, bottom: "12%", left: "6%", size: 38, speed: "0.05", speedx: "0.02", rotate: 30, color: "rgba(255,255,255,0.18)" },
+            { Icon: Network, top: "55%", right: "8%", size: 32, speed: "0.04", speedx: "-0.01", rotate: -10, color: "rgba(255,204,0,0.25)" },
+          ].map(({ Icon, top, left, right, bottom, size, speed, speedx, rotate, color }, idx) => (
+            <div
+              key={idx}
+              ref={(el) => { if (el) floatRefs.current[idx + 90] = el; }}
+              className="tts-float-icon"
+              data-speed={speed}
+              data-speedx={speedx}
+              data-rotate={rotate}
+              aria-hidden="true"
+              style={{ top, left, right, bottom, color }}
+            >
+              <Icon size={size} />
+            </div>
+          ))}
           {/* Gold glow bottom-left */}
           <div
             aria-hidden="true"
@@ -3703,7 +3749,7 @@ export default function TTSSite() {
           />
 
           <div
-            style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}
+            style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}
           >
             <div style={{ marginBottom: 56 }}>
               <h2
@@ -3742,232 +3788,195 @@ export default function TTSSite() {
               </p>
             </div>
 
-            {/* 3D card FAQ */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-                perspective: "1000px",
-              }}
-            >
-              {FAQ_ITEMS.map(({ q, a }, i) => {
-                const isOpen = openFaq === i;
-                return (
-                  <div
-                    key={q}
-                    className="tts-from-right"
-                    style={{
-                      transitionDelay: `${i * 0.06}s`,
-                      borderRadius: 16,
-                      overflow: "hidden",
-                      background: isOpen
-                        ? "rgba(204,0,0,0.06)"
-                        : "rgba(255,255,255,0.03)",
-                      border: isOpen
-                        ? "1px solid rgba(204,0,0,0.3)"
-                        : "1px solid rgba(255,255,255,0.08)",
-                      boxShadow: isOpen
-                        ? "0 0 40px rgba(204,0,0,0.1), 0 20px 60px rgba(0,0,0,0.4)"
-                        : "0 4px 20px rgba(0,0,0,0.3)",
-                      transform: isOpen
-                        ? "perspective(1000px) rotateX(0deg) scale(1.015)"
-                        : "perspective(1000px) rotateX(0deg) scale(1)",
-                      transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                      backdropFilter: "blur(12px)",
-                      WebkitBackdropFilter: "blur(12px)",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isOpen) {
-                        (e.currentTarget as HTMLDivElement).style.transform =
-                          "perspective(1000px) rotateX(-1.5deg) scale(1.008) translateY(-2px)";
-                        (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(255,255,255,0.15)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow =
-                          "0 16px 48px rgba(0,0,0,0.5)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isOpen) {
-                        (e.currentTarget as HTMLDivElement).style.transform =
-                          "perspective(1000px) rotateX(0deg) scale(1)";
-                        (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(255,255,255,0.08)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow =
-                          "0 4px 20px rgba(0,0,0,0.3)";
-                      }
-                    }}
-                  >
+            {/* Two-panel FAQ split */}
+            <div className="tts-faq-split">
+              {/* Left panel: question list */}
+              <div>
+                {FAQ_ITEMS.map(({ q }, i) => {
+                  const isActive = (openFaq ?? 0) === i;
+                  return (
                     <button
-                      onClick={() => setOpenFaq(isOpen ? null : i)}
-                      aria-expanded={isOpen}
-                      aria-controls={`faq-answer-${i}`}
+                      key={q}
+                      onClick={() => setOpenFaq(i)}
+                      aria-pressed={isActive}
                       style={{
                         width: "100%",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: 16,
-                        padding: "22px 28px",
+                        gap: 20,
+                        padding: "20px 0",
                         background: "transparent",
                         border: "none",
+                        borderBottom: "1px solid rgba(255,255,255,0.06)",
+                        borderLeft: isActive ? "3px solid #CC0000" : "3px solid transparent",
+                        paddingLeft: isActive ? 16 : 16,
                         cursor: "pointer",
                         textAlign: "left",
+                        transition: "all 0.25s ease",
                       }}
                     >
-                      <div
+                      <span
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 14,
+                          fontSize: 32,
+                          fontWeight: 900,
+                          color: isActive ? "#CC0000" : "#1a1a1a",
+                          lineHeight: 1,
+                          minWidth: 52,
+                          transition: "color 0.25s ease",
+                          letterSpacing: "-0.02em",
                         }}
                       >
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 800,
-                            color: isOpen ? "#CC0000" : "#3f3f46",
-                            letterSpacing: "0.08em",
-                            minWidth: 24,
-                            transition: "color 0.3s",
-                          }}
-                        >
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: 16,
-                            fontWeight: 600,
-                            color: isOpen ? "#fff" : "#d4d4d8",
-                            lineHeight: 1.4,
-                            transition: "color 0.3s",
-                          }}
-                        >
-                          {q}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: "50%",
-                          background: isOpen
-                            ? "rgba(204,0,0,0.2)"
-                            : "rgba(255,255,255,0.06)",
-                          border: isOpen
-                            ? "1px solid rgba(204,0,0,0.4)"
-                            : "1px solid rgba(255,255,255,0.1)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        <ChevronDown
-                          size={14}
-                          color={isOpen ? "#CC0000" : "#6b7280"}
-                          style={{
-                            transform: isOpen
-                              ? "rotate(180deg)"
-                              : "rotate(0deg)",
-                            transition: "transform 0.35s ease",
-                          }}
-                        />
-                      </div>
-                    </button>
-                    <div
-                      id={`faq-answer-${i}`}
-                      className="tts-faq-answer"
-                      role="region"
-                      aria-label={q}
-                      style={{
-                        maxHeight: isOpen ? "320px" : "0px",
-                        opacity: isOpen ? 1 : 0,
-                      }}
-                    >
-                      <p
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
                         style={{
                           fontSize: 15,
-                          color: "#a1a1aa",
-                          lineHeight: 1.75,
-                          padding: "0 28px 24px 66px",
-                          margin: 0,
+                          fontWeight: 600,
+                          color: isActive ? "#ffffff" : "#52525b",
+                          lineHeight: 1.45,
+                          transition: "color 0.25s ease",
                         }}
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            i === 0
-                              ? a.replace(
-                                  "@trojantechsolutions",
-                                  `<a href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#CC0000;text-decoration:none;">@trojantechsolutions</a>`,
-                                )
-                              : a,
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                      >
+                        {q}
+                      </span>
+                    </button>
+                  );
+                })}
 
-            {/* Still have questions */}
-            <div
-              className="tts-fade"
-              style={{
-                marginTop: 24,
-                padding: "22px 28px",
-                borderRadius: 16,
-                background:
-                  "linear-gradient(135deg, rgba(204,0,0,0.06) 0%, rgba(255,204,0,0.03) 100%)",
-                border: "1px solid rgba(204,0,0,0.2)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: 16,
-                transitionDelay: "0.15s",
-              }}
-            >
-              <div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>
-                  Still have a question?
-                </div>
-                <div style={{ fontSize: 13, color: "#71717a", marginTop: 2 }}>
-                  We&apos;re a real club with real people. Just reach out.
+                {/* Still have a question */}
+                <div
+                  className="tts-fade"
+                  style={{
+                    marginTop: 32,
+                    padding: "20px 20px",
+                    borderRadius: 14,
+                    background:
+                      "linear-gradient(135deg, rgba(204,0,0,0.06) 0%, rgba(255,204,0,0.03) 100%)",
+                    border: "1px solid rgba(204,0,0,0.2)",
+                    transitionDelay: "0.15s",
+                  }}
+                >
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 4 }}>
+                    Still have a question?
+                  </div>
+                  <div style={{ fontSize: 12, color: "#71717a", marginBottom: 14 }}>
+                    We&apos;re a real club with real people. Just reach out.
+                  </div>
+                  <a
+                    href="mailto:trojantechsolutions@gmail.com"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "9px 18px",
+                      borderRadius: 100,
+                      background: "#CC0000",
+                      color: "#fff",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      textDecoration: "none",
+                      transition: "all 0.2s ease",
+                      whiteSpace: "nowrap",
+                      boxShadow: "0 4px 20px rgba(204,0,0,0.3)",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = "#aa0000";
+                      (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-1px)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = "#CC0000";
+                      (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+                    }}
+                  >
+                    <Mail size={13} /> Email us
+                  </a>
                 </div>
               </div>
-              <a
-                href="mailto:trojantechsolutions@gmail.com"
+
+              {/* Right panel: sticky answer */}
+              <div
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "10px 20px",
-                  borderRadius: 100,
-                  background: "#CC0000",
-                  color: "#fff",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  textDecoration: "none",
-                  transition: "all 0.2s ease",
-                  whiteSpace: "nowrap",
-                  boxShadow: "0 4px 20px rgba(204,0,0,0.3)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background =
-                    "#aa0000";
-                  (e.currentTarget as HTMLAnchorElement).style.transform =
-                    "translateY(-1px)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background =
-                    "#CC0000";
-                  (e.currentTarget as HTMLAnchorElement).style.transform =
-                    "translateY(0)";
+                  position: "sticky",
+                  top: "calc(50vh - 160px)",
                 }}
               >
-                <Mail size={14} /> Email us
-              </a>
+                <div
+                  key={openFaq ?? 0}
+                  className="tts-faq-content"
+                  style={{
+                    background: "rgba(204,0,0,0.04)",
+                    border: "1px solid rgba(204,0,0,0.12)",
+                    borderRadius: 24,
+                    padding: "48px 44px",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* Giant decorative number */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      fontSize: 220,
+                      fontWeight: 900,
+                      color: "rgba(204,0,0,0.05)",
+                      position: "absolute",
+                      top: -20,
+                      right: -10,
+                      lineHeight: 1,
+                      userSelect: "none",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    {String((openFaq ?? 0) + 1).padStart(2, "0")}
+                  </div>
+
+                  <p
+                    style={{
+                      fontSize: "clamp(18px, 1.8vw, 22px)",
+                      fontWeight: 700,
+                      color: "#fff",
+                      margin: 0,
+                      marginBottom: 20,
+                      lineHeight: 1.35,
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  >
+                    {FAQ_ITEMS[openFaq ?? 0].q}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 16,
+                      color: "#a1a1aa",
+                      lineHeight: 1.8,
+                      margin: 0,
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        (openFaq ?? 0) === 0
+                          ? FAQ_ITEMS[0].a.replace(
+                              "@trojantechsolutions",
+                              `<a href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#CC0000;text-decoration:none;">@trojantechsolutions</a>`,
+                            )
+                          : FAQ_ITEMS[openFaq ?? 0].a,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: 8,
+                      height: 8,
+                      background: "#CC0000",
+                      borderRadius: "50%",
+                      marginTop: 28,
+                      boxShadow: "0 0 12px rgba(204,0,0,0.5)",
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -4181,15 +4190,10 @@ export default function TTSSite() {
                     style={{
                       fontSize: "clamp(100px, 20vw, 260px)",
                       fontWeight: 900,
-                      color: "#fff",
-                      letterSpacing: "-0.06em",
                       lineHeight: 1,
                       textAlign: "center",
-                      background:
-                        "linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
+                      color: "rgba(255,255,255,0.92)",
+                      letterSpacing: 0,
                     }}
                   >
                     0
