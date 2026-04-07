@@ -1568,13 +1568,34 @@ export default function TTSSite() {
                 <p
                   style={{
                     fontSize: 18 + heroScaleEased * 54,
-                    color: "#d4d4d8",
+                    fontWeight: 700,
+                    color: "#fff",
                     lineHeight: 1.65 - heroScaleEased * 0.55,
                     marginBottom: 8,
+                    letterSpacing: "-0.01em",
                   }}
                 >
-                  A USC builder club where you actually use AI: ship products,
-                  solve real problems, and get ahead.
+                  A USC builder club where you{" "}
+                  <span
+                    style={{
+                      color: "transparent",
+                      WebkitTextStroke: "1.5px #fff",
+                    }}
+                  >
+                    actually
+                  </span>{" "}
+                  use <span style={{ color: "#CC0000" }}>AI:</span> ship
+                  products, solve{" "}
+                  <span
+                    style={{
+                      color: "transparent",
+                      WebkitTextStroke: "1.5px #d4d4d8",
+                    }}
+                  >
+                    real
+                  </span>{" "}
+                  problems, and{" "}
+                  <span style={{ color: "#FFCC00" }}>get ahead.</span>
                 </p>
                 <div
                   style={{
