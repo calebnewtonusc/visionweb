@@ -8,7 +8,7 @@ const schema = z.object({
   major: z.string().min(1).max(100),
   year: z.enum(["Freshman", "Sophomore", "Junior", "Senior", "Graduate"]),
   track: z.enum(["Building", "Consulting", "Growing", "Unsure"]),
-  why: z.string().min(10).max(1000),
+  why: z.string().max(1000).optional().default(""),
 });
 
 function getSupabase() {

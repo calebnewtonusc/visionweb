@@ -268,13 +268,13 @@ const CABINET: {
     position: "center top",
   },
   {
-    name: "Sophie Chuang",
-    role: "Lead of Design",
-    initials: "SC",
-    accent: "#CC0000",
-    link: "https://www.linkedin.com/in/sophie-c-3147bb25b/",
-    headshot: "/img/sophie_shot.jpeg",
-    position: "center top",
+    name: "Coming Soon",
+    role: "TBD",
+    initials: "?",
+    accent: "#52525b",
+    link: null,
+    headshot: null,
+    placeholder: true,
   },
   {
     name: "Coming Soon",
@@ -893,6 +893,7 @@ function DotRowDivider({
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function TTSSite() {
+  const [isMobile, setIsMobile] = useState(false);
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
@@ -925,6 +926,13 @@ export default function TTSSite() {
   const trackInnerRef = useRef<HTMLDivElement>(null);
   const trackTitleRef = useRef<HTMLDivElement>(null);
   const floatRefs = useRef<HTMLDivElement[]>([]);
+  // Mobile detection
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
   // Custom cursor
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -2242,7 +2250,6 @@ export default function TTSSite() {
             </div>
           </div>
         </section>
-
         {/* Gradient: Hero → Mission */}
         <div
           aria-hidden="true"
@@ -2253,7 +2260,6 @@ export default function TTSSite() {
             flexShrink: 0,
           }}
         />
-
         {/* ── MISSION ── */}
         <section
           ref={missionSectionRef}
@@ -2590,7 +2596,6 @@ export default function TTSSite() {
             })()}
           </div>
         </section>
-
         {/* Gradient: Mission → Tracks */}
         <div
           aria-hidden="true"
@@ -2601,7 +2606,6 @@ export default function TTSSite() {
             flexShrink: 0,
           }}
         />
-
         {/* Wave 1 — before tracks */}
         <WaveDivider
           amplitude={24}
@@ -2609,109 +2613,60 @@ export default function TTSSite() {
           topColor="#09090b"
           bottomColor="#09090b"
         />
-
         {/* ── TRACKS — center-to-left title + gravity card reveal ── */}
-        <section
-          ref={trackScrollRef}
-          id="tracks"
-          style={{
-            background: "#09090b",
-            height: "clamp(200vh, 320vh, 320vh)",
-            position: "relative",
-          }}
-        >
-          <div
-            ref={trackStickyRef}
+        {/* Mobile: simple stacked layout. Desktop: full scroll animation. */}
+        {isMobile ? (
+          <section
+            ref={trackScrollRef}
+            id="tracks"
             style={{
-              position: "sticky",
-              top: 0,
-              height: "100vh",
-              overflow: "visible",
-              willChange: "transform",
+              background: "#09090b",
+              padding: "80px 20px",
+              position: "relative",
             }}
           >
-            {/* Background dot grid */}
-            <div
+            <p
               style={{
-                position: "absolute",
-                inset: 0,
-                backgroundImage:
-                  "radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Title — absolutely positioned, JS shifts it center → left */}
-            <div
-              ref={trackTitleRef}
-              className="tts-track-title"
-              style={{
-                position: "absolute",
-                left: 80,
-                top: "50%",
-                width: "clamp(220px, 24vw, 360px)",
-                zIndex: 2,
-                willChange: "transform",
+                fontSize: 11,
+                fontWeight: 700,
+                color: "#CC0000",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                marginBottom: 16,
               }}
             >
-              <h2
-                style={{
-                  fontSize: "clamp(56px, 7.5vw, 108px)",
-                  fontWeight: 900,
-                  color: "#fff",
-                  letterSpacing: "-0.04em",
-                  lineHeight: 1.05,
-                  marginBottom: 20,
-                }}
-              >
-                <SplitText text="Pick" style={{ display: "block" }} />
-                <SplitText
-                  text="your"
-                  baseDelay={0.1}
-                  style={{ display: "block" }}
-                />
-                <SplitText
-                  text="track."
-                  baseDelay={0.18}
-                  style={{
-                    display: "block",
-                    color: "transparent",
-                    WebkitTextStroke: "3px #fff",
-                  }}
-                />
-              </h2>
-              <p
-                className="track-title-sub"
-                style={{
-                  fontSize: 14,
-                  color: "#71717a",
-                  lineHeight: 1.7,
-                  maxWidth: 240,
-                  opacity: 0,
-                  transition: "opacity 0.3s ease",
-                }}
-              >
-                Pick one or drift across all three. Most people do both.
-              </p>
-            </div>
-
-            {/* Cards — flex row, each slides in from right with gravity bounce */}
-            <div
-              ref={trackInnerRef}
-              className="tts-track-cards"
+              Choose your path
+            </p>
+            <h2
               style={{
-                position: "absolute",
-                left: "clamp(140px, 28vw, 460px)",
-                right: "clamp(16px, 5vw, 60px)",
-                top: 0,
-                bottom: 0,
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                overflow: "visible",
+                fontSize: "clamp(36px, 10vw, 56px)",
+                fontWeight: 900,
+                color: "#fff",
+                letterSpacing: "-0.04em",
+                lineHeight: 1.05,
+                marginBottom: 32,
               }}
             >
+              Pick your
+              <br />
+              <span
+                style={{ color: "transparent", WebkitTextStroke: "2px #fff" }}
+              >
+                track.
+              </span>
+            </h2>
+            <p
+              style={{
+                fontSize: 14,
+                color: "#71717a",
+                lineHeight: 1.7,
+                maxWidth: 280,
+                marginBottom: 40,
+              }}
+            >
+              Pick one or drift across all three. Most people do both.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {TRACKS.map(
                 ({
                   num,
@@ -2726,55 +2681,24 @@ export default function TTSSite() {
                 }) => (
                   <div
                     key={num}
-                    className="track-card"
                     style={{
-                      flex: 1,
-                      minWidth: 0,
-                      height: "calc(100vh - 120px)",
                       background: featured ? "#141416" : "#111113",
-                      borderRadius: 20,
+                      borderRadius: 16,
                       border: featured
                         ? `1px solid ${accent}35`
-                        : "1px solid rgba(255,255,255,0.1)",
+                        : "1px solid rgba(255,255,255,0.08)",
                       borderTop: `4px solid ${accent}`,
-                      padding: "32px 28px 28px",
-                      display: "flex",
-                      flexDirection: "column",
+                      padding: "24px 20px",
                       position: "relative",
                       overflow: "hidden",
-                      opacity: 0,
-                      willChange: "transform, opacity",
-                      boxShadow: featured
-                        ? `0 0 80px ${accent}12, 0 32px 80px rgba(0,0,0,0.5)`
-                        : "0 16px 48px rgba(0,0,0,0.4)",
                     }}
                   >
-                    {/* Giant ghost number — outlined with accent color */}
-                    <div
-                      aria-hidden="true"
-                      style={{
-                        position: "absolute",
-                        bottom: -50,
-                        right: -16,
-                        fontSize: 260,
-                        fontWeight: 900,
-                        lineHeight: 1,
-                        color: "transparent",
-                        WebkitTextStroke: `1.5px ${accent}45`,
-                        letterSpacing: "-0.08em",
-                        pointerEvents: "none",
-                        userSelect: "none",
-                      }}
-                    >
-                      {num}
-                    </div>
-
                     {featured && (
                       <div
                         style={{
                           position: "absolute",
-                          top: 16,
-                          right: 16,
+                          top: 14,
+                          right: 14,
                           background: accent,
                           color: "#09090b",
                           fontSize: 9,
@@ -2788,181 +2712,444 @@ export default function TTSSite() {
                         Most popular
                       </div>
                     )}
-
-                    {/* Top row */}
                     <div
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: 24,
+                        gap: 10,
+                        marginBottom: 8,
                       }}
                     >
                       <div
                         style={{
-                          fontSize: 72,
+                          padding: 8,
+                          background: `${accent}15`,
+                          borderRadius: 10,
+                        }}
+                      >
+                        <Icon size={18} color={accent} />
+                      </div>
+                      <div>
+                        <div
+                          style={{
+                            fontSize: 17,
+                            fontWeight: 800,
+                            color: "#fff",
+                          }}
+                        >
+                          {title}
+                        </div>
+                        <div style={{ fontSize: 12, color: "#52525b" }}>
+                          {sub}
+                        </div>
+                      </div>
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "#a1a1aa",
+                        lineHeight: 1.65,
+                        marginBottom: 14,
+                      }}
+                    >
+                      {tagline}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 6,
+                      }}
+                    >
+                      {items.map((item) => (
+                        <div
+                          key={item}
+                          style={{
+                            display: "flex",
+                            gap: 8,
+                            fontSize: 13,
+                            color: "#d4d4d8",
+                          }}
+                        >
+                          <Check
+                            size={13}
+                            color={accent}
+                            style={{ flexShrink: 0, marginTop: 2 }}
+                          />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 11,
+                        color: "#52525b",
+                        marginTop: 14,
+                        borderTop: "1px solid rgba(255,255,255,0.06)",
+                        paddingTop: 12,
+                      }}
+                    >
+                      {forText}
+                    </p>
+                  </div>
+                ),
+              )}
+            </div>
+          </section>
+        ) : (
+          <section
+            ref={trackScrollRef}
+            id="tracks"
+            style={{
+              background: "#09090b",
+              height: "clamp(200vh, 320vh, 320vh)",
+              position: "relative",
+            }}
+          >
+            <div
+              ref={trackStickyRef}
+              style={{
+                position: "sticky",
+                top: 0,
+                height: "100vh",
+                overflow: "visible",
+                willChange: "transform",
+              }}
+            >
+              {/* Background dot grid */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage:
+                    "radial-gradient(rgba(255,255,255,0.018) 1px, transparent 1px)",
+                  backgroundSize: "40px 40px",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Title — absolutely positioned, JS shifts it center → left */}
+              <div
+                ref={trackTitleRef}
+                className="tts-track-title"
+                style={{
+                  position: "absolute",
+                  left: 80,
+                  top: "50%",
+                  width: "clamp(220px, 24vw, 360px)",
+                  zIndex: 2,
+                  willChange: "transform",
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: "clamp(56px, 7.5vw, 108px)",
+                    fontWeight: 900,
+                    color: "#fff",
+                    letterSpacing: "-0.04em",
+                    lineHeight: 1.05,
+                    marginBottom: 20,
+                  }}
+                >
+                  <SplitText text="Pick" style={{ display: "block" }} />
+                  <SplitText
+                    text="your"
+                    baseDelay={0.1}
+                    style={{ display: "block" }}
+                  />
+                  <SplitText
+                    text="track."
+                    baseDelay={0.18}
+                    style={{
+                      display: "block",
+                      color: "transparent",
+                      WebkitTextStroke: "3px #fff",
+                    }}
+                  />
+                </h2>
+                <p
+                  className="track-title-sub"
+                  style={{
+                    fontSize: 14,
+                    color: "#71717a",
+                    lineHeight: 1.7,
+                    maxWidth: 240,
+                    opacity: 0,
+                    transition: "opacity 0.3s ease",
+                  }}
+                >
+                  Pick one or drift across all three. Most people do both.
+                </p>
+              </div>
+
+              {/* Cards — flex row, each slides in from right with gravity bounce */}
+              <div
+                ref={trackInnerRef}
+                className="tts-track-cards"
+                style={{
+                  position: "absolute",
+                  left: "clamp(140px, 28vw, 460px)",
+                  right: "clamp(16px, 5vw, 60px)",
+                  top: 0,
+                  bottom: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                  overflow: "visible",
+                }}
+              >
+                {TRACKS.map(
+                  ({
+                    num,
+                    icon: Icon,
+                    accent,
+                    title,
+                    sub,
+                    tagline,
+                    items,
+                    for: forText,
+                    featured,
+                  }) => (
+                    <div
+                      key={num}
+                      className="track-card"
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        height: "calc(100vh - 120px)",
+                        background: featured ? "#141416" : "#111113",
+                        borderRadius: 20,
+                        border: featured
+                          ? `1px solid ${accent}35`
+                          : "1px solid rgba(255,255,255,0.1)",
+                        borderTop: `4px solid ${accent}`,
+                        padding: "32px 28px 28px",
+                        display: "flex",
+                        flexDirection: "column",
+                        position: "relative",
+                        overflow: "hidden",
+                        opacity: 0,
+                        willChange: "transform, opacity",
+                        boxShadow: featured
+                          ? `0 0 80px ${accent}12, 0 32px 80px rgba(0,0,0,0.5)`
+                          : "0 16px 48px rgba(0,0,0,0.4)",
+                      }}
+                    >
+                      {/* Giant ghost number — outlined with accent color */}
+                      <div
+                        aria-hidden="true"
+                        style={{
+                          position: "absolute",
+                          bottom: -50,
+                          right: -16,
+                          fontSize: 260,
                           fontWeight: 900,
-                          color: "transparent",
-                          WebkitTextStroke: `1px rgba(255,255,255,0.12)`,
-                          letterSpacing: "-0.06em",
                           lineHeight: 1,
+                          color: "transparent",
+                          WebkitTextStroke: `1.5px ${accent}45`,
+                          letterSpacing: "-0.08em",
+                          pointerEvents: "none",
                           userSelect: "none",
                         }}
                       >
                         {num}
                       </div>
+
+                      {featured && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 16,
+                            right: 16,
+                            background: accent,
+                            color: "#09090b",
+                            fontSize: 9,
+                            fontWeight: 800,
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
+                            padding: "3px 10px",
+                            borderRadius: 100,
+                          }}
+                        >
+                          Most popular
+                        </div>
+                      )}
+
+                      {/* Top row */}
                       <div
                         style={{
-                          width: 52,
-                          height: 52,
-                          borderRadius: 14,
-                          background: hexToRgba(accent, 0.15),
-                          border: `1px solid ${hexToRgba(accent, 0.4)}`,
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "center",
+                          justifyContent: "space-between",
+                          marginBottom: 24,
                         }}
                       >
-                        <Icon size={22} color={accent} />
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 700,
-                        color: accent,
-                        letterSpacing: "0.14em",
-                        textTransform: "uppercase",
-                        marginBottom: 8,
-                      }}
-                    >
-                      {sub}
-                    </div>
-                    <h3
-                      style={{
-                        fontSize: 32,
-                        fontWeight: 900,
-                        color: "#fff",
-                        letterSpacing: "-0.03em",
-                        lineHeight: 1.05,
-                        marginBottom: 12,
-                      }}
-                    >
-                      {title}
-                    </h3>
-                    <p
-                      style={{
-                        fontSize: 15,
-                        color: "#a1a1aa",
-                        lineHeight: 1.65,
-                        marginBottom: 24,
-                      }}
-                    >
-                      {tagline}
-                    </p>
-
-                    <div
-                      style={{
-                        height: 1,
-                        background: "rgba(255,255,255,0.1)",
-                        marginBottom: 20,
-                      }}
-                    />
-
-                    <ul
-                      style={{
-                        listStyle: "none",
-                        margin: 0,
-                        padding: 0,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 14,
-                        flex: 1,
-                      }}
-                    >
-                      {items.map((item) => (
-                        <li
-                          key={item}
+                        <div
                           style={{
+                            fontSize: 72,
+                            fontWeight: 900,
+                            color: "transparent",
+                            WebkitTextStroke: `1px rgba(255,255,255,0.12)`,
+                            letterSpacing: "-0.06em",
+                            lineHeight: 1,
+                            userSelect: "none",
+                          }}
+                        >
+                          {num}
+                        </div>
+                        <div
+                          style={{
+                            width: 52,
+                            height: 52,
+                            borderRadius: 14,
+                            background: hexToRgba(accent, 0.15),
+                            border: `1px solid ${hexToRgba(accent, 0.4)}`,
                             display: "flex",
-                            alignItems: "flex-start",
-                            gap: 10,
-                            fontSize: 14,
-                            color: "#d4d4d8",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Icon size={22} color={accent} />
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          color: accent,
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          marginBottom: 8,
+                        }}
+                      >
+                        {sub}
+                      </div>
+                      <h3
+                        style={{
+                          fontSize: 32,
+                          fontWeight: 900,
+                          color: "#fff",
+                          letterSpacing: "-0.03em",
+                          lineHeight: 1.05,
+                          marginBottom: 12,
+                        }}
+                      >
+                        {title}
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: 15,
+                          color: "#a1a1aa",
+                          lineHeight: 1.65,
+                          marginBottom: 24,
+                        }}
+                      >
+                        {tagline}
+                      </p>
+
+                      <div
+                        style={{
+                          height: 1,
+                          background: "rgba(255,255,255,0.1)",
+                          marginBottom: 20,
+                        }}
+                      />
+
+                      <ul
+                        style={{
+                          listStyle: "none",
+                          margin: 0,
+                          padding: 0,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 14,
+                          flex: 1,
+                        }}
+                      >
+                        {items.map((item) => (
+                          <li
+                            key={item}
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                              gap: 10,
+                              fontSize: 14,
+                              color: "#d4d4d8",
+                              lineHeight: 1.5,
+                            }}
+                          >
+                            <Check
+                              size={14}
+                              color={accent}
+                              strokeWidth={2.5}
+                              style={{ flexShrink: 0, marginTop: 2 }}
+                            />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div
+                        style={{
+                          marginTop: 24,
+                          paddingTop: 18,
+                          borderTop: "1px solid rgba(255,255,255,0.1)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: 13,
+                            color: "#71717a",
+                            maxWidth: 200,
                             lineHeight: 1.5,
                           }}
                         >
-                          <Check
-                            size={14}
-                            color={accent}
-                            strokeWidth={2.5}
-                            style={{ flexShrink: 0, marginTop: 2 }}
-                          />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div
-                      style={{
-                        marginTop: 24,
-                        paddingTop: 18,
-                        borderTop: "1px solid rgba(255,255,255,0.1)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: "#71717a",
-                          maxWidth: 200,
-                          lineHeight: 1.5,
-                        }}
-                      >
-                        {forText}
+                          {forText}
+                        </div>
+                        <button
+                          onClick={() => scrollTo("join")}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: accent,
+                            background: hexToRgba(accent, 0.1),
+                            border: `1px solid ${hexToRgba(accent, 0.3)}`,
+                            borderRadius: 8,
+                            cursor: "pointer",
+                            padding: "9px 16px",
+                            flexShrink: 0,
+                            transition: "background 0.15s",
+                            whiteSpace: "nowrap",
+                          }}
+                          onMouseEnter={(e) => {
+                            (
+                              e.currentTarget as HTMLButtonElement
+                            ).style.background = hexToRgba(accent, 0.2);
+                          }}
+                          onMouseLeave={(e) => {
+                            (
+                              e.currentTarget as HTMLButtonElement
+                            ).style.background = hexToRgba(accent, 0.1);
+                          }}
+                        >
+                          Join <ArrowRight size={12} />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => scrollTo("join")}
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 6,
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: accent,
-                          background: hexToRgba(accent, 0.1),
-                          border: `1px solid ${hexToRgba(accent, 0.3)}`,
-                          borderRadius: 8,
-                          cursor: "pointer",
-                          padding: "9px 16px",
-                          flexShrink: 0,
-                          transition: "background 0.15s",
-                          whiteSpace: "nowrap",
-                        }}
-                        onMouseEnter={(e) => {
-                          (
-                            e.currentTarget as HTMLButtonElement
-                          ).style.background = hexToRgba(accent, 0.2);
-                        }}
-                        onMouseLeave={(e) => {
-                          (
-                            e.currentTarget as HTMLButtonElement
-                          ).style.background = hexToRgba(accent, 0.1);
-                        }}
-                      >
-                        Join <ArrowRight size={12} />
-                      </button>
                     </div>
-                  </div>
-                ),
-              )}
+                  ),
+                )}
+              </div>
             </div>
-          </div>
-        </section>
-
+          </section>
+        )}{" "}
+        {/* end isMobile ternary */}
         {/* ── REVERSE SCROLL REVEAL ── */}
         <div
           ref={revealSectionRef}
@@ -3582,10 +3769,8 @@ export default function TTSSite() {
             </div>
           </div>
         </div>
-
         {/* Divider 2 — marquee ticker */}
         <MarqueeDivider topColor="#09090b" bottomColor="#000" />
-
         {/* ── LEADERSHIP ── */}
         <section
           id="leadership"
@@ -4067,10 +4252,8 @@ export default function TTSSite() {
             </p>
           </div>
         </section>
-
         {/* Divider 3 — diagonal slash */}
         <DiagonalSlashDivider topColor="#000" bottomColor="#09090b" />
-
         {/* ── CABINET ── */}
         <section
           id="cabinet"
@@ -4548,7 +4731,6 @@ export default function TTSSite() {
             </div>
           </div>
         </section>
-
         {/* ── TRANSITION BRIDGE: Cabinet → Alumni — floating icon cluster ── */}
         <div
           aria-hidden="true"
@@ -4776,7 +4958,6 @@ export default function TTSSite() {
             ),
           )}
         </div>
-
         {/* ── ALUMNI / BOARD ── */}
         <section
           id="alumni"
@@ -5336,10 +5517,8 @@ export default function TTSSite() {
             </div>
           </div>
         </section>
-
         {/* Divider 4 — dot matrix */}
         <DotRowDivider topColor="#0c0c0f" bottomColor="#09090b" />
-
         {/* ── FAQ ── */}
         <section
           id="faq"
@@ -5746,10 +5925,8 @@ export default function TTSSite() {
             </div>
           </div>
         </section>
-
         {/* Divider 5 — scan lines */}
         <ScanLineDivider topColor="#09090b" bottomColor="#0a0508" />
-
         {/* ── JOIN — scroll-driven cinematic ── */}
         <section
           ref={joinScrollRef}
@@ -6689,7 +6866,6 @@ export default function TTSSite() {
             })()}
           </div>
         </section>
-
         {/* ── FOOTER — fixed floating pills, appear near page bottom ── */}
         <footer
           className="tts-footer-pills"
