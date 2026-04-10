@@ -78,17 +78,17 @@ const TRACKS = [
     icon: Hammer,
     accent: "#CC0000",
     title: "Building",
-    sub: "Product & Community Impact",
+    sub: "Engineering, Product & Community Impact",
     tagline:
-      "Come in with an idea. Leave with a live link that helps real people.",
+      "Come in with an idea. Leave with something real — code, hardware, or a live link.",
     featured: false,
     items: [
-      "Build apps and tools that solve real community problems",
+      "Software and hardware engineering projects, not just apps",
+      "Build tools and systems that solve real community problems",
       "Deploy live products with real users and real stakes",
       "Work on projects for nonprofits, hospitals, and research orgs",
-      "No CS background required",
     ],
-    for: "Anyone who wants to make something that matters. Any major, any year.",
+    for: "Engineers, builders, and makers of any kind. Any major, any year.",
   },
   {
     num: "02",
