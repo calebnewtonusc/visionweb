@@ -1286,9 +1286,9 @@ function PersonCard({
 function CabinetCard({ person }: { person: Person }) {
   const pos = person.position ?? "center top";
   return (
-    <div className="h-full bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+    <div className="h-full min-h-0 bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
       <div
-        className="relative w-full aspect-[4/5] bg-zinc-900"
+        className="relative w-full flex-1 min-h-0 bg-zinc-900"
         style={{
           backgroundImage: person.photo
             ? undefined
@@ -1317,25 +1317,28 @@ function CabinetCard({ person }: { person: Person }) {
             </span>
           </div>
         )}
-        {/* subtle gradient so text overlay is legible if we add one later */}
         <div
           aria-hidden
           className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none"
           style={{
-            background: "linear-gradient(180deg, transparent, rgba(0,0,0,0.6))",
+            background:
+              "linear-gradient(180deg, transparent, rgba(0,0,0,0.55))",
           }}
         />
       </div>
-      <div className="p-4 sm:p-5 flex flex-col gap-1">
+      <div className="shrink-0 px-4 py-3 sm:px-5 sm:py-4 border-t border-white/5 bg-white/[0.02]">
         <div
-          className="font-semibold text-white leading-tight tracking-tight"
-          style={{ fontSize: "clamp(1.0625rem, 1.55vw, 1.375rem)" }}
+          className="font-semibold text-white leading-tight tracking-tight truncate"
+          style={{ fontSize: "clamp(1rem, 1.4vw, 1.25rem)" }}
         >
           {person.name}
         </div>
         <div
-          className="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] font-semibold leading-snug"
-          style={{ color: person.accent }}
+          className="uppercase tracking-[0.16em] font-semibold leading-snug mt-1 truncate"
+          style={{
+            color: person.accent,
+            fontSize: "clamp(0.625rem, 0.85vw, 0.75rem)",
+          }}
         >
           {person.role}
         </div>
