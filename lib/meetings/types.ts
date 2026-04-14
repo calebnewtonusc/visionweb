@@ -94,6 +94,17 @@ export type Slide =
       // Exactly three circles. Rendered as overlapping Venn with TTS in the middle.
       circles: [VennCircle, VennCircle, VennCircle];
       center: { label: string; sub?: string };
+    }
+  | {
+      kind: "video";
+      eyebrow?: string;
+      title?: string;
+      // Path to the video file under /public (e.g. "/video/caleb-intro.mp4").
+      src: string;
+      // Optional poster image shown before playback starts.
+      poster?: string;
+      // Start muted so autoplay is allowed by browsers. Default true.
+      autoplay?: boolean;
     };
 
 export type VennCircle = {

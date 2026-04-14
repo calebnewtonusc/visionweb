@@ -499,6 +499,49 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
     );
   }
 
+  if (slide.kind === "video") {
+    return (
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-6xl`}>
+          {slide.eyebrow && (
+            <div
+              className="text-xs sm:text-sm uppercase tracking-[0.3em] font-semibold mb-5 sm:mb-8"
+              style={{ color: accent }}
+            >
+              {slide.eyebrow}
+            </div>
+          )}
+          {slide.title && (
+            <h2
+              className="mb-6 sm:mb-10 font-bold tracking-tight leading-tight"
+              style={{ fontSize: "clamp(1.75rem, 5cqw, 3.5rem)" }}
+            >
+              {slide.title}
+            </h2>
+          )}
+          <div
+            className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black"
+            style={{
+              aspectRatio: "16 / 9",
+              boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
+            }}
+          >
+            <video
+              src={slide.src}
+              poster={slide.poster}
+              controls
+              playsInline
+              autoPlay={slide.autoplay ?? true}
+              muted={slide.autoplay ?? true}
+              preload="metadata"
+              className="absolute inset-0 w-full h-full object-contain bg-black"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (slide.kind === "section") {
     return (
       <div className={wrap}>
@@ -1138,6 +1181,8 @@ function slideLabel(s: Slide): string {
       return `${s.value} · ${s.label}`;
     case "cta":
       return s.title;
+    case "video":
+      return s.title ?? "Video";
   }
 }
 

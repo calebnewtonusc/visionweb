@@ -27,6 +27,13 @@ export const meeting01: Meeting = {
     },
 
     {
+      kind: "video",
+      eyebrow: "A word from Caleb",
+      title: "Before we get into it",
+      src: "/video/caleb-intro.mp4",
+    },
+
+    {
       kind: "bullets",
       eyebrow: "Meeting Objectives",
       title: "Today's Agenda",
