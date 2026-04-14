@@ -6,31 +6,211 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
+  Atom,
+  Brain,
   ChevronLeft,
   ChevronRight,
+  Code,
+  Compass,
+  Cpu,
+  Hexagon,
+  Layers,
   List,
+  Network,
+  Rocket,
+  Sparkles,
+  Terminal,
   X,
+  Zap,
 } from "lucide-react";
 import type { Meeting, Person, Slide } from "@/lib/meetings";
 
 const SWIPE_THRESHOLD = 50;
 
+type FloatingIconSpec = {
+  Icon: React.ComponentType<{ size?: number }>;
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
+  size: number;
+  rot: number;
+  color: string;
+  dur: string;
+  delay: string;
+};
+
+const FLOATING_ICONS: FloatingIconSpec[] = [
+  {
+    Icon: Zap,
+    top: "9%",
+    left: "4%",
+    size: 42,
+    rot: -14,
+    color: "rgba(255,204,0,0.14)",
+    dur: "11s",
+    delay: "0s",
+  },
+  {
+    Icon: Code,
+    top: "24%",
+    right: "5%",
+    size: 54,
+    rot: 18,
+    color: "rgba(204,0,0,0.16)",
+    dur: "14s",
+    delay: "1s",
+  },
+  {
+    Icon: Cpu,
+    bottom: "20%",
+    left: "6%",
+    size: 64,
+    rot: -24,
+    color: "rgba(204,0,0,0.12)",
+    dur: "12s",
+    delay: "2s",
+  },
+  {
+    Icon: Brain,
+    top: "55%",
+    right: "11%",
+    size: 40,
+    rot: 10,
+    color: "rgba(255,204,0,0.14)",
+    dur: "13s",
+    delay: "0.5s",
+  },
+  {
+    Icon: Terminal,
+    bottom: "10%",
+    right: "18%",
+    size: 36,
+    rot: -30,
+    color: "rgba(16,185,129,0.14)",
+    dur: "10s",
+    delay: "1.5s",
+  },
+  {
+    Icon: Sparkles,
+    top: "38%",
+    left: "13%",
+    size: 32,
+    rot: 44,
+    color: "rgba(255,204,0,0.18)",
+    dur: "12s",
+    delay: "2.5s",
+  },
+  {
+    Icon: Rocket,
+    top: "72%",
+    left: "30%",
+    size: 38,
+    rot: -18,
+    color: "rgba(204,0,0,0.12)",
+    dur: "15s",
+    delay: "0.8s",
+  },
+  {
+    Icon: Network,
+    top: "14%",
+    right: "26%",
+    size: 42,
+    rot: 22,
+    color: "rgba(59,130,246,0.14)",
+    dur: "11s",
+    delay: "1.8s",
+  },
+  {
+    Icon: Layers,
+    bottom: "32%",
+    right: "4%",
+    size: 50,
+    rot: -8,
+    color: "rgba(139,92,246,0.13)",
+    dur: "13s",
+    delay: "0.3s",
+  },
+  {
+    Icon: Compass,
+    top: "48%",
+    left: "3%",
+    size: 38,
+    rot: 0,
+    color: "rgba(16,185,129,0.14)",
+    dur: "14s",
+    delay: "2.2s",
+  },
+  {
+    Icon: Hexagon,
+    bottom: "44%",
+    left: "22%",
+    size: 30,
+    rot: 30,
+    color: "rgba(255,204,0,0.12)",
+    dur: "10s",
+    delay: "1.2s",
+  },
+  {
+    Icon: Atom,
+    top: "6%",
+    right: "18%",
+    size: 28,
+    rot: -20,
+    color: "rgba(204,0,0,0.14)",
+    dur: "12s",
+    delay: "0.6s",
+  },
+];
+
+function FloatingIcons() {
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+    >
+      {FLOATING_ICONS.map((spec, i) => (
+        <div
+          key={i}
+          className="tts-meeting-float-icon"
+          style={
+            {
+              top: spec.top,
+              left: spec.left,
+              right: spec.right,
+              bottom: spec.bottom,
+              color: spec.color,
+              "--rot": `${spec.rot}deg`,
+              "--dur": spec.dur,
+              "--delay": spec.delay,
+            } as React.CSSProperties
+          }
+        >
+          <spec.Icon size={spec.size} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function SlideDeck({ meeting }: { meeting: Meeting }) {
   const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const [showIndex, setShowIndex] = useState(false);
   const total = meeting.slides.length;
   const touchStartX = useRef<number | null>(null);
 
   const go = useCallback(
-    (next: number) => {
-      if (next < 0 || next >= total) return;
-      setIndex(next);
+    (target: number, dir: "next" | "prev") => {
+      if (target < 0 || target >= total) return;
+      setDirection(dir);
+      setIndex(target);
     },
     [total],
   );
 
-  const next = useCallback(() => go(index + 1), [go, index]);
-  const prev = useCallback(() => go(index - 1), [go, index]);
+  const next = useCallback(() => go(index + 1, "next"), [go, index]);
+  const prev = useCallback(() => go(index - 1, "prev"), [go, index]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -113,7 +293,17 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <SlideBody slide={slide} accent={meeting.accent} />
+        <FloatingIcons />
+        <div
+          key={index}
+          className={`absolute inset-0 ${
+            direction === "next"
+              ? "tts-slide-enter-next"
+              : "tts-slide-enter-prev"
+          }`}
+        >
+          <SlideBody slide={slide} accent={meeting.accent} />
+        </div>
 
         <button
           type="button"
@@ -188,6 +378,7 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
           meeting={meeting}
           current={index}
           onSelect={(i) => {
+            setDirection(i >= index ? "next" : "prev");
             setIndex(i);
             setShowIndex(false);
           }}
