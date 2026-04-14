@@ -13,7 +13,7 @@ export const meeting01: Meeting = {
   timeLabel: "7:00 PM PT",
   location: "USC Campus, location on Instagram",
   summary:
-    "Introductory meeting. The mission, the four verticals, the advisors, the tools, and how you plug in.",
+    "Introductory meeting. The mission, the six verticals, the advisors, the tools, and how you plug in.",
   status: "upcoming",
   accent: COLOR.red,
   slides: [
@@ -39,16 +39,32 @@ export const meeting01: Meeting = {
       title: "Today's Agenda",
       items: [
         {
-          label: "Mission overview",
-          detail: "How we approach impact, technology, and the work itself.",
+          label: "Mission and cadence",
+          detail: "Why TTS exists and how we operate this spring into summer.",
         },
         {
-          label: "Vertical breakdowns",
-          detail: "An in-depth look at the four core teams.",
+          label: "The six verticals",
+          detail:
+            "How TTS is structured. Deep dives on Consulting, Building, Music, and Web3.",
         },
         {
-          label: "Open Q&A",
-          detail: "How you join, which team fits, and how to contribute.",
+          label: "The people behind TTS",
+          detail:
+            "Leadership, the six-advisor board, and the alumni network you're joining.",
+        },
+        {
+          label: "Clay and the Consulting Team",
+          detail:
+            "The AI platform top companies pay six figures for, in our hands.",
+        },
+        {
+          label: "Building, Music, and Web3",
+          detail:
+            "The ten-week Builder cohort, 3D Nuos, and on-chain delivery.",
+        },
+        {
+          label: "How it compounds and Q&A",
+          detail: "Cross-vertical collaboration, then how you plug in.",
         },
       ],
     },
@@ -80,7 +96,7 @@ export const meeting01: Meeting = {
             "AI-first strategic work for nonprofits and charity organizations.",
         },
         {
-          label: "Entrepreneurship",
+          label: "Building",
           detail:
             "Design, build, and ship real-world applications and digital products.",
         },
