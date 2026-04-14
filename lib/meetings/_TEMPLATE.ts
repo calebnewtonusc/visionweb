@@ -171,7 +171,7 @@ export const meetingTemplate: Meeting = {
       title: "The ask",
       body: "Optional one-paragraph body.",
       actions: [
-        { label: "trojantechsolutions.com" },
+        { label: "usctts.com" },
         { label: "@trojantechsolutions on Instagram" },
         { label: "Show up next week" },
       ],

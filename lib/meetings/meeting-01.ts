@@ -484,7 +484,7 @@ export const meeting01: Meeting = {
       title: "Welcome to TTS.",
       body: "Questions, ideas, or a team you want on? Grab Tyler or Caleb after the meeting.",
       actions: [
-        { label: "trojantechsolutions.com" },
+        { label: "usctts.com" },
         { label: "@trojantechsolutions on Instagram" },
         { label: "Pick a team. Show up next week. Build." },
       ],

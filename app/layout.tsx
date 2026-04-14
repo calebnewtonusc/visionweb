@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: "Trojan Technology Solutions",
     description:
       "USC's AI builder club. Open to every major. No experience required. No gatekeeping.",
-    url: "https://trojantechsolutions.com",
+    url: "https://usctts.com",
     siteName: "Trojan Technology Solutions",
     type: "website",
   },
