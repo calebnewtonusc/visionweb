@@ -459,6 +459,106 @@ export const meeting01: Meeting = {
     {
       kind: "section",
       number: "06",
+      title: "The Building Team",
+      blurb:
+        "Transform individuals into entrepreneurs who follow their passion, develop lasting relationships in the startup ecosystem, and ship ventures that create real impact.",
+    },
+    {
+      kind: "quote",
+      quote: "Ideas don't build businesses, people do.",
+      attribution: "The Building Team thesis",
+    },
+    {
+      kind: "three-up",
+      eyebrow: "Three core pillars",
+      title: "How the Building Team operates",
+      cards: [
+        {
+          label: "01",
+          heading: "Build",
+          body: "A cohort-style startup accelerator: industry-specific workshops, keynote speakers, and mentorship from the TTS professional network.",
+          accent: COLOR.red,
+        },
+        {
+          label: "02",
+          heading: "Grow",
+          body: "A tight community of passionate founders. Social events, cross-team projects, and real relationships across every discipline.",
+          accent: COLOR.gold,
+        },
+        {
+          label: "03",
+          heading: "Compete",
+          body: "Demo Day at the end of the semester. New member startups pitch for funding in front of investors, operators, and founders.",
+          accent: COLOR.emerald,
+        },
+      ],
+    },
+    {
+      kind: "bullets",
+      eyebrow: "10-week curriculum",
+      title: "From idea to Demo Day",
+      body: "Every Building member runs this cohort. Each week has a concrete deliverable that builds on the one before.",
+      items: [
+        {
+          label: "Week 1 · Intro to FE",
+          detail: "Introduction to startups and cohort bonding.",
+        },
+        {
+          label: "Week 2 · Customer & problem discovery",
+          detail:
+            "Identify and validate the real customer problem worth solving.",
+        },
+        {
+          label: "Week 3 · Ideation and solutions",
+          detail:
+            "Develop concrete solutions that map to the validated problem.",
+        },
+        {
+          label: "Week 4 · Team formation",
+          detail: "Form founding teams around the strongest ideas.",
+        },
+        {
+          label: "Week 5 · MVPs",
+          detail: "Ship a minimum viable product users can actually touch.",
+        },
+        {
+          label: "Week 6 · Product development and iteration",
+          detail: "Refine the MVP with real user feedback.",
+        },
+        {
+          label: "Week 7 · Guest speaker and Demo Night",
+          detail: "Industry insights plus an internal progress demo.",
+        },
+        {
+          label: "Week 8 · GTM, growth, distribution, and pitch design",
+          detail: "Go-to-market strategy and pitch craft.",
+        },
+        {
+          label: "Week 9 · Pitch Night",
+          detail: "Present the pitch to peers and mentors for hard feedback.",
+        },
+        {
+          label: "Week 10 · Demo Day",
+          detail:
+            "Final pitch in front of investors and founders for real funding.",
+        },
+      ],
+    },
+    {
+      kind: "cta",
+      eyebrow: "The Building Team ask",
+      title: "Build the future, today.",
+      body: "Ten weeks. Real founders. Real funding on the line.",
+      actions: [
+        { label: "Join USC's premier builder track" },
+        { label: "Ship something users touch by Week 5" },
+        { label: "Pitch on Demo Day by Week 10" },
+      ],
+    },
+
+    {
+      kind: "section",
+      number: "07",
       title: "Collaboration",
       blurb:
         "The verticals are not silos. They back each other, and that is the point.",
