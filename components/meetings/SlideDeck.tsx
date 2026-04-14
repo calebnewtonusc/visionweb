@@ -390,34 +390,43 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
 }
 
 function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
+  // wrap fills the full slide viewport; inner containers control layout.
   const wrap =
-    "absolute inset-0 overflow-y-auto px-5 sm:px-10 lg:px-16 py-8 sm:py-12 flex";
+    "absolute inset-0 overflow-y-auto px-5 sm:px-10 lg:px-16 py-6 sm:py-10 flex";
+  // Centered slides: content is vertically centered in full viewport height.
+  const innerCentered =
+    "mx-auto w-full min-h-full flex flex-col justify-center";
+  // Filling slides: header shrinks, content grows to fill remaining height.
+  const innerFill = "mx-auto w-full min-h-full flex flex-col";
 
   if (slide.kind === "title") {
     return (
-      <div className={`${wrap} items-center`}>
-        <div className="mx-auto max-w-4xl w-full">
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-5xl`}>
           {slide.eyebrow && (
             <div
-              className="text-xs sm:text-sm uppercase tracking-[0.3em] font-semibold mb-6 sm:mb-8"
+              className="text-xs sm:text-sm uppercase tracking-[0.3em] font-semibold mb-6 sm:mb-10"
               style={{ color: accent }}
             >
               {slide.eyebrow}
             </div>
           )}
           <h1
-            className="font-bold tracking-tight leading-[0.95]"
-            style={{ fontSize: "clamp(2.25rem, 9vw, 6rem)" }}
+            className="font-bold tracking-tight leading-[0.92]"
+            style={{ fontSize: "clamp(2.5rem, 11vw, 8rem)" }}
           >
             {slide.title}
           </h1>
           {slide.subtitle && (
-            <p className="mt-6 sm:mt-8 text-lg sm:text-2xl text-zinc-300 leading-snug max-w-3xl">
+            <p
+              className="mt-6 sm:mt-10 text-zinc-300 leading-snug max-w-3xl"
+              style={{ fontSize: "clamp(1.125rem, 2.6vw, 1.875rem)" }}
+            >
               {slide.subtitle}
             </p>
           )}
           {slide.footer && (
-            <div className="mt-10 sm:mt-14 text-sm sm:text-base text-zinc-500 font-mono">
+            <div className="mt-10 sm:mt-16 text-sm sm:text-base text-zinc-500 font-mono">
               {slide.footer}
             </div>
           )}
@@ -428,25 +437,28 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "section") {
     return (
-      <div className={`${wrap} items-center`}>
-        <div className="mx-auto max-w-4xl w-full">
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-5xl`}>
           <div
             className="font-black tracking-tighter leading-none opacity-90"
             style={{
-              fontSize: "clamp(5rem, 22vw, 14rem)",
+              fontSize: "clamp(6rem, 26vw, 18rem)",
               color: accent,
             }}
           >
             {slide.number}
           </div>
           <h2
-            className="mt-2 sm:mt-4 font-bold tracking-tight leading-tight"
-            style={{ fontSize: "clamp(1.75rem, 6vw, 4rem)" }}
+            className="mt-3 sm:mt-6 font-bold tracking-tight leading-tight"
+            style={{ fontSize: "clamp(2rem, 7vw, 5rem)" }}
           >
             {slide.title}
           </h2>
           {slide.blurb && (
-            <p className="mt-5 sm:mt-6 text-base sm:text-xl text-zinc-400 leading-relaxed max-w-2xl">
+            <p
+              className="mt-5 sm:mt-8 text-zinc-400 leading-relaxed max-w-3xl"
+              style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)" }}
+            >
               {slide.blurb}
             </p>
           )}
@@ -457,8 +469,8 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "bullets") {
     return (
-      <div className={`${wrap} items-start sm:items-center`}>
-        <div className="mx-auto max-w-4xl w-full">
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-5xl`}>
           {slide.eyebrow && (
             <div
               className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
@@ -469,33 +481,42 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
           )}
           <h2
             className="font-semibold tracking-tight leading-tight"
-            style={{ fontSize: "clamp(1.75rem, 5.5vw, 3.25rem)" }}
+            style={{ fontSize: "clamp(2rem, 6vw, 3.75rem)" }}
           >
             {slide.title}
           </h2>
           {slide.body && (
-            <p className="mt-4 text-base sm:text-lg text-zinc-400 leading-relaxed max-w-3xl">
+            <p
+              className="mt-4 sm:mt-5 text-zinc-400 leading-relaxed max-w-3xl"
+              style={{ fontSize: "clamp(1rem, 1.8vw, 1.375rem)" }}
+            >
               {slide.body}
             </p>
           )}
-          <ul className="mt-7 sm:mt-10 space-y-4 sm:space-y-5">
+          <ul className="mt-8 sm:mt-12 space-y-5 sm:space-y-6">
             {slide.items.map((item, i) => (
               <li
                 key={i}
-                className="flex gap-3 sm:gap-5 items-start border-t border-white/5 pt-4 sm:pt-5 first:border-t-0 first:pt-0"
+                className="flex gap-3 sm:gap-6 items-start border-t border-white/5 pt-5 sm:pt-6 first:border-t-0 first:pt-0"
               >
                 <div
-                  className="shrink-0 font-mono text-xs sm:text-sm mt-1"
+                  className="shrink-0 font-mono text-xs sm:text-sm mt-1.5"
                   style={{ color: accent }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </div>
-                <div className="min-w-0">
-                  <div className="text-base sm:text-xl font-semibold text-white leading-snug">
+                <div className="min-w-0 flex-1">
+                  <div
+                    className="font-semibold text-white leading-snug"
+                    style={{ fontSize: "clamp(1.125rem, 2.2vw, 1.625rem)" }}
+                  >
                     {item.label}
                   </div>
                   {item.detail && (
-                    <div className="mt-1 text-sm sm:text-base text-zinc-400 leading-relaxed">
+                    <div
+                      className="mt-1.5 text-zinc-400 leading-relaxed"
+                      style={{ fontSize: "clamp(0.95rem, 1.5vw, 1.125rem)" }}
+                    >
                       {item.detail}
                     </div>
                   )}
@@ -510,27 +531,29 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "three-up") {
     return (
-      <div className={`${wrap} items-start sm:items-center`}>
-        <div className="mx-auto max-w-6xl w-full">
-          {slide.eyebrow && (
-            <div
-              className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
-              style={{ color: accent }}
+      <div className={wrap}>
+        <div className={`${innerFill} max-w-7xl`}>
+          <div className="shrink-0">
+            {slide.eyebrow && (
+              <div
+                className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
+                style={{ color: accent }}
+              >
+                {slide.eyebrow}
+              </div>
+            )}
+            <h2
+              className="font-semibold tracking-tight leading-tight"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 3.25rem)" }}
             >
-              {slide.eyebrow}
-            </div>
-          )}
-          <h2
-            className="font-semibold tracking-tight leading-tight"
-            style={{ fontSize: "clamp(1.5rem, 4.5vw, 2.75rem)" }}
-          >
-            {slide.title}
-          </h2>
-          <div className="mt-7 sm:mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+              {slide.title}
+            </h2>
+          </div>
+          <div className="mt-6 sm:mt-10 flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {slide.cards.map((card, i) => (
               <div
                 key={i}
-                className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-5 sm:p-6"
+                className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col"
               >
                 <div
                   className="absolute top-5 right-5 text-xs font-mono"
@@ -539,13 +562,19 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                   {card.label}
                 </div>
                 <div
-                  className="w-8 h-1 rounded-full mb-4"
+                  className="w-10 h-1 rounded-full mb-5"
                   style={{ background: card.accent }}
                 />
-                <div className="text-xl sm:text-2xl font-semibold tracking-tight mb-2">
+                <div
+                  className="font-semibold tracking-tight mb-3"
+                  style={{ fontSize: "clamp(1.375rem, 2.6vw, 1.875rem)" }}
+                >
                   {card.heading}
                 </div>
-                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">
+                <p
+                  className="text-zinc-400 leading-relaxed"
+                  style={{ fontSize: "clamp(0.95rem, 1.5vw, 1.125rem)" }}
+                >
                   {card.body}
                 </p>
               </div>
@@ -558,23 +587,23 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "quote") {
     return (
-      <div className={`${wrap} items-center`}>
-        <div className="mx-auto max-w-4xl w-full">
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-5xl`}>
           <div
             aria-hidden
             className="font-serif leading-none mb-2 sm:mb-4 opacity-20"
-            style={{ fontSize: "clamp(4rem, 14vw, 10rem)", color: accent }}
+            style={{ fontSize: "clamp(5rem, 16vw, 12rem)", color: accent }}
           >
             &ldquo;
           </div>
           <blockquote
-            className="font-medium tracking-tight leading-[1.15] text-white"
-            style={{ fontSize: "clamp(1.5rem, 5vw, 3rem)" }}
+            className="font-medium tracking-tight leading-[1.12] text-white"
+            style={{ fontSize: "clamp(1.75rem, 6vw, 4rem)" }}
           >
             {slide.quote}
           </blockquote>
           {slide.attribution && (
-            <div className="mt-6 sm:mt-8 text-sm sm:text-base text-zinc-500 uppercase tracking-widest">
+            <div className="mt-8 sm:mt-10 text-xs sm:text-sm text-zinc-500 uppercase tracking-[0.25em]">
               {slide.attribution}
             </div>
           )}
@@ -585,8 +614,8 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "stat") {
     return (
-      <div className={`${wrap} items-center`}>
-        <div className="mx-auto max-w-4xl w-full text-center sm:text-left">
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-5xl text-center sm:text-left`}>
           {slide.eyebrow && (
             <div
               className="text-xs uppercase tracking-[0.25em] font-semibold mb-4"
@@ -598,7 +627,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
           <div
             className="font-black tracking-tighter leading-none"
             style={{
-              fontSize: "clamp(6rem, 28vw, 18rem)",
+              fontSize: "clamp(7rem, 32vw, 22rem)",
               background: `linear-gradient(180deg, ${accent}, #FFCC00)`,
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
@@ -608,13 +637,16 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             {slide.value}
           </div>
           <div
-            className="mt-2 sm:mt-4 font-semibold tracking-tight"
-            style={{ fontSize: "clamp(1.25rem, 4vw, 2.25rem)" }}
+            className="mt-3 sm:mt-5 font-semibold tracking-tight"
+            style={{ fontSize: "clamp(1.5rem, 4.5vw, 2.75rem)" }}
           >
             {slide.label}
           </div>
           {slide.context && (
-            <p className="mt-4 text-sm sm:text-lg text-zinc-400 leading-relaxed max-w-2xl mx-auto sm:mx-0">
+            <p
+              className="mt-5 text-zinc-400 leading-relaxed max-w-2xl mx-auto sm:mx-0"
+              style={{ fontSize: "clamp(1rem, 1.8vw, 1.25rem)" }}
+            >
               {slide.context}
             </p>
           )}
@@ -628,34 +660,39 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
     const gridCols =
       count === 2 ? "sm:grid-cols-2" : count >= 3 ? "md:grid-cols-3" : "";
     return (
-      <div className={`${wrap} items-start sm:items-center`}>
-        <div className="mx-auto max-w-6xl w-full">
-          {slide.eyebrow && (
-            <div
-              className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
-              style={{ color: accent }}
+      <div className={wrap}>
+        <div className={`${innerFill} max-w-7xl`}>
+          <div className="shrink-0">
+            {slide.eyebrow && (
+              <div
+                className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
+                style={{ color: accent }}
+              >
+                {slide.eyebrow}
+              </div>
+            )}
+            <h2
+              className="font-semibold tracking-tight leading-tight"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 3.25rem)" }}
             >
-              {slide.eyebrow}
-            </div>
-          )}
-          <h2
-            className="font-semibold tracking-tight leading-tight"
-            style={{ fontSize: "clamp(1.5rem, 4.5vw, 2.75rem)" }}
-          >
-            {slide.title}
-          </h2>
-          {slide.body && (
-            <p className="mt-3 text-sm sm:text-lg text-zinc-400 leading-relaxed max-w-3xl">
-              {slide.body}
-            </p>
-          )}
+              {slide.title}
+            </h2>
+            {slide.body && (
+              <p
+                className="mt-4 text-zinc-400 leading-relaxed max-w-3xl"
+                style={{ fontSize: "clamp(1rem, 1.8vw, 1.25rem)" }}
+              >
+                {slide.body}
+              </p>
+            )}
+          </div>
           {count === 1 ? (
-            <div className="mt-6 sm:mt-10 max-w-3xl">
+            <div className="mt-6 sm:mt-10 flex-1 min-h-0 flex">
               <PersonCard person={slide.people[0]!} spotlight />
             </div>
           ) : (
             <div
-              className={`mt-6 sm:mt-10 grid grid-cols-1 ${gridCols} gap-4 sm:gap-6`}
+              className={`mt-6 sm:mt-10 flex-1 min-h-0 grid grid-cols-1 ${gridCols} gap-4 sm:gap-6`}
             >
               {slide.people.map((p, i) => (
                 <PersonCard key={i} person={p} />
@@ -669,28 +706,33 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "cabinet") {
     return (
-      <div className={`${wrap} items-start sm:items-center`}>
-        <div className="mx-auto max-w-6xl w-full">
-          {slide.eyebrow && (
-            <div
-              className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
-              style={{ color: accent }}
+      <div className={wrap}>
+        <div className={`${innerFill} max-w-7xl`}>
+          <div className="shrink-0">
+            {slide.eyebrow && (
+              <div
+                className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
+                style={{ color: accent }}
+              >
+                {slide.eyebrow}
+              </div>
+            )}
+            <h2
+              className="font-semibold tracking-tight leading-tight"
+              style={{ fontSize: "clamp(1.75rem, 5vw, 3.25rem)" }}
             >
-              {slide.eyebrow}
-            </div>
-          )}
-          <h2
-            className="font-semibold tracking-tight leading-tight"
-            style={{ fontSize: "clamp(1.5rem, 4.5vw, 2.75rem)" }}
-          >
-            {slide.title}
-          </h2>
-          {slide.body && (
-            <p className="mt-3 text-sm sm:text-lg text-zinc-400 leading-relaxed max-w-3xl">
-              {slide.body}
-            </p>
-          )}
-          <div className="mt-6 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4">
+              {slide.title}
+            </h2>
+            {slide.body && (
+              <p
+                className="mt-4 text-zinc-400 leading-relaxed max-w-3xl"
+                style={{ fontSize: "clamp(1rem, 1.8vw, 1.25rem)" }}
+              >
+                {slide.body}
+              </p>
+            )}
+          </div>
+          <div className="mt-6 sm:mt-10 flex-1 min-h-0 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 auto-rows-fr">
             {slide.people.map((p, i) => (
               <CabinetCard key={i} person={p} />
             ))}
@@ -702,11 +744,11 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   // cta
   return (
-    <div className={`${wrap} items-center`}>
-      <div className="mx-auto max-w-3xl w-full">
+    <div className={wrap}>
+      <div className={`${innerCentered} max-w-4xl`}>
         {slide.eyebrow && (
           <div
-            className="text-xs uppercase tracking-[0.3em] font-semibold mb-5"
+            className="text-xs uppercase tracking-[0.3em] font-semibold mb-5 sm:mb-7"
             style={{ color: accent }}
           >
             {slide.eyebrow}
@@ -714,23 +756,27 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
         )}
         <h2
           className="font-bold tracking-tight leading-tight"
-          style={{ fontSize: "clamp(2rem, 7vw, 4.5rem)" }}
+          style={{ fontSize: "clamp(2.25rem, 8vw, 5.5rem)" }}
         >
           {slide.title}
         </h2>
         {slide.body && (
-          <p className="mt-5 text-base sm:text-xl text-zinc-300 leading-relaxed">
+          <p
+            className="mt-5 sm:mt-7 text-zinc-300 leading-relaxed"
+            style={{ fontSize: "clamp(1.125rem, 2.2vw, 1.5rem)" }}
+          >
             {slide.body}
           </p>
         )}
-        <ul className="mt-8 space-y-3">
+        <ul className="mt-8 sm:mt-12 space-y-4">
           {slide.actions.map((a, i) => (
             <li
               key={i}
-              className="flex items-center gap-3 text-base sm:text-xl text-white"
+              className="flex items-center gap-3 sm:gap-4 text-white"
+              style={{ fontSize: "clamp(1.125rem, 2vw, 1.5rem)" }}
             >
               <ArrowRight
-                className="w-4 h-4 sm:w-5 sm:h-5 shrink-0"
+                className="w-5 h-5 sm:w-6 sm:h-6 shrink-0"
                 style={{ color: accent }}
               />
               <span className="font-medium">{a.label}</span>
@@ -878,27 +924,43 @@ function PersonPhoto({
   );
 }
 
-function PersonMeta({ person }: { person: Person }) {
+function PersonMeta({
+  person,
+  spotlight = false,
+}: {
+  person: Person;
+  spotlight?: boolean;
+}) {
+  const nameSize = spotlight
+    ? "clamp(1.75rem, 3.4vw, 2.75rem)"
+    : "clamp(1.125rem, 2vw, 1.625rem)";
+  const bulletSize = spotlight
+    ? "clamp(1rem, 1.6vw, 1.25rem)"
+    : "clamp(0.9rem, 1.3vw, 1.0625rem)";
   return (
     <>
       <div
-        className="text-[11px] font-semibold uppercase tracking-[0.2em] mb-1.5"
+        className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] mb-2"
         style={{ color: person.accent }}
       >
         {person.role}
       </div>
-      <div className="text-lg sm:text-2xl font-semibold tracking-tight mb-3">
+      <div
+        className="font-semibold tracking-tight mb-4 leading-tight"
+        style={{ fontSize: nameSize }}
+      >
         {person.name}
       </div>
       {person.bullets && person.bullets.length > 0 && (
-        <ul className="space-y-2">
+        <ul className="space-y-2.5 sm:space-y-3">
           {person.bullets.map((b, i) => (
             <li
               key={i}
-              className="text-sm sm:text-base text-zinc-300 leading-relaxed flex gap-2.5"
+              className="text-zinc-300 leading-relaxed flex gap-3"
+              style={{ fontSize: bulletSize }}
             >
               <span
-                className="shrink-0 mt-1.5 w-1 h-1 rounded-full"
+                className="shrink-0 mt-2 w-1.5 h-1.5 rounded-full"
                 style={{ background: person.accent }}
                 aria-hidden
               />
@@ -919,31 +981,31 @@ function PersonCard({
   spotlight?: boolean;
 }) {
   if (spotlight) {
-    // 1 person: image on left (fixed width on desktop), content on right.
+    // 1 person: fills full slide area. Photo left, content right on desktop.
     return (
-      <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex flex-col md:flex-row">
+      <div className="w-full bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex flex-col md:flex-row">
         <PersonPhoto
           person={person}
-          className="w-full aspect-[4/5] md:w-64 md:aspect-auto md:self-stretch md:shrink-0"
-          sizes="(max-width: 768px) 100vw, 256px"
-          initialsFontSize="clamp(3.5rem, 10vw, 6rem)"
+          className="w-full aspect-[4/5] md:w-[42%] md:max-w-[36rem] md:aspect-auto md:h-auto md:self-stretch md:shrink-0"
+          sizes="(max-width: 768px) 100vw, 42vw"
+          initialsFontSize="clamp(4rem, 12vw, 8rem)"
         />
-        <div className="p-5 sm:p-6 flex-1 min-w-0">
-          <PersonMeta person={person} />
+        <div className="p-6 sm:p-10 flex-1 min-w-0 flex flex-col justify-center">
+          <PersonMeta person={person} spotlight />
         </div>
       </div>
     );
   }
-  // 2 or 3 people: card with photo on top in portrait ratio.
+  // 2 or 3 people: card stretches to grid cell height. Photo top, content below.
   return (
-    <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+    <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex flex-col h-full">
       <PersonPhoto
         person={person}
-        className="w-full aspect-[4/5]"
+        className="w-full aspect-[4/5] shrink-0"
         sizes="(max-width: 768px) 100vw, 33vw"
         initialsFontSize="clamp(3rem, 7vw, 5rem)"
       />
-      <div className="p-4 sm:p-5 flex-1">
+      <div className="p-5 sm:p-6 flex-1 min-h-0">
         <PersonMeta person={person} />
       </div>
     </div>
@@ -953,9 +1015,9 @@ function PersonCard({
 function CabinetCard({ person }: { person: Person }) {
   const pos = person.position ?? "center top";
   return (
-    <div className="bg-white/[0.04] border border-white/10 rounded-xl overflow-hidden flex items-center gap-3 p-3">
+    <div className="h-full bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden flex items-center gap-4 p-4 sm:p-5">
       <div
-        className="relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden bg-zinc-900"
+        className="relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl overflow-hidden bg-zinc-900"
         style={{
           backgroundImage: person.photo
             ? undefined
@@ -967,14 +1029,14 @@ function CabinetCard({ person }: { person: Person }) {
             src={person.photo}
             alt={person.name}
             fill
-            sizes="64px"
+            sizes="96px"
             className="object-cover"
             style={{ objectPosition: pos }}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span
-              className="text-base font-bold"
+              className="text-xl font-bold"
               style={{ color: person.accent }}
             >
               {person.initials}
@@ -983,11 +1045,14 @@ function CabinetCard({ person }: { person: Person }) {
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-sm sm:text-base font-semibold text-white leading-tight">
+        <div
+          className="font-semibold text-white leading-tight"
+          style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.125rem)" }}
+        >
           {person.name}
         </div>
         <div
-          className="text-[10px] sm:text-xs uppercase tracking-wider font-medium mt-0.5 leading-snug"
+          className="text-[10px] sm:text-[11px] uppercase tracking-wider font-medium mt-1 leading-snug"
           style={{ color: person.accent }}
         >
           {person.role}
