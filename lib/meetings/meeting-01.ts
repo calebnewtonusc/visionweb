@@ -663,9 +663,9 @@ export const meeting01: Meeting = {
     },
     {
       kind: "bullets",
-      eyebrow: "10-week curriculum · spring into summer",
+      eyebrow: "Spring cohort · Optional summer pathway",
       title: "From vibe coding to Demo Day",
-      body: "Every Building member runs this cohort. It spans our four spring meetings and carries straight into summer. We open with vibe coding so no one is blocked by how to build, then roll straight into shipping real startups.",
+      body: "Weeks 1 through 4 run during our four spring meetings. Every Building member starts here. Weeks 5 through 10 are an optional summer pathway for members who want to keep shipping toward Demo Day. No one is forced into summer; the door is open if you want it.",
       items: [
         {
           label: "Week 1 · Vibe coding foundations",
@@ -686,6 +686,11 @@ export const meeting01: Meeting = {
           label: "Week 4 · Ideation and team formation",
           detail:
             "Turn validated problems into concrete solutions and lock in founding teams.",
+        },
+        {
+          label: "Summer pathway · Optional · Weeks 5 to 10",
+          detail:
+            "Everything below is the summer continuation. Stay in if you want to ship your startup to Demo Day. Step out after Week 4 and you still finish the spring cohort in good standing.",
         },
         {
           label: "Week 5 · MVPs",
