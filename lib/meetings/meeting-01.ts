@@ -204,7 +204,7 @@ export const meeting01: Meeting = {
     {
       kind: "people",
       eyebrow: "Board of Advisors",
-      title: "Five people with real runway to shape this club",
+      title: "Six people with real runway to shape this club",
       people: [
         {
           name: "Matthew Kim",
@@ -272,6 +272,20 @@ export const meeting01: Meeting = {
             "Practicing pediatrician in Southern California",
             "Former member of the Kaiser Med School admission board",
             "Knows exactly what it takes for top pre-med students to stand out",
+          ],
+        },
+        {
+          name: "Andrew Laffoon",
+          role: "Founder & CEO, Mixbook",
+          photo: "/img/andrew_shot.jpeg",
+          position: "center center",
+          initials: "AL",
+          accent: COLOR.gold,
+          affiliation: "Mixbook",
+          bullets: [
+            "Founder and CEO of Mixbook, $100M+ in annual revenue",
+            "Two decades of founder-CEO experience scaling a consumer tech company",
+            "Real startup wisdom for the Building and Entrepreneurship tracks",
           ],
         },
       ],
