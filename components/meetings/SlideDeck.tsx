@@ -781,44 +781,87 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
 
   if (slide.kind === "cabinet") {
     const cabinetCount = slide.people.length;
-    // Larger lists (alumni, ~15) get 5 columns; standard (~9) stays at 3.
-    const cabinetCols =
-      cabinetCount >= 12
-        ? "grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-        : "grid-cols-2 sm:grid-cols-3";
+    // Larger lists (alumni, ~15) get a top header + 5-column grid.
+    // Smaller lists (~9) get a left sidebar so cards can go skinny and tall.
+    const isLargeList = cabinetCount >= 12;
+    const cabinetCols = isLargeList
+      ? "grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+      : "grid-cols-2 sm:grid-cols-3";
+    if (isLargeList) {
+      return (
+        <div className={wrap}>
+          <div className={`${innerFill} max-w-7xl`}>
+            <div className="shrink-0">
+              {slide.eyebrow && (
+                <div
+                  className="text-xs uppercase tracking-[0.25em] font-semibold mb-2"
+                  style={{ color: accent }}
+                >
+                  {slide.eyebrow}
+                </div>
+              )}
+              <h2
+                className="font-semibold tracking-tight leading-tight"
+                style={{ fontSize: "clamp(1.5rem, 4cqw, 2.5rem)" }}
+              >
+                {slide.title}
+              </h2>
+              {slide.body && (
+                <p
+                  className="mt-2 text-zinc-400 leading-relaxed max-w-3xl"
+                  style={{ fontSize: "clamp(0.9rem, 1.4cqw, 1.0625rem)" }}
+                >
+                  {slide.body}
+                </p>
+              )}
+            </div>
+            <div
+              className={`mt-4 sm:mt-5 flex-1 min-h-0 grid ${cabinetCols} gap-3 sm:gap-3 auto-rows-fr`}
+            >
+              {slide.people.map((p, i) => (
+                <CabinetCard key={i} person={p} />
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    // Small list: sidebar + skinny-tall grid.
     return (
       <div className={wrap}>
         <div className={`${innerFill} max-w-7xl`}>
-          <div className="shrink-0">
-            {slide.eyebrow && (
-              <div
-                className="text-xs uppercase tracking-[0.25em] font-semibold mb-2"
-                style={{ color: accent }}
+          <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,26%)_1fr] gap-6 sm:gap-8 h-full">
+            <div className="flex flex-col justify-center">
+              {slide.eyebrow && (
+                <div
+                  className="text-xs uppercase tracking-[0.25em] font-semibold mb-3"
+                  style={{ color: accent }}
+                >
+                  {slide.eyebrow}
+                </div>
+              )}
+              <h2
+                className="font-semibold tracking-tight leading-[1.05]"
+                style={{ fontSize: "clamp(1.75rem, 4.5cqw, 3rem)" }}
               >
-                {slide.eyebrow}
-              </div>
-            )}
-            <h2
-              className="font-semibold tracking-tight leading-tight"
-              style={{ fontSize: "clamp(1.5rem, 4cqw, 2.5rem)" }}
+                {slide.title}
+              </h2>
+              {slide.body && (
+                <p
+                  className="mt-4 text-zinc-400 leading-relaxed"
+                  style={{ fontSize: "clamp(0.95rem, 1.5cqw, 1.125rem)" }}
+                >
+                  {slide.body}
+                </p>
+              )}
+            </div>
+            <div
+              className={`min-h-0 grid ${cabinetCols} gap-2.5 sm:gap-2.5 auto-rows-fr h-full`}
             >
-              {slide.title}
-            </h2>
-            {slide.body && (
-              <p
-                className="mt-2 text-zinc-400 leading-relaxed max-w-3xl"
-                style={{ fontSize: "clamp(0.9rem, 1.4cqw, 1.0625rem)" }}
-              >
-                {slide.body}
-              </p>
-            )}
-          </div>
-          <div
-            className={`mt-4 sm:mt-5 flex-1 min-h-0 grid ${cabinetCols} gap-3 sm:gap-3 auto-rows-fr`}
-          >
-            {slide.people.map((p, i) => (
-              <CabinetCard key={i} person={p} />
-            ))}
+              {slide.people.map((p, i) => (
+                <CabinetCard key={i} person={p} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
