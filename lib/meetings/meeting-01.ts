@@ -702,6 +702,138 @@ export const meeting01: Meeting = {
     {
       kind: "section",
       number: "08",
+      title: "The Music Team",
+      blurb:
+        "Music that amplifies every TTS project. Score demos and events, ship original releases, and make the audio side of the club pull its own weight.",
+    },
+    {
+      kind: "quote",
+      quote: "Every great product has a soundtrack. Ours is made in-house.",
+      attribution: "The Music Team thesis",
+    },
+    {
+      kind: "three-up",
+      eyebrow: "Three core pillars",
+      title: "How the Music Team operates",
+      cards: [
+        {
+          label: "01",
+          heading: "Score",
+          body: "Original music for TTS demos, campaigns, and events. Every visual we ship has sound designed to match it.",
+          accent: COLOR.red,
+        },
+        {
+          label: "02",
+          heading: "Ship",
+          body: "Independent releases from Music Team members. Real tracks on DSPs under the TTS banner, not practice files on a hard drive.",
+          accent: COLOR.gold,
+        },
+        {
+          label: "03",
+          heading: "Collaborate",
+          body: "Cross-team projects with Building and Consulting. Audio-heavy apps, sonic branding, and campaign scoring on client work.",
+          accent: COLOR.emerald,
+        },
+      ],
+    },
+    {
+      kind: "bullets",
+      eyebrow: "What you ship as a Music member",
+      title: "From studio onboarding to released tracks",
+      body: "Led by Malakai Carey, President of the Music Team. The cohort runs in parallel with the other verticals so the work stacks.",
+      items: [
+        {
+          label: "Studio onboarding",
+          detail:
+            "DAW fluency, monitors, and a clean workflow for producing at club speed.",
+        },
+        {
+          label: "Score a TTS demo",
+          detail:
+            "Pick a demo video from Building or Consulting and drop original music on it.",
+        },
+        {
+          label: "Release a single",
+          detail:
+            "Ship at least one original track on Spotify under the TTS banner by end of semester.",
+        },
+        {
+          label: "Sound-design for the club",
+          detail:
+            "Event intros, pitch reels, campaign stingers. The Music Team is the audio layer of everything TTS ships.",
+        },
+      ],
+    },
+
+    {
+      kind: "section",
+      number: "09",
+      title: "The Web3 Team",
+      blurb:
+        "Real web3 work, not speculation. Research, build, and ship on-chain products alongside every other TTS vertical.",
+    },
+    {
+      kind: "quote",
+      quote: "Deployed contracts, not whitepapers.",
+      attribution: "The Web3 Team thesis",
+    },
+    {
+      kind: "three-up",
+      eyebrow: "Three core pillars",
+      title: "How the Web3 Team operates",
+      cards: [
+        {
+          label: "01",
+          heading: "Research",
+          body: "Stay current on protocols, primitives, and emerging infrastructure. Weekly deep dives inform what the team actually builds.",
+          accent: COLOR.violet,
+        },
+        {
+          label: "02",
+          heading: "Build",
+          body: "Smart contracts, DAOs, and tokenized systems as real product infra. Solidity fluency from day one.",
+          accent: COLOR.blue,
+        },
+        {
+          label: "03",
+          heading: "Ship",
+          body: "Every Consulting engagement that touches web3 gets on-chain delivery. Deployed to mainnet or testnet, not just slides.",
+          accent: COLOR.gold,
+        },
+      ],
+    },
+    {
+      kind: "bullets",
+      eyebrow: "What you ship as a Web3 member",
+      title: "From Solidity onboarding to mainnet",
+      body: "Led by Jet Jadeja, President of the Web3 Team. The cohort runs alongside the other verticals and feeds real on-chain deliverables into client work.",
+      items: [
+        {
+          label: "Solidity and wallets onboarding",
+          detail:
+            "Foundry or Hardhat, test networks, and a personal wallet that can actually ship.",
+        },
+        {
+          label: "Weekly protocol deep dives",
+          detail:
+            "Study one protocol or primitive per week. Write the one-pager the team actually references.",
+        },
+        {
+          label: "Ship an on-chain demo",
+          detail:
+            "Working smart contract deployed to a testnet by week 5. Open the Etherscan link in the pitch.",
+        },
+        {
+          label: "Back TTS clients with on-chain delivery",
+          detail:
+            "Pair with Consulting engagements where web3 is the right answer, not a buzzword.",
+        },
+      ],
+    },
+
+    {
+      kind: "section",
+      number: "10",
       title: "Collaboration",
       blurb:
         "The verticals are not silos. They back each other, and that is the point.",
