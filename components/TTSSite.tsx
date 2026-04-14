@@ -207,7 +207,7 @@ const CABINET: {
   },
   {
     name: "Malakai Carey",
-    role: "Lead of Music",
+    role: "President, Music Team",
     initials: "MC",
     accent: "#CC0000",
     link: "https://www.linkedin.com/in/malakai-carey-11187038a/",
@@ -243,7 +243,7 @@ const CABINET: {
   },
   {
     name: "Jet Jadeja",
-    role: "Lead of Web3",
+    role: "President, Web3 Team",
     initials: "JJ",
     accent: "#CC0000",
     link: "https://www.linkedin.com/in/jet-jadeja/",

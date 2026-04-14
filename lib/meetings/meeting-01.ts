@@ -200,7 +200,7 @@ export const meeting01: Meeting = {
         },
         {
           name: "Malakai Carey",
-          role: "Lead of Music",
+          role: "President, Music Team",
           photo: "/img/malakai_shot.jpeg",
           position: "center 30%",
           initials: "MC",
@@ -208,7 +208,7 @@ export const meeting01: Meeting = {
         },
         {
           name: "Jet Jadeja",
-          role: "Lead of Web3",
+          role: "President, Web3 Team",
           photo: "/img/jet_shot.jpeg",
           position: "center 30%",
           initials: "JJ",
