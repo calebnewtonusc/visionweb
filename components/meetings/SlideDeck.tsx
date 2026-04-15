@@ -264,14 +264,14 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
       <header className="relative z-20 flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/5">
         <Link
           href="/meetings"
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-white hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden />
           <span className="hidden sm:inline">All meetings</span>
           <span className="sm:hidden">Back</span>
         </Link>
 
-        <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-500 font-mono">
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-white font-mono">
           <span
             className="font-semibold tracking-wider uppercase"
             style={{ color: meeting.accent }}
@@ -287,7 +287,7 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
         <button
           type="button"
           onClick={() => setShowIndex((v) => !v)}
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-white hover:text-white transition-colors cursor-pointer"
         >
           <List className="w-4 h-4" aria-hidden />
           <span className="hidden sm:inline">Index</span>
@@ -318,7 +318,7 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
           aria-label="Previous slide"
           onClick={prev}
           disabled={index === 0}
-          className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
+          className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -327,7 +327,7 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
           aria-label="Next slide"
           onClick={next}
           disabled={index === total - 1}
-          className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
+          className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -347,9 +347,9 @@ export function SlideDeck({ meeting }: { meeting: Meeting }) {
           />
         </div>
 
-        <div className="flex items-center justify-between gap-3 text-xs text-zinc-500">
+        <div className="flex items-center justify-between gap-3 text-xs text-white">
           <div className="truncate">
-            <span className="text-zinc-300">{meeting.title}</span>
+            <span className="text-white">{meeting.title}</span>
             <span className="text-zinc-700 mx-2">·</span>
             <span>{meeting.dateLabel}</span>
           </div>
@@ -476,21 +476,21 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             </div>
           )}
           <h1
-            className="font-bold tracking-tight leading-[0.92]"
+            className="tts-neon-title font-bold tracking-tight leading-[0.92]"
             style={{ fontSize: "clamp(2.5rem, 11cqw, 8rem)" }}
           >
             {slide.title}
           </h1>
           {slide.subtitle && (
             <p
-              className="mt-6 sm:mt-10 text-zinc-300 leading-snug max-w-3xl"
+              className="mt-6 sm:mt-10 text-white leading-snug max-w-3xl"
               style={{ fontSize: "clamp(1.125rem, 2.6cqw, 1.875rem)" }}
             >
               {slide.subtitle}
             </p>
           )}
           {slide.footer && (
-            <div className="mt-10 sm:mt-16 text-sm sm:text-base text-zinc-500 font-mono">
+            <div className="mt-10 sm:mt-16 text-sm sm:text-base text-white font-mono">
               {slide.footer}
             </div>
           )}
@@ -512,14 +512,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             </div>
           )}
           <h2
-            className="font-semibold tracking-tight leading-tight"
+            className="tts-neon-title font-semibold tracking-tight leading-tight"
             style={{ fontSize: "clamp(1.75rem, 5cqw, 3rem)" }}
           >
             {slide.title}
           </h2>
           {slide.body && (
             <p
-              className="mt-4 sm:mt-6 text-zinc-400 leading-relaxed max-w-4xl"
+              className="mt-4 sm:mt-6 text-white leading-relaxed max-w-4xl"
               style={{ fontSize: "clamp(0.95rem, 1.5cqw, 1.125rem)" }}
             >
               {slide.body}
@@ -542,7 +542,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                     </div>
                   )}
                   <h3
-                    className="font-semibold tracking-tight leading-tight mb-4 sm:mb-5"
+                    className="tts-neon-title font-semibold tracking-tight leading-tight mb-4 sm:mb-5"
                     style={{ fontSize: "clamp(1.125rem, 2.2cqw, 1.5rem)" }}
                   >
                     {col.title}
@@ -567,7 +567,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                           </div>
                           {item.detail && (
                             <div
-                              className="text-zinc-400 leading-snug mt-1"
+                              className="text-white leading-snug mt-1"
                               style={{
                                 fontSize: "clamp(0.85rem, 1.15cqw, 0.95rem)",
                               }}
@@ -602,7 +602,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
           )}
           {slide.title && (
             <h2
-              className="mb-6 sm:mb-10 font-bold tracking-tight leading-tight"
+              className="tts-neon-title mb-6 sm:mb-10 font-bold tracking-tight leading-tight"
               style={{ fontSize: "clamp(1.75rem, 5cqw, 3.5rem)" }}
             >
               {slide.title}
@@ -645,14 +645,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             {slide.number}
           </div>
           <h2
-            className="mt-3 sm:mt-6 font-bold tracking-tight leading-tight"
+            className="tts-neon-title mt-3 sm:mt-6 font-bold tracking-tight leading-tight"
             style={{ fontSize: "clamp(2rem, 7cqw, 5rem)" }}
           >
             {slide.title}
           </h2>
           {slide.blurb && (
             <p
-              className="mt-5 sm:mt-8 text-zinc-400 leading-relaxed max-w-3xl"
+              className="mt-5 sm:mt-8 text-white leading-relaxed max-w-3xl"
               style={{ fontSize: "clamp(1rem, 2cqw, 1.5rem)" }}
             >
               {slide.blurb}
@@ -676,14 +676,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             </div>
           )}
           <h2
-            className="font-semibold tracking-tight leading-tight"
+            className="tts-neon-title font-semibold tracking-tight leading-tight"
             style={{ fontSize: "clamp(2rem, 6cqw, 3.75rem)" }}
           >
             {slide.title}
           </h2>
           {slide.body && (
             <p
-              className="mt-4 sm:mt-5 text-zinc-400 leading-relaxed max-w-3xl"
+              className="mt-4 sm:mt-5 text-white leading-relaxed max-w-3xl"
               style={{ fontSize: "clamp(1rem, 1.8cqw, 1.375rem)" }}
             >
               {slide.body}
@@ -710,7 +710,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                   </div>
                   {item.detail && (
                     <div
-                      className="mt-1.5 text-zinc-400 leading-relaxed"
+                      className="mt-1.5 text-white leading-relaxed"
                       style={{ fontSize: "clamp(0.95rem, 1.5cqw, 1.125rem)" }}
                     >
                       {item.detail}
@@ -739,37 +739,40 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
               </div>
             )}
             <h2
-              className="font-semibold tracking-tight leading-tight"
+              className="tts-neon-title font-semibold tracking-tight leading-tight"
               style={{ fontSize: "clamp(1.75rem, 5cqw, 3.25rem)" }}
             >
               {slide.title}
             </h2>
           </div>
-          <div className="mt-6 sm:mt-10 flex-1 min-h-0 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <div className="mt-6 sm:mt-10 flex flex-col gap-3 sm:gap-4">
             {slide.cards.map((card, i) => (
               <div
                 key={i}
-                className="relative bg-white/[0.04] border border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col"
+                className="relative bg-white/[0.04] border border-white/10 rounded-2xl px-5 sm:px-7 py-4 sm:py-5 flex items-center gap-5 sm:gap-8"
               >
                 <div
-                  className="absolute top-5 right-5 text-xs font-mono"
+                  className="shrink-0 font-mono text-xs sm:text-sm w-8 sm:w-10"
                   style={{ color: card.accent }}
                 >
                   {card.label}
                 </div>
                 <div
-                  className="w-10 h-1 rounded-full mb-5"
+                  className="shrink-0 w-1 self-stretch rounded-full"
                   style={{ background: card.accent }}
                 />
                 <div
-                  className="font-semibold tracking-tight mb-3"
-                  style={{ fontSize: "clamp(1.375rem, 2.6cqw, 1.875rem)" }}
+                  className="shrink-0 font-semibold tracking-tight"
+                  style={{
+                    fontSize: "clamp(1.25rem, 2.4cqw, 1.75rem)",
+                    minWidth: "clamp(8rem, 18cqw, 14rem)",
+                  }}
                 >
                   {card.heading}
                 </div>
                 <p
-                  className="text-zinc-400 leading-relaxed"
-                  style={{ fontSize: "clamp(0.95rem, 1.5cqw, 1.125rem)" }}
+                  className="text-white leading-snug flex-1 min-w-0"
+                  style={{ fontSize: "clamp(0.95rem, 1.45cqw, 1.125rem)" }}
                 >
                   {card.body}
                 </p>
@@ -793,13 +796,13 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             &ldquo;
           </div>
           <blockquote
-            className="font-medium tracking-tight leading-[1.12] text-white"
+            className="tts-neon-title font-medium tracking-tight leading-[1.12] text-white"
             style={{ fontSize: "clamp(1.75rem, 6cqw, 4rem)" }}
           >
             {slide.quote}
           </blockquote>
           {slide.attribution && (
-            <div className="mt-8 sm:mt-10 text-xs sm:text-sm text-zinc-500 uppercase tracking-[0.25em]">
+            <div className="mt-8 sm:mt-10 text-xs sm:text-sm text-white uppercase tracking-[0.25em]">
               {slide.attribution}
             </div>
           )}
@@ -836,14 +839,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
             {slide.value}
           </div>
           <div
-            className="mt-3 sm:mt-5 font-semibold tracking-tight"
+            className="tts-neon-title mt-3 sm:mt-5 font-semibold tracking-tight"
             style={{ fontSize: "clamp(1.5rem, 3.2cqw, 2.5rem)" }}
           >
             {slide.label}
           </div>
           {slide.context && (
             <p
-              className="mt-5 text-zinc-400 leading-relaxed max-w-3xl mx-auto sm:mx-0"
+              className="mt-5 text-white leading-relaxed max-w-3xl mx-auto sm:mx-0"
               style={{ fontSize: "clamp(1rem, 1.4cqw, 1.25rem)" }}
             >
               {slide.context}
@@ -879,14 +882,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
               </div>
             )}
             <h2
-              className="font-semibold tracking-tight leading-tight"
+              className="tts-neon-title font-semibold tracking-tight leading-tight"
               style={{ fontSize: "clamp(1.75rem, 5cqw, 3.25rem)" }}
             >
               {slide.title}
             </h2>
             {slide.body && (
               <p
-                className="mt-4 text-zinc-400 leading-relaxed max-w-3xl"
+                className="mt-4 text-white leading-relaxed max-w-3xl"
                 style={{ fontSize: "clamp(1rem, 1.8cqw, 1.25rem)" }}
               >
                 {slide.body}
@@ -933,14 +936,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                 </div>
               )}
               <h2
-                className="font-semibold tracking-tight leading-tight"
+                className="tts-neon-title font-semibold tracking-tight leading-tight"
                 style={{ fontSize: "clamp(1.5rem, 4cqw, 2.5rem)" }}
               >
                 {slide.title}
               </h2>
               {slide.body && (
                 <p
-                  className="mt-2 text-zinc-400 leading-relaxed max-w-3xl"
+                  className="mt-2 text-white leading-relaxed max-w-3xl"
                   style={{ fontSize: "clamp(0.9rem, 1.4cqw, 1.0625rem)" }}
                 >
                   {slide.body}
@@ -973,14 +976,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                 </div>
               )}
               <h2
-                className="font-semibold tracking-tight leading-[1.05]"
+                className="tts-neon-title font-semibold tracking-tight leading-[1.05]"
                 style={{ fontSize: "clamp(1.75rem, 4.5cqw, 3rem)" }}
               >
                 {slide.title}
               </h2>
               {slide.body && (
                 <p
-                  className="mt-4 text-zinc-400 leading-relaxed"
+                  className="mt-4 text-white leading-relaxed"
                   style={{ fontSize: "clamp(0.95rem, 1.5cqw, 1.125rem)" }}
                 >
                   {slide.body}
@@ -1015,14 +1018,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
               </div>
             )}
             <h2
-              className="font-semibold tracking-tight leading-tight"
+              className="tts-neon-title font-semibold tracking-tight leading-tight"
               style={{ fontSize: "clamp(1.75rem, 5cqw, 3.25rem)" }}
             >
               {slide.title}
             </h2>
             {slide.body && (
               <p
-                className="mt-4 text-zinc-400 leading-relaxed max-w-3xl"
+                className="mt-4 text-white leading-relaxed max-w-3xl"
                 style={{ fontSize: "clamp(1rem, 1.8cqw, 1.25rem)" }}
               >
                 {slide.body}
@@ -1119,7 +1122,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                   </div>
                   {circle.body && (
                     <p
-                      className="mt-2 text-zinc-400 leading-relaxed"
+                      className="mt-2 text-white leading-relaxed"
                       style={{ fontSize: "clamp(0.875rem, 1.3cqw, 1rem)" }}
                     >
                       {circle.body}
@@ -1147,14 +1150,14 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
           </div>
         )}
         <h2
-          className="font-bold tracking-tight leading-tight"
+          className="tts-neon-title font-bold tracking-tight leading-tight"
           style={{ fontSize: "clamp(2.25rem, 8cqw, 5.5rem)" }}
         >
           {slide.title}
         </h2>
         {slide.body && (
           <p
-            className="mt-5 sm:mt-7 text-zinc-300 leading-relaxed"
+            className="mt-5 sm:mt-7 text-white leading-relaxed"
             style={{ fontSize: "clamp(1.125rem, 2.2cqw, 1.5rem)" }}
           >
             {slide.body}
@@ -1173,7 +1176,7 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
               />
               <span className="font-medium">{a.label}</span>
               {a.detail && (
-                <span className="text-zinc-500 text-sm sm:text-base">
+                <span className="text-white text-sm sm:text-base">
                   {a.detail}
                 </span>
               )}
@@ -1203,8 +1206,8 @@ function SlideIndex({
       aria-modal="true"
     >
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-white/5">
-        <div className="text-sm text-zinc-400">
-          <span className="text-zinc-500">Jump to slide</span>
+        <div className="text-sm text-white">
+          <span className="text-white">Jump to slide</span>
           <span className="text-zinc-700 mx-2">·</span>
           <span className="text-white">{meeting.title}</span>
         </div>
@@ -1240,7 +1243,7 @@ function SlideIndex({
                 <span className="block text-white font-medium text-sm sm:text-base leading-snug truncate">
                   {slideLabel(s)}
                 </span>
-                <span className="block text-xs text-zinc-500 uppercase tracking-wider mt-0.5">
+                <span className="block text-xs text-white uppercase tracking-wider mt-0.5">
                   {s.kind}
                 </span>
               </span>
@@ -1400,7 +1403,7 @@ function PersonMeta({
           {person.bullets.map((b, i) => (
             <li
               key={i}
-              className="text-zinc-300 leading-relaxed flex gap-3"
+              className="text-white leading-relaxed flex gap-3"
               style={{ fontSize: bulletSize }}
             >
               <span

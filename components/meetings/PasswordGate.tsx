@@ -56,20 +56,20 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
       >
         <div className="flex items-center gap-2.5 mb-8">
           <div className="p-2 bg-white/5 border border-white/10 rounded-xl">
-            <Lock className="w-4 h-4 text-zinc-300" />
+            <Lock className="w-4 h-4 text-white" />
           </div>
           <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+            <div className="text-xs uppercase tracking-[0.2em] text-white">
               TTS Meetings
             </div>
-            <div className="text-sm text-zinc-300">Members only</div>
+            <div className="text-sm text-white">Members only</div>
           </div>
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
           Enter the password
         </h1>
-        <p className="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8">
+        <p className="text-white text-sm sm:text-base leading-relaxed mb-8">
           Slides from every meeting live here. Ask a cabinet member if you need
           the password.
         </p>

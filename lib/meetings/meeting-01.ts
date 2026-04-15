@@ -2,7 +2,7 @@ import type { Meeting } from "./types";
 import { COLOR } from "./types";
 
 // Meeting 01 — Tuesday, April 14, 2026
-// Introductory meeting. Club overview, four verticals, advisors, Clay, collaboration.
+// Introductory meeting. Club overview, six verticals, advisors, Clay, collaboration.
 
 export const meeting01: Meeting = {
   slug: "meeting-01",
@@ -12,8 +12,7 @@ export const meeting01: Meeting = {
   dateLabel: "Tuesday, April 14",
   timeLabel: "7:00 PM PT",
   location: "USC Campus, location on Instagram",
-  summary:
-    "Introductory meeting. The mission, the six verticals, the advisors, the tools, and how you plug in.",
+  summary: "The mission, six verticals, advisors, tools, and how you plug in.",
   status: "upcoming",
   accent: COLOR.red,
   slides: [
@@ -21,8 +20,7 @@ export const meeting01: Meeting = {
       kind: "title",
       eyebrow: "Introductory Meeting",
       title: "Trojan Technology Solutions",
-      subtitle:
-        "A multidisciplinary club dedicated to shipping real-world products and delivering real solutions.",
+      subtitle: "We ship real products and deliver real solutions.",
       footer: "Tuesday, April 14, 2026",
     },
 
@@ -35,37 +33,15 @@ export const meeting01: Meeting = {
 
     {
       kind: "bullets",
-      eyebrow: "Meeting Objectives",
-      title: "Today's Agenda",
+      eyebrow: "Agenda",
+      title: "Today",
       items: [
-        {
-          label: "Mission and cadence",
-          detail: "Why TTS exists and how this spring runs.",
-        },
-        {
-          label: "The six verticals",
-          detail:
-            "How TTS is structured. Deep dives on Consulting, Building, Music, Web3, and Biotech.",
-        },
-        {
-          label: "The people behind TTS",
-          detail:
-            "Leadership, the six-advisor board, and the alumni network you're joining.",
-        },
-        {
-          label: "Clay and the Consulting Team",
-          detail:
-            "The AI platform top companies pay six figures for, in our hands.",
-        },
-        {
-          label: "Building, Music, Web3, and Biotech",
-          detail:
-            "The ten-week Builder cohort, 3D Nuos, on-chain delivery, and biotech prototypes.",
-        },
-        {
-          label: "How it compounds and Q&A",
-          detail: "Cross-vertical collaboration, then how you plug in.",
-        },
+        { label: "Mission and cadence", detail: "Why TTS. How spring runs." },
+        { label: "Six verticals", detail: "How TTS is structured." },
+        { label: "People", detail: "Leadership, advisors, alumni." },
+        { label: "Clay + Consulting", detail: "The tool. The team." },
+        { label: "Building, Music, Web3, Biotech", detail: "What each ships." },
+        { label: "How it compounds", detail: "Cross-vertical work. Then Q&A." },
       ],
     },
 
@@ -74,51 +50,43 @@ export const meeting01: Meeting = {
       eyebrow: "Our cadence",
       value: "4",
       label: "focused meetings this spring",
-      context:
-        "We started late, so spring is four focused meetings instead of a dozen. No filler, no busywork. Every meeting earns its place on your calendar.",
+      context: "No filler. Every meeting earns its place.",
     },
 
     {
       kind: "section",
       number: "01",
       title: "A team-based collective",
-      blurb:
-        "TTS is composed of six specialized verticals. Each team focuses on high-level execution within a specific domain.",
+      blurb: "Six verticals. Each one focused on high-level execution.",
     },
     {
       kind: "bullets",
-      eyebrow: "Organizational structure",
+      eyebrow: "Structure",
       title: "Six verticals, one club",
       items: [
         {
           label: "Consulting",
-          detail:
-            "AI-first strategic work for nonprofits and charity organizations.",
+          detail: "AI-first work for nonprofits.",
         },
         {
           label: "Building",
-          detail:
-            "Design, build, and ship real-world applications and digital products.",
+          detail: "Design, build, and ship real products.",
         },
         {
           label: "Engineering",
-          detail:
-            "Complex hardware and software projects delivered at production-grade standards.",
+          detail: "Production-grade hardware and software.",
         },
         {
           label: "Biotech",
-          detail:
-            "Research and real-world project work across biotech and biomedical engineering.",
+          detail: "Research and prototypes across biomed.",
         },
         {
           label: "Music",
-          detail:
-            "Music-tech: inventing the hardware, software, and AI tools that reshape how music gets made.",
+          detail: "Music-tech: hardware, software, and AI tools.",
         },
         {
           label: "Web3",
-          detail:
-            "Research, build, and ship on-chain products alongside every other TTS vertical.",
+          detail: "On-chain products, shipped to real networks.",
         },
       ],
     },
@@ -127,14 +95,13 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "02",
       title: "The people running TTS",
-      blurb:
-        "Leadership transferred roughly three weeks ago. Two co-presidents and nine cabinet leads now drive every function of the club.",
+      blurb: "Two co-presidents. Nine cabinet leads. Three weeks in.",
     },
     {
       kind: "people",
       eyebrow: "Co-Presidents",
       title: "Running the club",
-      body: "Three weeks in. Building infrastructure, team, and an advisor network worth being part of.",
+      body: "Three weeks in. Building team, infrastructure, and advisor network.",
       people: [
         {
           name: "Tyler Larsen",
@@ -166,9 +133,9 @@ export const meeting01: Meeting = {
     },
     {
       kind: "cabinet",
-      eyebrow: "Meet the cabinet",
+      eyebrow: "Cabinet",
       title: "The nine who run the rest of TTS",
-      body: "Every team, every function. If you need something, one of these people owns it.",
+      body: "Every team, every function. If you need something, one of them owns it.",
       people: [
         {
           name: "Shirley Park",
@@ -248,22 +215,20 @@ export const meeting01: Meeting = {
     {
       kind: "section",
       number: "03",
-      title: "The professional advisors behind TTS",
-      blurb:
-        "Not guest speakers. Active mentors personally invested in TTS winning.",
+      title: "The advisors behind TTS",
+      blurb: "Not guest speakers. Active mentors invested in us winning.",
     },
     {
       kind: "stat",
       eyebrow: "Board of Advisors",
       value: "6",
       label: "advisors behind TTS",
-      context:
-        "McKinsey, Reddit, Google, Stanford, medicine, and a $100M-revenue founder. All personally committed to making TTS the strongest club on campus.",
+      context: "McKinsey. Reddit. Google. Stanford. Medicine. A $100M founder.",
     },
     {
       kind: "people",
       eyebrow: "Consulting & strategy",
-      title: "The advisors driving the Consulting Team",
+      title: "Driving the Consulting Team",
       people: [
         {
           name: "Matthew Kim",
@@ -282,7 +247,7 @@ export const meeting01: Meeting = {
         },
         {
           name: "Kevin Sangmuah",
-          role: "Software Engineer, Reddit · Startup Founder",
+          role: "Software Engineer, Reddit · Founder",
           photo: "/img/kevin_shot.jpeg",
           initials: "KS",
           accent: COLOR.red,
@@ -290,13 +255,13 @@ export const meeting01: Meeting = {
           affiliationLogo: "/img/logos/reddit.png",
           bullets: [
             "Software engineer at Reddit",
-            "Founder and current CFO of Retax 360",
-            "Engineering and entrepreneurship muscle, fully committed to TTS",
+            "Founder and CFO of Retax 360",
+            "Engineering and entrepreneurship muscle",
           ],
         },
         {
           name: "Sagar Tiwari",
-          role: "Stanford MBA · Former McKinsey · Clay Co-Developer",
+          role: "Stanford MBA · ex-McKinsey · Clay co-dev",
           photo: "/img/sagar_shot.jpeg",
           position: "center center",
           initials: "ST",
@@ -305,7 +270,7 @@ export const meeting01: Meeting = {
           affiliationLogo: "/img/logos/stanford.png",
           bullets: [
             "Helped launch Clay, the AI tool TTS now uses",
-            "Current Stanford MBA, one of the most competitive programs in the world",
+            "Current Stanford MBA",
             "Recognized by senior McKinsey leadership",
           ],
         },
@@ -314,7 +279,7 @@ export const meeting01: Meeting = {
     {
       kind: "people",
       eyebrow: "Engineering, medical, startup",
-      title: "The advisors backing every other team",
+      title: "Backing every other team",
       people: [
         {
           name: "Duncan Inganji",
@@ -327,8 +292,8 @@ export const meeting01: Meeting = {
           affiliationLogo: "/img/logos/google.png",
           bullets: [
             "Software engineer at Google",
-            "Active mentor to USC students through ACTS2 Fellowship",
-            "Engineering guidance and a tight line to the Building Team",
+            "Mentor to USC students via ACTS2",
+            "Tight line to the Building Team",
           ],
         },
         {
@@ -341,9 +306,9 @@ export const meeting01: Meeting = {
           affiliation: "Medicine",
           affiliationLogo: "/img/logos/kaiser.png",
           bullets: [
-            "Practicing pediatrician in Southern California",
-            "Former member of a med school admission board",
-            "Knows exactly what top pre-med students need to stand out",
+            "Practicing pediatrician in SoCal",
+            "Former med school admission board",
+            "Knows what pre-meds need to stand out",
           ],
         },
         {
@@ -357,9 +322,9 @@ export const meeting01: Meeting = {
           affiliationLogo: "/img/logos/mixbook.png",
           affiliationLogoInvert: true,
           bullets: [
-            "Founder and CEO of Mixbook, $100M+ in annual revenue",
-            "Two decades scaling a consumer tech company end-to-end",
-            "Real startup wisdom for Building and Entrepreneurship",
+            "$100M+ annual revenue founder and CEO",
+            "Two decades scaling consumer tech",
+            "Real startup wisdom for our builders",
           ],
         },
       ],
@@ -367,7 +332,7 @@ export const meeting01: Meeting = {
     {
       kind: "quote",
       quote:
-        "Every advisor in this club is personally invested in its members. They do not mentor from a distance.",
+        "Every advisor here is personally invested. They do not mentor from a distance.",
       attribution: "The TTS advisor thesis",
     },
 
@@ -376,13 +341,13 @@ export const meeting01: Meeting = {
       number: "04",
       title: "TTS Alumni",
       blurb:
-        "Where TTS members land. Engineers, consultants, bankers, and founders shipping at the companies setting the pace for the industry.",
+        "Where TTS members land. Engineers, consultants, bankers, founders.",
     },
     {
       kind: "cabinet",
       eyebrow: "Where they are now",
       title: "The TTS alumni network",
-      body: "Proof that the work done here compounds. Every name below started in this club.",
+      body: "Every name below started in this club.",
       people: [
         {
           name: "Elizabeth Abbey",
@@ -428,7 +393,7 @@ export const meeting01: Meeting = {
         },
         {
           name: "Albert Chung",
-          role: "FDE, Palantir Technologies",
+          role: "FDE, Palantir",
           photo: "/img/alumni/albertchung.jpeg",
           initials: "AC",
           accent: COLOR.gold,
@@ -442,35 +407,35 @@ export const meeting01: Meeting = {
         },
         {
           name: "Akshar Aiyer",
-          role: "Investment Banking, Citi",
+          role: "IB, Citi",
           photo: "/img/alumni/aksharaiyer.jpeg",
           initials: "AA",
           accent: COLOR.violet,
         },
         {
           name: "Abhi Shah",
-          role: "Investment Banking, Jefferies",
+          role: "IB, Jefferies",
           photo: "/img/alumni/abhishah.jpeg",
           initials: "AS",
           accent: COLOR.violet,
         },
         {
           name: "Parth Juthani",
-          role: "Investment Banking, Nomura",
+          role: "IB, Nomura",
           photo: "/img/alumni/parthjuthani.jpeg",
           initials: "PJ",
           accent: COLOR.violet,
         },
         {
           name: "James La",
-          role: "Technology Consulting, PwC",
+          role: "Tech Consulting, PwC",
           photo: "/img/alumni/jamesla.jpeg",
           initials: "JL",
           accent: COLOR.red,
         },
         {
           name: "Brandon McGowan",
-          role: "Product Manager, Epic",
+          role: "PM, Epic",
           photo: "/img/alumni/brandonmcgowan.jpeg",
           initials: "BM",
           accent: COLOR.red,
@@ -496,29 +461,25 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "05",
       title: "The Consulting Team",
-      blurb:
-        "Consulting work for real nonprofits and charity organizations. Every project serves a real organization.",
+      blurb: "Real consulting work for real nonprofits.",
     },
     {
       kind: "bullets",
       eyebrow: "Objective",
-      title: "Real social change, real consulting experience",
-      body: "We are not a case-competition club. We create measurable impact while gaining genuine consulting chops and hands-on knowledge of advanced AI tools.",
+      title: "Real impact, real chops",
+      body: "Not a case-competition club. Measurable work plus hands-on AI.",
       items: [
         {
-          label: "Nonprofits and charities only",
-          detail:
-            "Every engagement serves a real organization doing real good.",
+          label: "Nonprofits only",
+          detail: "Every engagement serves real good.",
         },
         {
-          label: "Advisor-backed execution",
-          detail:
-            "Every project runs with McKinsey-level guidance, not student guesswork.",
+          label: "Advisor-backed",
+          detail: "McKinsey-level guidance on every project.",
         },
         {
-          label: "AI-native deliverables",
-          detail:
-            "Clay and similar tools applied directly to the client's hardest problem.",
+          label: "AI-native",
+          detail: "Clay applied to the client's hardest problem.",
         },
       ],
     },
@@ -527,64 +488,62 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "06",
       title: "Clay",
-      blurb:
-        "The Consulting Team's secret weapon. A comprehensive data orchestration and AI agent platform.",
+      blurb: "An AI data orchestration platform. Our secret weapon.",
     },
     {
       kind: "three-up",
       eyebrow: "What Clay does",
-      title: "Three capabilities, one platform",
+      title: "Three capabilities",
       cards: [
         {
           label: "01",
-          heading: "Precision list building",
-          body: "Find any target persona at scale. LACI alumni. Series A founders. High-net-worth donors. TTS impact: instantly identify the nonprofit partners and donors worth reaching.",
+          heading: "List building",
+          body: "Find any target persona at scale. Alumni, founders, donors.",
           accent: COLOR.gold,
         },
         {
           label: "02",
-          heading: "Deep data enrichment",
-          body: "Surface any data point, from direct emails to AI-scored social mutuals. TTS impact: bypass generic inboxes and reach the actual decision-makers.",
+          heading: "Enrichment",
+          body: "Direct emails and AI-scored social mutuals on every target.",
           accent: COLOR.red,
         },
         {
           label: "03",
-          heading: "Smart sequencing",
-          body: "Auto-send personalized messages across Email, LinkedIn, and Instagram in one coordinated campaign.",
+          heading: "Sequencing",
+          body: "Auto-send across Email, LinkedIn, and Instagram.",
           accent: COLOR.emerald,
         },
       ],
     },
     {
       kind: "stat",
-      eyebrow: "Why it matters for us",
+      eyebrow: "Why it matters",
       value: "Six figures",
-      label: "what OpenAI, Anthropic, and Canva pay for Clay",
-      context:
-        "Companies like OpenAI, Anthropic, and Canva pay hundreds of thousands of dollars for this tool. Because of TTS's connections, we get complete access.",
+      label: "what OpenAI, Anthropic, and Canva pay",
+      context: "We get complete access through TTS connections.",
     },
 
     {
       kind: "three-up",
-      eyebrow: "Clay in the hands of TTS",
-      title: "High-level strategic value for our nonprofit partners",
+      eyebrow: "Clay in our hands",
+      title: "Value for our nonprofit partners",
       cards: [
         {
           label: "01",
-          heading: "Strategic donor acquisition",
-          body: "Scenario: St. Jude launches a campaign and needs the right donors. TTS solution: identify every high-net-worth individual in California with a donation history and deliver the campaign directly to their inbox.",
+          heading: "Donor acquisition",
+          body: "Every HNW donor in California, reached directly.",
           accent: COLOR.gold,
         },
         {
           label: "02",
-          heading: "Precision volunteer mobilization",
-          body: "Scenario: Friends of the LA River needs a specialized volunteer force. TTS solution: pinpoint every able-bodied person in LA with prior service experience and automate a direct recruitment sequence.",
+          heading: "Volunteer mobilization",
+          body: "Pinpoint the right volunteers. Automate recruiting.",
           accent: COLOR.emerald,
         },
         {
           label: "03",
-          heading: "National scale for local causes",
-          body: "Scenario: a small local nonprofit is struggling to gain momentum. TTS solution: grant them enterprise-grade reach with an instant nationwide advocacy and awareness campaign.",
+          heading: "National scale",
+          body: "Enterprise-grade reach for a local nonprofit.",
           accent: COLOR.blue,
         },
       ],
@@ -592,32 +551,32 @@ export const meeting01: Meeting = {
     {
       kind: "quote",
       quote:
-        "We have direct advice from Maddie Kelly, future president of the Impact Investing Group. Years of nonprofit consulting experience, hundreds of organizations served, and a playbook for applying TTS's tools.",
+        "Direct advice from Maddie Kelly. Hundreds of nonprofits served. A playbook for our tools.",
       attribution: "Maddie Kelly · Impact Investing Group",
     },
 
     {
       kind: "venn",
-      eyebrow: "The Consulting Team recap",
+      eyebrow: "Consulting recap",
       title: "Where advisors, tools, and knowledge meet",
-      body: "Every other club on campus has one of these. TTS is the only one with all three.",
+      body: "Other clubs have one. We have all three.",
       circles: [
         {
           label: "Advisors",
-          heading: "McKinsey-level advisement",
-          body: "Guidance from consultants at the world's top firm. Not student guesswork.",
+          heading: "McKinsey-level",
+          body: "Top-firm guidance, not student guesswork.",
           accent: COLOR.gold,
         },
         {
           label: "Tools",
-          heading: "Full access to Clay",
-          body: "The AI platform top companies pay six figures to use. TTS gets complete access.",
+          heading: "Full Clay access",
+          body: "The tool top companies pay six figures for.",
           accent: COLOR.red,
         },
         {
           label: "Knowledge",
-          heading: "Impact Investing expertise",
-          body: "Hundreds of nonprofits served. A clear playbook for how to apply it.",
+          heading: "Impact Investing",
+          body: "A playbook from hundreds of nonprofits.",
           accent: COLOR.emerald,
         },
       ],
@@ -628,8 +587,7 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "07",
       title: "The Building Team",
-      blurb:
-        "Transform individuals into entrepreneurs who follow their passion, develop lasting relationships in the startup ecosystem, and ship ventures that create real impact.",
+      blurb: "Build passions. Ship ventures. Real impact.",
     },
     {
       kind: "quote",
@@ -638,107 +596,85 @@ export const meeting01: Meeting = {
     },
     {
       kind: "three-up",
-      eyebrow: "Three core pillars",
-      title: "How the Building Team operates",
+      eyebrow: "Three pillars",
+      title: "How Building operates",
       cards: [
         {
           label: "01",
           heading: "Build",
-          body: "A cohort-style startup accelerator that opens with vibe coding. Learn to ship working apps with Claude, Cursor, and the AI tools real founders use today, regardless of your major.",
+          body: "Cohort accelerator. Ship working apps with Claude and Cursor.",
           accent: COLOR.red,
         },
         {
           label: "02",
           heading: "Grow",
-          body: "A tight community of passionate founders. Social events, cross-team projects, and real relationships across every discipline.",
+          body: "Tight community. Social events. Cross-team projects.",
           accent: COLOR.gold,
         },
         {
           label: "03",
           heading: "Ship",
-          body: "Every cohort member ships a working startup. Pitches land in front of peers, mentors, and the TTS advisor network, not a slide deck in a drawer.",
+          body: "Every member ships a real startup. Pitches land with advisors.",
           accent: COLOR.emerald,
         },
       ],
     },
     {
       kind: "split-bullets",
-      eyebrow: "Spring cohort · Optional summer pathway",
-      title: "From vibe coding to a shipped startup",
-      body: "Weeks 1 through 4 run during our four spring meetings. Every Building member starts here. Weeks 5 through 10 are an optional summer pathway for members who want to keep shipping. No one is forced into summer. The door is open if you want it.",
+      eyebrow: "Spring · Optional summer",
+      title: "Vibe coding to shipped startup",
+      body: "Weeks 1-4 this spring. Weeks 5-10 optional summer.",
       columns: [
         {
-          eyebrow: "Required · Spring meetings",
-          title: "Weeks 1 to 4",
+          eyebrow: "Required · Spring",
+          title: "Weeks 1-4",
           accent: COLOR.red,
           items: [
             {
-              label: "Vibe coding foundations",
-              detail:
-                "Claude, Cursor, and the modern AI stack. Ship your first working app in one session, no CS required.",
+              label: "Vibe coding I",
+              detail: "Claude, Cursor. Ship your first app.",
             },
             {
               label: "Vibe coding II",
-              detail:
-                "Prototype to production: auth, data, deploy. Ship something real users can actually touch.",
+              detail: "Auth, data, deploy. Real users can touch it.",
             },
             {
-              label: "Customer and problem discovery",
-              detail:
-                "Identify and validate the real customer problem worth solving.",
+              label: "Problem discovery",
+              detail: "Validate the customer problem.",
             },
             {
-              label: "Ideation and team formation",
-              detail:
-                "Turn validated problems into concrete solutions and lock in founding teams.",
+              label: "Ideation + teams",
+              detail: "Lock in solutions and founding teams.",
             },
           ],
         },
         {
-          eyebrow: "Optional · Summer pathway",
-          title: "Weeks 5 to 10",
+          eyebrow: "Optional · Summer",
+          title: "Weeks 5-10",
           accent: COLOR.gold,
           items: [
+            { label: "MVPs", detail: "Ship your team's MVP in one session." },
+            { label: "Iteration", detail: "Refine with real user feedback." },
+            { label: "Demo Night", detail: "Guest speaker + progress demo." },
             {
-              label: "MVPs",
-              detail:
-                "Apply your vibe coding stack to ship your team's MVP in a single session.",
+              label: "GTM + pitch",
+              detail: "Growth strategy and pitch craft.",
             },
-            {
-              label: "Product iteration",
-              detail: "Refine the MVP with real user feedback.",
-            },
-            {
-              label: "Guest speaker and Demo Night",
-              detail: "Industry insights plus an internal progress demo.",
-            },
-            {
-              label: "GTM, growth, and pitch design",
-              detail: "Go-to-market strategy and pitch craft.",
-            },
-            {
-              label: "Pitch Night",
-              detail:
-                "Present the pitch to peers and mentors for hard feedback.",
-            },
-            {
-              label: "Final founder pitches",
-              detail:
-                "Present your startup to mentors, advisors, and the TTS network.",
-            },
+            { label: "Pitch Night", detail: "Peer and mentor feedback." },
+            { label: "Founder pitches", detail: "Pitch to the TTS network." },
           ],
         },
       ],
     },
     {
       kind: "cta",
-      eyebrow: "The Building Team ask",
+      eyebrow: "The Building ask",
       title: "Build the future, today.",
-      body: "Four spring weeks. An optional summer pathway. Real founders. Real product.",
+      body: "Four spring weeks. Optional summer. Real founders.",
       actions: [
         { label: "Join USC's premier builder track" },
         { label: "Ship something users touch by Week 5" },
-        { label: "Pitch your startup to mentors and advisors by Week 10" },
+        { label: "Pitch to mentors and advisors by Week 10" },
       ],
     },
 
@@ -746,103 +682,60 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "08",
       title: "The Music Team",
-      blurb:
-        "Music-tech. Not a production club. The Music Team invents the hardware, software, and AI tools that reshape how music gets made.",
+      blurb: "Music-tech. We build the tools that reshape how music gets made.",
     },
     {
       kind: "quote",
       quote:
-        "We do not just make music. We build the tools that make new music possible.",
+        "We don't just make music. We build the tools that make new music possible.",
       attribution: "The Music Team thesis",
     },
     {
       kind: "three-up",
-      eyebrow: "Three core pillars",
-      title: "How the Music Team operates",
+      eyebrow: "Three pillars",
+      title: "How Music operates",
       cards: [
         {
           label: "01",
           heading: "Research",
-          body: "Find where music creation is bottlenecked and where new primitives unlock real creators. Weekly deep dives into spatial audio, AI engineering, capture hardware, and creator workflows.",
+          body: "Spatial audio, AI engineering, capture hardware, creator workflows.",
           accent: COLOR.red,
         },
         {
           label: "02",
           heading: "Build",
-          body: "Ship music-tech products: capture hardware, creator software, and AI tooling. The team ships prototypes users can touch, not slide decks.",
+          body: "Capture hardware, creator software, AI tooling. Real prototypes.",
           accent: COLOR.gold,
         },
         {
           label: "03",
           heading: "Ship",
-          body: "Put real products in creator hands. Partner with Building and Engineering on the hardware and software layers, and use Clay to find the right artists to test with.",
+          body: "Real products in creator hands. Clay finds the test artists.",
           accent: COLOR.emerald,
         },
       ],
     },
     {
       kind: "bullets",
-      eyebrow: "What you ship as a Music-Tech member",
-      title: "From research to real prototypes",
-      body: "Led by Malakai Carey, President of the Music Team. Members pick an active project and contribute to it end-to-end across research, design, and build.",
+      eyebrow: "What you ship",
+      title: "Research to real prototypes",
+      body: "Led by Malakai Carey. Pick a project. Contribute end-to-end.",
       items: [
         {
           label: "Research onboarding",
-          detail:
-            "DAW fluency, a crash course on spatial audio, and a working map of today's music-tech landscape.",
+          detail: "DAW fluency. Spatial audio crash course.",
         },
         {
           label: "Pick a project",
-          detail:
-            "Join an active Music Team project, starting with our flagship concept: 3D Nuos.",
+          detail: "Join an active Music Team project.",
         },
         {
           label: "Prototype and test",
-          detail:
-            "Build something users can touch: a capture rig, a software mockup, an AI coaching loop, or a creator workflow tool.",
+          detail: "Capture rig, software mockup, or AI coach.",
         },
         {
-          label: "Cross-vertical delivery",
-          detail:
-            "Partner with Building on software, Engineering on hardware, and Consulting on creator outreach.",
-        },
-      ],
-    },
-
-    {
-      kind: "section",
-      number: "08.1",
-      title: "Example project · 3D Nuos",
-      blurb:
-        "3 Dimensional Neural Unified Omni Sound. A native 3D sound creation platform. A compact modular recording pod plus an AI creator OS so any artist can capture at studio quality without studio friction.",
-    },
-    {
-      kind: "quote",
-      quote: "Capture sound as space, not just as a flat track.",
-      attribution: "3D Nuos · founding principle",
-    },
-    {
-      kind: "three-up",
-      eyebrow: "The 3D Nuos stack",
-      title: "Three layers, one system",
-      cards: [
-        {
-          label: "01",
-          heading: "Hardware · The Nuos Pod",
-          body: "An egg-shaped enclosure with hexagonal acoustic paneling, a central primary mic, and a distributed mic array. Captures the performer and the full sonic field around them.",
-          accent: COLOR.red,
-        },
-        {
-          label: "02",
-          heading: "Software · Nuos OS",
-          body: "Voice-first session control. Tell the system what you want, and it configures tracks, routing, and effects. Creator profiles remember your setup and style over time.",
-          accent: COLOR.gold,
-        },
-        {
-          label: "03",
-          heading: "AI · Coach and Engineer",
-          body: "An AI layer that handles setup, cleans takes, and coaches the performer. Does not replace the artist. Removes the technical friction around the artist.",
-          accent: COLOR.emerald,
+          label: "Cross-vertical",
+          detail: "Partner with Building, Engineering, Consulting.",
         },
       ],
     },
@@ -851,8 +744,7 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "09",
       title: "The Web3 Team",
-      blurb:
-        "Real web3 work, not speculation. Research, build, and ship on-chain products alongside every other TTS vertical.",
+      blurb: "Real on-chain work. Not speculation.",
     },
     {
       kind: "quote",
@@ -861,54 +753,50 @@ export const meeting01: Meeting = {
     },
     {
       kind: "three-up",
-      eyebrow: "Three core pillars",
-      title: "How the Web3 Team operates",
+      eyebrow: "Three pillars",
+      title: "How Web3 operates",
       cards: [
         {
           label: "01",
           heading: "Research",
-          body: "Stay current on protocols, primitives, and emerging infrastructure. Weekly deep dives inform what the team actually builds.",
+          body: "Protocols, primitives, emerging infra. Weekly deep dives.",
           accent: COLOR.violet,
         },
         {
           label: "02",
           heading: "Build",
-          body: "Smart contracts, DAOs, and tokenized systems as real product infra. Solidity fluency from day one.",
+          body: "Smart contracts, DAOs, tokenized systems. Solidity day one.",
           accent: COLOR.blue,
         },
         {
           label: "03",
           heading: "Ship",
-          body: "Every Consulting engagement that touches web3 gets on-chain delivery. Deployed to mainnet or testnet, not just slides.",
+          body: "On-chain delivery for Consulting engagements.",
           accent: COLOR.gold,
         },
       ],
     },
     {
       kind: "bullets",
-      eyebrow: "What you ship as a Web3 member",
-      title: "From Solidity onboarding to mainnet",
-      body: "Led by Jet Jadeja, President of the Web3 Team. The cohort runs alongside the other verticals and feeds real on-chain deliverables into client work.",
+      eyebrow: "What you ship",
+      title: "Solidity onboarding to mainnet",
+      body: "Led by Jet Jadeja. Feeds on-chain work into client projects.",
       items: [
         {
-          label: "Solidity and wallets onboarding",
-          detail:
-            "Foundry or Hardhat, test networks, and a personal wallet that can actually ship.",
+          label: "Solidity + wallets",
+          detail: "Foundry or Hardhat. Testnets. A real wallet.",
         },
         {
-          label: "Weekly protocol deep dives",
-          detail:
-            "Study one protocol or primitive per week. Write the one-pager the team actually references.",
+          label: "Protocol deep dives",
+          detail: "One protocol per week. Write the team one-pager.",
         },
         {
-          label: "Ship an on-chain demo",
-          detail:
-            "Working smart contract deployed to a testnet by week 5. Open the Etherscan link in the pitch.",
+          label: "On-chain demo",
+          detail: "Contract deployed to testnet by week 5.",
         },
         {
-          label: "Back TTS clients with on-chain delivery",
-          detail:
-            "Pair with Consulting engagements where web3 is the right answer, not a buzzword.",
+          label: "Back TTS clients",
+          detail: "Pair with Consulting where web3 fits.",
         },
       ],
     },
@@ -917,8 +805,7 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "10",
       title: "The Biotech Team",
-      blurb:
-        "Real research and real project work across biotech and biomedical engineering. Not a pre-med reading group. A team that ships.",
+      blurb: "Real research. Real projects. Not a reading group.",
     },
     {
       kind: "quote",
@@ -927,54 +814,50 @@ export const meeting01: Meeting = {
     },
     {
       kind: "three-up",
-      eyebrow: "Three core pillars",
-      title: "How the Biotech Team operates",
+      eyebrow: "Three pillars",
+      title: "How Biotech operates",
       cards: [
         {
           label: "01",
           heading: "Research",
-          body: "Weekly literature reviews and lab-aligned deep dives across diagnostics, therapeutics, computational biology, and biomedical devices. Read primary research, critique it, and translate it into product direction.",
+          body: "Literature reviews across diagnostics, therapeutics, computational bio.",
           accent: COLOR.emerald,
         },
         {
           label: "02",
           heading: "Build",
-          body: "Prototype work across the biotech stack. Lab partnerships where they exist, computational tooling where it ships faster. Every member leaves with hands on something real.",
+          body: "Prototypes. Lab partnerships. Computational tooling.",
           accent: COLOR.red,
         },
         {
           label: "03",
           heading: "Ship",
-          body: "Publish findings, demo prototypes, and pair with Consulting to deliver clinical and public-health insight to nonprofit partners.",
+          body: "Publish. Demo. Pair with Consulting on health work.",
           accent: COLOR.gold,
         },
       ],
     },
     {
       kind: "bullets",
-      eyebrow: "What you ship as a Biotech member",
-      title: "From lit review to working prototype",
-      body: "Led by Austin Chen, President of the Biotech Team. Members pick an active project and contribute end-to-end across research, design, and build.",
+      eyebrow: "What you ship",
+      title: "Lit review to working prototype",
+      body: "Led by Austin Chen. Pick a project. Contribute end-to-end.",
       items: [
         {
           label: "Research onboarding",
-          detail:
-            "PubMed fluency, a primer on today's biotech and biomedical frontiers, and a working map of USC lab and faculty resources.",
+          detail: "PubMed fluency. USC lab resources.",
         },
         {
           label: "Pick a project",
-          detail:
-            "Join an active Biotech Team project across diagnostics, therapeutics, computational biology, or medical devices.",
+          detail: "Diagnostics, therapeutics, devices, or comp bio.",
         },
         {
           label: "Prototype and validate",
-          detail:
-            "Build something testable: a diagnostic workflow, a device mockup, a computational model, or a protocol that survives peer review.",
+          detail: "Diagnostic workflow, device mockup, or model.",
         },
         {
-          label: "Cross-vertical delivery",
-          detail:
-            "Partner with Engineering on hardware, Building on software, and Consulting on nonprofit health engagements.",
+          label: "Cross-vertical",
+          detail: "Partner with Engineering, Building, Consulting.",
         },
       ],
     },
@@ -983,8 +866,7 @@ export const meeting01: Meeting = {
       kind: "section",
       number: "11",
       title: "Collaboration",
-      blurb:
-        "The verticals are not silos. They back each other, and that is the point.",
+      blurb: "Verticals aren't silos. They back each other. That's the point.",
     },
     {
       kind: "three-up",
@@ -993,20 +875,20 @@ export const meeting01: Meeting = {
       cards: [
         {
           label: "01",
-          heading: "Multidisciplinary intelligence",
-          body: "TTS bridges CS, Biotech, Engineering, and Business. Members are not stuck in silos. They are backed by a full-stack network of top students across every discipline.",
+          heading: "Cross-discipline",
+          body: "CS, Biotech, Engineering, Business. Full-stack network.",
           accent: COLOR.gold,
         },
         {
           label: "02",
           heading: "Vertical integration",
-          body: "Each team is a force multiplier for the others. An engineer's build powers a consultant's strategic delivery, creating an exponential value loop for partners and members.",
+          body: "Each team multiplies the others. Exponential loop.",
           accent: COLOR.red,
         },
         {
           label: "03",
-          heading: "Collaborative excellence",
-          body: "We move beyond individual contribution to high-stakes, cross-functional execution. Merging diverse expertise delivers results a single-discipline team cannot replicate.",
+          heading: "Cross-functional",
+          body: "High-stakes execution no single team can replicate.",
           accent: COLOR.blue,
         },
       ],
@@ -1016,7 +898,7 @@ export const meeting01: Meeting = {
       kind: "cta",
       eyebrow: "Next steps",
       title: "Welcome to TTS.",
-      body: "Three more meetings this spring. Questions, ideas, or a team you want on? Grab Tyler or Caleb after the meeting.",
+      body: "Three more meetings this spring. Grab Tyler or Caleb after.",
       actions: [
         { label: "usctts.com" },
         { label: "@trojantechsolutions on Instagram" },
