@@ -145,7 +145,7 @@ const FOUNDERS = [
     id: "caleb",
     name: "Caleb Newton",
     role: "Co-President",
-    focus: "Innovation & Entrepreneurship",
+    focus: "Innovation & Building",
     headshot: "/img/caleb_shot.jpg",
     position: "center 15%",
     link: "https://calebnewton.me/",
@@ -198,7 +198,7 @@ const CABINET: {
 }[] = [
   {
     name: "Shirley Park",
-    role: "Co-lead of Entrepreneurship",
+    role: "Co-lead of Building",
     initials: "SP",
     accent: "#CC0000",
     link: "https://www.linkedin.com/in/seoyeon-shirley-park/",
@@ -207,7 +207,7 @@ const CABINET: {
   },
   {
     name: "Kaitlyn Lee",
-    role: "Co-lead of Entrepreneurship",
+    role: "Co-lead of Building",
     initials: "KL",
     accent: "#CC0000",
     link: "https://www.linkedin.com/in/kaitlynleee/",
