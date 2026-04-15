@@ -93,7 +93,7 @@ export type Slide =
       body?: string;
       // Exactly three circles. Rendered as overlapping Venn with TTS in the middle.
       circles: [VennCircle, VennCircle, VennCircle];
-      center: { label: string; sub?: string };
+      center?: { label: string; sub?: string };
     }
   | {
       kind: "split-bullets";

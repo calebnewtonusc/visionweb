@@ -1085,32 +1085,34 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
                 labelPos="bottom"
               />
               {/* Center label */}
-              <div
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none"
-                style={{ zIndex: 4 }}
-              >
+              {slide.center && (
                 <div
-                  className="font-black tracking-tight leading-none"
-                  style={{
-                    fontSize: "clamp(1rem, 2.2cqw, 1.5rem)",
-                    color: "#ffffff",
-                    textShadow: "0 2px 20px rgba(0,0,0,0.8)",
-                  }}
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none"
+                  style={{ zIndex: 4 }}
                 >
-                  {slide.center.label}
-                </div>
-                {slide.center.sub && (
                   <div
-                    className="mt-1 text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold"
+                    className="font-black tracking-tight leading-none"
                     style={{
-                      color: accent,
-                      textShadow: "0 1px 10px rgba(0,0,0,0.8)",
+                      fontSize: "clamp(1rem, 2.2cqw, 1.5rem)",
+                      color: "#ffffff",
+                      textShadow: "0 2px 20px rgba(0,0,0,0.8)",
                     }}
                   >
-                    {slide.center.sub}
+                    {slide.center.label}
                   </div>
-                )}
-              </div>
+                  {slide.center.sub && (
+                    <div
+                      className="mt-1 text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold"
+                      style={{
+                        color: accent,
+                        textShadow: "0 1px 10px rgba(0,0,0,0.8)",
+                      }}
+                    >
+                      {slide.center.sub}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="space-y-4 sm:space-y-5">
               {slide.circles.map((circle, i) => (
