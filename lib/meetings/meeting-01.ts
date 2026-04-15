@@ -28,7 +28,7 @@ export const meeting01: Meeting = {
       kind: "video",
       eyebrow: "A word from Caleb",
       title: "Before we get into it",
-      src: "/video/caleb-intro.mp4",
+      youtubeId: "5qwbKRO199o",
     },
 
     {

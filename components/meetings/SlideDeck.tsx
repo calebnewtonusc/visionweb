@@ -619,16 +619,26 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
               boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
             }}
           >
-            <video
-              src={slide.src}
-              poster={slide.poster}
-              controls
-              playsInline
-              autoPlay={slide.autoplay ?? true}
-              muted={slide.autoplay ?? true}
-              preload="metadata"
-              className="absolute inset-0 w-full h-full object-contain bg-black"
-            />
+            {slide.youtubeId ? (
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${slide.youtubeId}?rel=0&modestbranding=1&playsinline=1`}
+                title={slide.title ?? "Video"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            ) : slide.src ? (
+              <video
+                src={slide.src}
+                poster={slide.poster}
+                controls
+                playsInline
+                autoPlay={slide.autoplay ?? true}
+                muted={slide.autoplay ?? true}
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-contain bg-black"
+              />
+            ) : null}
           </div>
         </div>
       </div>

@@ -106,9 +106,13 @@ export type Slide =
       kind: "video";
       eyebrow?: string;
       title?: string;
-      // Path to the video file under /public (e.g. "/video/caleb-intro.mp4").
-      src: string;
-      // Optional poster image shown before playback starts.
+      // Path to a video file under /public (e.g. "/video/caleb-intro.mp4").
+      // Omit when using youtubeId.
+      src?: string;
+      // YouTube video ID (e.g. "5qwbKRO199o" from https://youtu.be/5qwbKRO199o).
+      // When set, renders a YouTube embed instead of an mp4.
+      youtubeId?: string;
+      // Optional poster image shown before playback starts (mp4 only).
       poster?: string;
       // Start muted so autoplay is allowed by browsers. Default true.
       autoplay?: boolean;
