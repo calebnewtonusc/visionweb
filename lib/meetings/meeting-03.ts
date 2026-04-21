@@ -36,21 +36,21 @@ export const meeting03: Meeting = {
       cards: [
         {
           label: "Building",
-          heading: "Build Team",
+          heading: "Building",
           body: "Staying here. Caleb runs the room.",
           accent: COLOR.red,
         },
         {
-          label: "Science",
-          heading: "Biotech Team",
-          body: "Breaking off to their own session.",
-          accent: COLOR.emerald,
-        },
-        {
-          label: "Strategy",
-          heading: "Consulting Team",
+          label: "Consulting",
+          heading: "Consulting",
           body: "Breaking off. Tyler runs the room.",
           accent: COLOR.gold,
+        },
+        {
+          label: "Biotech",
+          heading: "Biotech",
+          body: "Breaking off to their own session.",
+          accent: COLOR.emerald,
         },
       ],
     },
