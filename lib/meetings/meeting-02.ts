@@ -22,7 +22,7 @@ export const meeting02: Meeting = {
       kind: "title",
       eyebrow: "Meeting 02",
       title: "Build. Build. Build.",
-      subtitle: "First half Building. Second half Consulting.",
+
       footer: "Tuesday, April 28, 2026",
     },
 

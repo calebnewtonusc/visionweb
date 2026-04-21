@@ -25,7 +25,7 @@ export const meeting03: Meeting = {
       kind: "title",
       eyebrow: "Meeting 03",
       title: "Team Build Day",
-      subtitle: "Tonight we build. Teams split off after this.",
+
       footer: "Monday, May 5, 2026",
     },
 
