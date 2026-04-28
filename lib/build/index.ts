@@ -239,7 +239,7 @@ export const buildMeeting02: BuildSession = {
     {
       kind: "title",
       eyebrow: "Build Meeting 02",
-      title: "Vibe Coding 101",
+      title: "Vibe Code Your First Web Page",
       subtitle: "How ideas become live websites. No syntax required.",
       footer: "TTS Build Team",
     },
@@ -257,8 +257,36 @@ export const buildMeeting02: BuildSession = {
           detail: "Tech stacks, the ecosystem, GitHub basics, which tools to use",
         },
         {
+          label: "Live demo",
+          detail: "Watch a webpage get built from a single prompt — start to running in the browser",
+        },
+        {
           label: "2 min form",
           detail: "What you want to build and how the BUILD team should look",
+        },
+      ],
+    },
+    {
+      kind: "bullets",
+      eyebrow: "Learning objectives",
+      title: "What you'll leave knowing",
+      body: "By the end of tonight, every one of these should feel obvious — not magic.",
+      items: [
+        {
+          label: "What vibe coding actually is",
+          detail: "Why describing what you want is now a real skill — and why syntax is no longer the bottleneck.",
+        },
+        {
+          label: "The builder ecosystem",
+          detail: "Frontend, backend, database, GitHub, Vercel — what each piece does and when you'd reach for it.",
+        },
+        {
+          label: "How to prompt like a builder",
+          detail: "Be specific, bring references, iterate one step at a time, paste errors back in.",
+        },
+        {
+          label: "Which tool to start with",
+          detail: "Lovable / Base44 → Cursor → Claude Code. You'll know which one fits where you are right now.",
         },
       ],
     },
@@ -471,6 +499,114 @@ export const buildMeeting02: BuildSession = {
       ],
     },
     {
+      kind: "section",
+      number: "02",
+      title: "Prompt like a builder",
+      blurb: "Vague prompts get vague pages. Specific prompts get pages you'd actually ship.",
+    },
+    {
+      kind: "bullets",
+      eyebrow: "The workflow",
+      title: "Four moves that make AI useful",
+      body: "Use this loop every time. It's how you go from blank screen to working page without getting stuck.",
+      items: [
+        {
+          label: "Name the outcome",
+          detail: "Say what the page should do, who it's for, and what should be visible. Outcomes beat instructions.",
+        },
+        {
+          label: "Bring references",
+          detail: "Find a site, layout, or effect you like. Paste the URL or describe it exactly. AI is much better with examples.",
+        },
+        {
+          label: "One step at a time",
+          detail: "Generate → run → notice one thing → fix one thing. Don't ask for ten changes at once.",
+        },
+        {
+          label: "Paste errors back",
+          detail: "If something breaks, paste the exact error into Claude. Most bugs get solved on the first reply.",
+        },
+      ],
+    },
+    {
+      kind: "split-bullets",
+      eyebrow: "Prompt anatomy",
+      title: "Weak prompt vs. builder prompt",
+      body: "Same idea, very different result. The right side is what gets pasted into Claude tonight.",
+      columns: [
+        {
+          eyebrow: "Weak",
+          title: '"Make me a website"',
+          accent: COLOR.zinc,
+          items: [
+            { label: "No audience", detail: "Claude has to guess who it's for." },
+            { label: "No structure", detail: "You'll get a generic template." },
+            { label: "No reference", detail: "Looks like every AI demo from 2024." },
+          ],
+        },
+        {
+          eyebrow: "Builder",
+          title: '"Personal site for a USC student"',
+          accent: COLOR.gold,
+          items: [
+            { label: "Audience named", detail: "Recruiters and founders skimming on a phone." },
+            { label: "Sections listed", detail: "Hero, about, three projects, contact — in that order." },
+            { label: "Reference attached", detail: '"Clean and modern, like linear.app or vercel.com."' },
+          ],
+        },
+      ],
+    },
+    {
+      kind: "section",
+      number: "03",
+      title: "Live demo — your first page",
+      blurb: "Watch one prompt go from idea to a real webpage running in a browser. Then we copy the same flow.",
+    },
+    {
+      kind: "cta",
+      eyebrow: "Demo flow",
+      title: "What you'll see Caleb do",
+      body: "Same loop you'll run after the meeting. The point is: the steps are short, and the AI does the typing.",
+      actions: [
+        {
+          label: "Step 1 · Prompt",
+          detail: "Paste the builder prompt into Claude. Hit enter.",
+        },
+        {
+          label: "Step 2 · Save the file",
+          detail: "Drop the generated HTML into a new file in Cursor or VS Code.",
+        },
+        {
+          label: "Step 3 · Open it",
+          detail: "Double-click the file. The browser opens. The page is real.",
+        },
+        {
+          label: "Step 4 · Iterate",
+          detail: '"Change the headline to my name." "Make the hero darker." Watch it update.',
+        },
+      ],
+    },
+    {
+      kind: "cta",
+      eyebrow: "The starter prompt",
+      title: "Copy this — try it tonight",
+      body: 'Build me a single-file personal webpage. HTML and CSS only, no frameworks. Sections: hero with my name, short about, three project cards, contact. Clean, modern, dark background, gold accent. Tell me how to open the file in my browser.',
+      actions: [
+        {
+          label: "Run it",
+          detail: "Open the generated file in your browser. Confirm it loads.",
+        },
+        {
+          label: "Make it yours",
+          detail: "Swap in your name, your projects, your colors. One change at a time.",
+        },
+        {
+          label: "Push it",
+          detail: "Create a GitHub repo. Commit. Push. Now it lives somewhere safe.",
+        },
+      ],
+    },
+    {
       kind: "bullets",
       eyebrow: "Recap",
       title: "What you just learned",
@@ -480,6 +616,7 @@ export const buildMeeting02: BuildSession = {
         { label: "GitHub", detail: "Saves every version. Commit, push, pull, branch." },
         { label: "Vercel", detail: "One click to a live URL." },
         { label: "Claude", detail: "Your AI engineer. Describe it → it builds it." },
+        { label: "Prompt loop", detail: "Outcome → reference → one step → paste the error back." },
         { label: "Start simple", detail: "Lovable / Base44 → Cursor → Claude Code. Graduate up." },
       ],
     },

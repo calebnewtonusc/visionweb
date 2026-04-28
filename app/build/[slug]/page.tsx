@@ -14,7 +14,6 @@ export async function generateMetadata({
   const { slug } = await params;
   const session = getBuildSession(slug);
   if (!session) return {};
-
   return {
     title: `${session.title} | TTS Build`,
     description: session.summary,
