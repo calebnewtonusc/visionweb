@@ -866,6 +866,42 @@ export const buildMeeting02: BuildSession = {
       attribution: "Build Team",
     },
     {
+      kind: "links",
+      eyebrow: "Where I steal ideas",
+      title: "Resourcefulness is the skill",
+      body: "Every cool site you've ever seen was inspired by ten others. Here's where I look when I build. Click through, read the source, then prompt Claude with what you found.",
+      links: [
+        {
+          source: "My personal site",
+          label: "calebnewton.me — iPad simulator portfolio",
+          url: "https://github.com/calebnewtonusc/D1-Vibe-Coding",
+          description:
+            "The full repo behind my portfolio. Read the components, see how the spring physics work, copy what you like.",
+        },
+        {
+          source: "This site",
+          label: "USCTTS — what you're looking at right now",
+          url: "https://github.com/calebnewtonusc/USCTTS",
+          description:
+            "The slide deck system, the password gate, the scroll effects. Open the repo and see exactly how it's built.",
+        },
+        {
+          source: "Scroll effects",
+          label: "Prismic — every CSS scroll effect in one place",
+          url: "https://prismic.io/blog/css-scroll-effects",
+          description:
+            "Reveal animations, sticky stacking, parallax, velocity skew. Pick one, paste it into Claude, ask it to wire it into your page.",
+        },
+        {
+          source: "Awesome lists",
+          label: "sindresorhus/awesome — the meta-index of everything",
+          url: "https://github.com/sindresorhus/awesome",
+          description:
+            "Curated lists for every stack, framework, and topic. When you don't know what's possible, start here.",
+        },
+      ],
+    },
+    {
       kind: "section",
       number: "02",
       title: "Your personal portfolio",

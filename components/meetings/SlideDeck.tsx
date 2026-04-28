@@ -288,7 +288,8 @@ export function SlideDeck({
             className="font-semibold tracking-wider uppercase"
             style={{ color: meeting.accent }}
           >
-            {codePrefix}{String(meeting.number).padStart(2, "0")}
+            {codePrefix}
+            {String(meeting.number).padStart(2, "0")}
           </span>
           <span className="text-zinc-700">/</span>
           <span>
@@ -1132,6 +1133,85 @@ function SlideBody({ slide, accent }: { slide: Slide; accent: string }) {
     );
   }
 
+  if (slide.kind === "links") {
+    return (
+      <div className={wrap}>
+        <div className={`${innerCentered} max-w-5xl`}>
+          {slide.eyebrow && (
+            <div
+              className="text-xs uppercase tracking-[0.3em] font-semibold mb-5 sm:mb-7"
+              style={{ color: accent }}
+            >
+              {slide.eyebrow}
+            </div>
+          )}
+          <h2
+            className="tts-neon-title font-bold tracking-tight leading-tight"
+            style={{ fontSize: "clamp(2rem, 6.5cqw, 4.5rem)" }}
+          >
+            {slide.title}
+          </h2>
+          {slide.body && (
+            <p
+              className="mt-5 sm:mt-7 text-white leading-relaxed"
+              style={{ fontSize: "clamp(1rem, 2cqw, 1.375rem)" }}
+            >
+              {slide.body}
+            </p>
+          )}
+          <div className="mt-8 sm:mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {slide.links.map((link, i) => (
+              <a
+                key={i}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block rounded-2xl border border-white/10 bg-white/[0.04] p-5 sm:p-6 transition-all duration-200 hover:bg-white/[0.08] hover:border-white/25"
+                style={{
+                  boxShadow: `0 0 0 0 ${accent}`,
+                }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    {link.source && (
+                      <div
+                        className="text-[0.65rem] uppercase tracking-[0.3em] font-semibold mb-2"
+                        style={{ color: accent }}
+                      >
+                        {link.source}
+                      </div>
+                    )}
+                    <div
+                      className="font-semibold text-white leading-tight"
+                      style={{ fontSize: "clamp(1rem, 1.8cqw, 1.375rem)" }}
+                    >
+                      {link.label}
+                    </div>
+                    {link.description && (
+                      <p className="mt-2 text-sm sm:text-base text-zinc-300 leading-relaxed">
+                        {link.description}
+                      </p>
+                    )}
+                    <div
+                      className="mt-3 text-xs text-zinc-500 truncate font-mono"
+                      title={link.url}
+                    >
+                      {link.url.replace(/^https?:\/\//, "")}
+                    </div>
+                  </div>
+                  <ArrowRight
+                    className="w-5 h-5 shrink-0 mt-1 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
+                    style={{ color: accent, transform: "rotate(-45deg)" }}
+                  />
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // cta
   return (
     <div className={wrap}>
@@ -1268,6 +1348,8 @@ function slideLabel(s: Slide): string {
     case "stat":
       return `${s.value} · ${s.label}`;
     case "cta":
+      return s.title;
+    case "links":
       return s.title;
     case "video":
       return s.title ?? "Video";

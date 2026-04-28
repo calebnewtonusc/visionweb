@@ -103,6 +103,18 @@ export type Slide =
       columns: [SplitColumn, SplitColumn];
     }
   | {
+      kind: "links";
+      eyebrow?: string;
+      title: string;
+      body?: string;
+      links: {
+        label: string;
+        url: string;
+        description?: string;
+        source?: string;
+      }[];
+    }
+  | {
       kind: "video";
       eyebrow?: string;
       title?: string;
