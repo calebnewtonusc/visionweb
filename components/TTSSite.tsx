@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Code2, Smartphone, BarChart2, Mail, Instagram } from "lucide-react";
+import { ArrowRight, Code2, Smartphone, BarChart2, Mail, AtSign } from "lucide-react";
 import Navbar from "./Navbar";
 
 const GRADIENT = "linear-gradient(135deg, #7C3AED 0%, #D946EF 100%)";
@@ -169,7 +169,7 @@ export default function TTSSite() {
               href="https://instagram.com/trojantechsolutions"
               className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors"
             >
-              <Instagram size={14} /> @trojantechsolutions
+              <AtSign size={14} /> @trojantechsolutions
             </a>
           </div>
         </div>

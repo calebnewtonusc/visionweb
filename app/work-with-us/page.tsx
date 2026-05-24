@@ -9,7 +9,7 @@ import {
   MessageSquare,
   CheckCircle,
   Mail,
-  Instagram,
+  AtSign,
   ArrowRight,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -261,7 +261,7 @@ export default function WorkWithUs() {
               href="https://instagram.com/trojantechsolutions"
               className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors"
             >
-              <Instagram size={14} /> @trojantechsolutions
+              <AtSign size={14} /> @trojantechsolutions
             </a>
           </div>
         </div>
