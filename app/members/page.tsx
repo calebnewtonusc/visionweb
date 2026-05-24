@@ -140,7 +140,7 @@ export default function MembersPage() {
           className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)",
+            background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -161,14 +161,14 @@ export default function MembersPage() {
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Co-Presidents</h2>
             <p className="text-base text-gray-900">Guiding our mission and vision forward.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 border-2 border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 border-2 border-gray-300 bg-gray-300">
             {FOUNDERS.map(({ name, role, focus, headshot, link }) => (
               <a
                 key={name}
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 bg-white p-6 hover:bg-gray-50 transition-colors duration-150 no-underline"
+                className="flex items-center gap-4 bg-white p-6 hover:bg-gray-100 transition-colors duration-150 no-underline"
               >
                 <div className="relative w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-100">
                   <Image src={headshot} alt={name} fill className="object-cover" />
@@ -186,17 +186,17 @@ export default function MembersPage() {
       </section>
 
       {/* Cabinet */}
-      <section className="px-6 py-16 bg-gray-50">
+      <section className="px-6 py-16 bg-gray-100">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ THE_TEAM ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Cabinet</h2>
             <p className="text-base text-gray-900">Leading teams and driving impact across our organization.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-0.5 border-2 border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-0.5 border-2 border-gray-300 bg-gray-300">
             {CABINET.map(({ name, role, link, photo }) => {
               const Card = (
-                <div className="bg-white p-5 text-center hover:bg-gray-50 transition-colors duration-150">
+                <div className="bg-white p-5 text-center hover:bg-gray-100 transition-colors duration-150">
                   <div className="relative w-16 h-16 overflow-hidden mx-auto mb-3 bg-gray-100">
                     <Image src={photo} alt={name} fill className="object-cover object-top" />
                   </div>
@@ -224,10 +224,10 @@ export default function MembersPage() {
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Alumni Network</h2>
             <p className="text-base text-gray-900">Our graduates continue to make impact across industries.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5 border-2 border-gray-200 bg-gray-200">
-            {ALUMNI.map(({ name, detail, photo, logo }) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5 border-2 border-gray-300 bg-gray-300">
+            {ALUMNI.map(({ name, detail, photo }) => (
               <div key={name} className="bg-white p-5">
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3">
                   <div className="relative w-10 h-10 overflow-hidden flex-shrink-0 bg-gray-100">
                     <Image src={photo} alt={name} fill className="object-cover" />
                   </div>
@@ -236,11 +236,13 @@ export default function MembersPage() {
                     <p className="text-xs text-gray-900 mt-0.5">{detail}</p>
                   </div>
                 </div>
-                {logo && (
-                  <div className="relative h-5 w-20">
-                    <Image src={logo} alt="" fill className="object-contain object-left" />
-                  </div>
-                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-center gap-8 mt-8 flex-wrap">
+            {ALUMNI.filter((a) => a.logo).map(({ name, logo }) => (
+              <div key={name} className="relative h-6 w-24">
+                <Image src={logo!} alt="" fill className="object-contain" />
               </div>
             ))}
           </div>

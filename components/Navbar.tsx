@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { TTSAsterisk } from "./TTSAsterisk";
 
 const LINKS = [
   { label: "Home", href: "/" },
@@ -17,7 +17,7 @@ export default function Navbar() {
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-14">
         <Link href="/" className="flex items-center gap-2.5 no-underline">
-          <TTSAsterisk size={32} gradId="navAstGrad" />
+          <Image src="/img/tts-logo.png" alt="TTS" width={32} height={32} />
           <span className="text-sm font-semibold text-gray-900">Trojan Technology Solutions</span>
         </Link>
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-0">

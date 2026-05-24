@@ -69,114 +69,9 @@ const TRACKS = [
   },
 ];
 
-function GlassTTS() {
-  return (
-    <div className="w-full max-w-2xl mx-auto mb-6" style={{ overflow: "visible" }}>
-      <svg
-        viewBox="0 0 540 190"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ overflow: "visible", width: "100%", height: "auto" }}
-        role="img"
-        aria-label="TTS"
-      >
-        <defs>
-          <linearGradient id="gGlare" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="35%" stopColor="#ffffff" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.6)" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
-          </linearGradient>
-          <filter id="gDrop" x="-15%" y="-15%" width="130%" height="145%">
-            <feDropShadow dx="0" dy="6" stdDeviation="20" floodColor="#99A6F9" floodOpacity="0.55" />
-            <feDropShadow dx="0" dy="1" stdDeviation="3" floodColor="#ffffff" floodOpacity="0.5" />
-          </filter>
-          <clipPath id="gTopHalf">
-            <rect x="0" y="0" width="540" height="95" />
-          </clipPath>
-          <clipPath id="gBottomHalf">
-            <rect x="0" y="95" width="540" height="95" />
-          </clipPath>
-        </defs>
-
-        {/* Depth / shadow layer */}
-        <g transform="translate(4, 8)">
-          <text
-            x="270" y="155"
-            textAnchor="middle"
-            fontSize="180"
-            fontWeight="900"
-            fontFamily="Inter, system-ui, sans-serif"
-            letterSpacing="-12"
-            fill="rgba(153,166,249,0.25)"
-          >TTS</text>
-        </g>
-
-        {/* Glass body — transparent fill, white stroke so background shows through */}
-        <text
-          x="270" y="155"
-          textAnchor="middle"
-          fontSize="180"
-          fontWeight="900"
-          fontFamily="Inter, system-ui, sans-serif"
-          letterSpacing="-12"
-          fill="rgba(255,255,255,0.14)"
-          stroke="url(#gEdge)"
-          strokeWidth="3"
-          paintOrder="stroke"
-          filter="url(#gDrop)"
-        >TTS</text>
-
-        {/* Top glare — bright white highlight on upper half */}
-        <text
-          x="270" y="155"
-          textAnchor="middle"
-          fontSize="180"
-          fontWeight="900"
-          fontFamily="Inter, system-ui, sans-serif"
-          letterSpacing="-12"
-          fill="url(#gGlare)"
-          clipPath="url(#gTopHalf)"
-          opacity="0.7"
-        >TTS</text>
-
-        {/* Bottom subtle reflection */}
-        <text
-          x="270" y="155"
-          textAnchor="middle"
-          fontSize="180"
-          fontWeight="900"
-          fontFamily="Inter, system-ui, sans-serif"
-          letterSpacing="-12"
-          fill="rgba(255,255,255,0.08)"
-          clipPath="url(#gBottomHalf)"
-        >TTS</text>
-      </svg>
-    </div>
-  );
-}
-
 export default function TTSSite() {
   return (
     <div className="font-sans bg-white text-gray-900 min-h-screen">
-      {/* Announcement banner */}
-      <div style={{ background: GRADIENT }} className="relative overflow-hidden text-white text-center py-2.5 px-6 text-sm">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
-            backgroundSize: "200px 200px",
-            opacity: 0.08,
-            mixBlendMode: "overlay",
-          }}
-        />
-        <span className="relative z-10">Open to All: No application process required. Everyone is welcome to join and contribute.</span>
-      </div>
-
       <Navbar />
 
       {/* Hero — animated blob gradient with glass TTS */}
@@ -200,23 +95,28 @@ export default function TTSSite() {
         />
 
         <div className="relative z-10">
-          <p className="text-xs font-semibold text-white/70 tracking-widest uppercase mb-6">[ USC TECH FOR GOOD ]</p>
-          <GlassTTS />
-          <p className="text-xl font-bold text-white mb-3 tracking-tight">Trojan Technology Solutions</p>
-          <p className="text-base text-white/80 max-w-lg mx-auto leading-relaxed mb-10">
+          <p className="text-xs font-semibold text-gray-600 tracking-widest uppercase mb-6">[ USC TECH FOR GOOD ]</p>
+          <h1
+            className="font-black text-gray-900 tracking-tight leading-none mb-6 mx-auto"
+            style={{ fontSize: "clamp(80px,16vw,160px)", letterSpacing: "-0.04em" }}
+          >
+            TTS
+          </h1>
+          <p className="text-xl font-bold text-gray-900 mb-3 tracking-tight">Trojan Technology Solutions</p>
+          <p className="text-base text-gray-900 max-w-lg mx-auto leading-relaxed mb-10">
             USC&apos;s student-run tech org delivering high-impact AI and software solutions for nonprofits, hospitals, and research labs. Completely pro bono.
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link
               href="/work-with-us"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold bg-white no-underline transition-all duration-200 hover:opacity-90"
-              style={{ color: CORAL }}
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white no-underline transition-all duration-200 hover:opacity-90"
+              style={{ background: GRADIENT }}
             >
               Join Our Team <ArrowRight size={15} />
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white border border-white/50 no-underline hover:bg-white/10 transition-all duration-200"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-gray-900 border border-gray-400 no-underline hover:bg-gray-100 transition-all duration-200"
             >
               Learn More
             </Link>
@@ -250,7 +150,7 @@ export default function TTSSite() {
       </section>
 
       {/* What We Do */}
-      <section className="px-6 py-20 bg-gray-50">
+      <section className="px-6 py-20 bg-gray-100">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">What We Do</h2>
@@ -258,11 +158,11 @@ export default function TTSSite() {
               Our projects span various domains, all focused on creating positive social impact through technology.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-2 border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-2 border-gray-300">
             {SERVICES.map(({ Icon, title, description, accent }, i) => (
               <div
                 key={title}
-                className={`bg-white p-8 hover:bg-gray-50 transition-all duration-200 ${i < 2 ? "border-r-2 border-gray-200" : ""}`}
+                className={`bg-white p-8 hover:bg-gray-100 transition-all duration-200 ${i < 2 ? "border-r-2 border-gray-300" : ""}`}
               >
                 <div className="w-10 h-10 flex items-center justify-center mb-5" style={{ background: accent }}>
                   <Icon size={20} color="white" />
@@ -292,9 +192,9 @@ export default function TTSSite() {
                 No experience required. No gatekeeping. Just curious people who want to use technology to make a difference.
               </p>
             </div>
-            <div className="flex flex-col gap-0 border-2 border-gray-200">
+            <div className="flex flex-col gap-0 border-2 border-gray-300">
               {TRACKS.map(({ Icon, title, sub, description, accent }) => (
-                <div key={title} className="p-5 border-b-2 border-gray-200 last:border-b-0 bg-white hover:bg-gray-50 transition-colors duration-150">
+                <div key={title} className="p-5 border-b-2 border-gray-300 last:border-b-0 bg-white hover:bg-gray-100 transition-colors duration-150">
                   <div className="flex items-start gap-4">
                     <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{ background: accent }}>
                       <Icon size={16} color="white" />

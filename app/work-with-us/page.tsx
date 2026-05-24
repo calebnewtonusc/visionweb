@@ -231,7 +231,7 @@ export default function WorkWithUs() {
           className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)",
+            background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -257,9 +257,9 @@ export default function WorkWithUs() {
               Fall Session starts in August.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 border-2 border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 border-2 border-gray-300 bg-gray-300">
             {ROLES.map(({ Icon, title, description, tags, accent }) => (
-              <div key={title} className="bg-white p-6 hover:bg-gray-50 transition-colors duration-150">
+              <div key={title} className="bg-white p-6 hover:bg-gray-100 transition-colors duration-150">
                 <div className="w-10 h-10 flex items-center justify-center mb-4" style={{ background: accent }}>
                   <Icon size={18} color="white" />
                 </div>
@@ -283,9 +283,9 @@ export default function WorkWithUs() {
       </section>
 
       {/* Why Join */}
-      <section className="px-6 py-16 bg-gray-50">
+      <section className="px-6 py-16 bg-gray-100">
         <div className="max-w-3xl mx-auto">
-          <div className="border-2 border-gray-200 bg-white p-8 md:p-10">
+          <div className="border-2 border-gray-300 bg-white p-8 md:p-10">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">Why Join?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {WHY_JOIN.map((item) => (
@@ -308,9 +308,9 @@ export default function WorkWithUs() {
               Partner with us to access high-quality tech consulting services, completely pro bono.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border-2 border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border-2 border-gray-300 bg-gray-300">
             {ORG_TYPES.map(({ title, description, accent }) => (
-              <div key={title} className="bg-white p-6 hover:bg-gray-50 transition-colors duration-150">
+              <div key={title} className="bg-white p-6 hover:bg-gray-100 transition-colors duration-150">
                 <div className="w-8 h-1.5 mb-4" style={{ background: accent }} />
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
                 <p className="text-sm text-gray-900 leading-relaxed">{description}</p>
@@ -321,7 +321,7 @@ export default function WorkWithUs() {
       </section>
 
       {/* Process — 5 Steps */}
-      <section className="px-6 py-20 bg-gray-50">
+      <section className="px-6 py-20 bg-gray-100">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ HOW_IT_WORKS ]</p>
@@ -337,9 +337,9 @@ export default function WorkWithUs() {
           </div>
 
           {/* Step detail cards */}
-          <div className="flex flex-col gap-0.5 border-2 border-gray-200 bg-gray-200">
+          <div className="flex flex-col gap-0.5 border-2 border-gray-300 bg-gray-300">
             {PROCESS_STEPS.map(({ num, Icon, title, subtitle, description, accent, lightAccent, borderColor, link, linkLabel }) => (
-              <div key={num} className="bg-white p-6 md:p-8 hover:bg-gray-50 transition-colors duration-150">
+              <div key={num} className="bg-white p-6 md:p-8 hover:bg-gray-100 transition-colors duration-150">
                 <div className="flex items-start gap-5">
                   <div
                     className="w-10 h-10 flex items-center justify-center flex-shrink-0"
@@ -432,13 +432,6 @@ export default function WorkWithUs() {
               style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
             >
               <Mail size={15} /> Email Us
-            </a>
-            <a
-              href="https://discord.gg/trojantechsolutions"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold no-underline transition-all duration-200"
-              style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
-            >
-              Join Our Discord <ArrowRight size={15} />
             </a>
           </div>
           <p className="text-xs text-white/60">Response time: Within 48 hours</p>

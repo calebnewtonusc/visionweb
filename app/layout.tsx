@@ -28,6 +28,10 @@ export const metadata: Metadata = {
     description:
       "USC's AI builder club. Open to every major. No experience required.",
   },
+  icons: {
+    icon: "/img/tts-logo.png",
+    apple: "/img/tts-logo.png",
+  },
 };
 
 export default function RootLayout({

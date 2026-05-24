@@ -1,12 +1,8 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SiteFooter from "@/components/SiteFooter";
-
-const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
-const PURPLE = "#99A6F9";
 
 const PHILOSOPHY = [
   {
@@ -23,7 +19,6 @@ const PHILOSOPHY = [
     prefix: "Everyone can",
     keyword: "enjoy",
     body: "Technology should be used to uplift communities and create positive change. We work exclusively with social impact-oriented organizations and individuals to address their most pressing needs. Our pro bono consulting ensures that financial constraints never stand in the way of meaningful innovation.",
-    cta: true,
   },
 ];
 
@@ -71,7 +66,7 @@ export default function AboutPage() {
           className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)",
+            background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -85,15 +80,18 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="px-6 py-20 border-t-2 border-gray-100">
+      <section className="px-6 py-20 border-t-2 border-gray-200">
         <div className="max-w-2xl mx-auto">
           <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ OUR_PHILOSOPHY ]</p>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-16 tracking-tight">
-            At TTS, Tech is for everyone.
+            At TTS,{" "}
+            <span style={{ background: "rgba(153,166,249,0.3)", padding: "2px 8px", display: "inline" }}>
+              Tech is for everyone.
+            </span>
           </h2>
-          <div className="flex flex-col gap-0 border-2 border-gray-200">
-            {PHILOSOPHY.map(({ prefix, keyword, body, cta }) => (
-              <div key={keyword} className="p-8 border-b-2 border-gray-200 last:border-b-0">
+          <div className="flex flex-col gap-0 border-2 border-gray-300">
+            {PHILOSOPHY.map(({ prefix, keyword, body }) => (
+              <div key={keyword} className="p-8 border-b-2 border-gray-300 last:border-b-0">
                 <h3 className="text-lg font-bold text-gray-900 mb-3">
                   {prefix}{" "}
                   <span
@@ -109,11 +107,6 @@ export default function AboutPage() {
                   </span>
                 </h3>
                 <p className="text-base text-gray-900 leading-relaxed mb-3">{body}</p>
-                {cta && (
-                  <Link href="/work-with-us" className="text-sm font-semibold no-underline" style={{ color: PURPLE }}>
-                    Partner with us →
-                  </Link>
-                )}
               </div>
             ))}
           </div>
@@ -121,7 +114,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="px-6 py-20 bg-gray-50">
+      <section className="px-6 py-20 bg-gray-100">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">What We Stand For</h2>
@@ -129,7 +122,7 @@ export default function AboutPage() {
               Our values guide every project we take on and every relationship we build.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border-2 border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border-2 border-gray-300 bg-gray-300">
             {VALUES.map(({ title, description, accent }) => (
               <div key={title} className="bg-white p-6">
                 <div className="w-8 h-1.5 mb-4" style={{ background: accent }} />
