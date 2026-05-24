@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Sans:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -127,9 +127,17 @@
   }
 }
 
+/* Instrument Serif display font */
+@font-face {
+  font-family: "InstrumentSerif";
+  src: url("/fonts/InstrumentSerif-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 .font-comico {
-  font-family: "Instrument Sans", sans-serif !important;
-  font-weight: 400 !important;
+  font-family: "InstrumentSerif", serif !important;
+  font-weight: normal !important;
 }
 
 /* Monoska display font */
