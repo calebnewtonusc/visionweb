@@ -127,9 +127,39 @@
   }
 }
 
-/* ── Size scale — 20% larger base ─────────────────────────────────────── */
+/* ── Size scale — 20% larger base (desktop), 10% smaller than desktop on mobile ── */
 html {
   font-size: 120%;
+}
+@media (max-width: 767px) {
+  html {
+    font-size: 108%;
+  }
+
+  /* Consistent section padding on mobile */
+  .py-20 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  .py-16 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  .pt-20, .pt-24 {
+    padding-top: 3rem !important;
+  }
+  .pb-16, .pb-20 {
+    padding-bottom: 2.5rem !important;
+  }
+  .mb-16 {
+    margin-bottom: 2.5rem !important;
+  }
+  .mb-12 {
+    margin-bottom: 2rem !important;
+  }
+  .gap-16 {
+    gap: 2.5rem !important;
+  }
 }
 
 
