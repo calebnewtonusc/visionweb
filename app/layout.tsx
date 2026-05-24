@@ -37,9 +37,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} h-full`}>
-      <body className={`${inter.className} min-h-full bg-zinc-950 antialiased`}>
+      <body className={`${inter.className} min-h-full bg-white antialiased`}>
         {children}
-        <Toaster theme="dark" />
+        <Toaster theme="light" />
         <Analytics />
       </body>
     </html>
