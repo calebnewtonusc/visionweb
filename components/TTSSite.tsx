@@ -95,14 +95,14 @@ export default function TTSSite() {
         />
 
         <div className="relative z-10">
-          <p className="text-xs font-semibold text-gray-600 tracking-widest uppercase mb-6">[ USC TECH FOR GOOD ]</p>
+          <p className="text-xs font-semibold text-gray-600 tracking-widest uppercase mb-6">[ TROJAN TECHNOLOGY SOLUTIONS ]</p>
           <h1
             className="font-black text-gray-900 leading-none mb-6 mx-auto"
             style={{ fontSize: "clamp(80px,16vw,160px)", letterSpacing: "0.02em" }}
           >
             TTS
           </h1>
-          <p className="text-xl font-bold text-gray-900 mb-3 tracking-tight">Trojan Technology Solutions</p>
+          <p className="text-xl font-bold text-gray-900 mb-3 tracking-tight">Technology for Everyone</p>
           <p className="text-base text-gray-900 max-w-lg mx-auto leading-relaxed mb-10">
             USC&apos;s student-run tech org delivering high-impact AI and software solutions for nonprofits, hospitals, and research labs. Completely pro bono.
           </p>
