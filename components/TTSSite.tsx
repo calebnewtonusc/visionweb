@@ -102,7 +102,7 @@ export default function TTSSite() {
           >
             TTS
           </h1>
-          <p className="text-xl text-gray-900 mb-3" style={{ fontFamily: "Monoska, monospace" }}>Technology for Everyone</p>
+          <p className="font-monoska text-xl text-gray-900 mb-3">Technology for Everyone</p>
           <p className="text-base text-gray-900 max-w-lg mx-auto leading-relaxed mb-10">
             USC&apos;s student-run tech org delivering high-impact AI and software solutions for nonprofits, hospitals, and research labs. Completely pro bono.
           </p>
@@ -181,7 +181,7 @@ export default function TTSSite() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             <div>
               <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ ABOUT_US ]</p>
-              <h2 className="text-3xl md:text-4xl text-gray-900 tracking-tight mb-5" style={{ fontFamily: "Monoska, monospace" }}>
+              <h2 className="font-monoska text-3xl md:text-4xl text-gray-900 tracking-tight mb-5">
                 Building Tech<br />
                 for All
               </h2>

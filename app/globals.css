@@ -136,6 +136,9 @@
   font-style: normal;
   font-display: swap;
 }
+.font-monoska {
+  font-family: "Monoska", monospace !important;
+}
 
 /* Alumni logo marquee */
 @keyframes logo-marquee {
