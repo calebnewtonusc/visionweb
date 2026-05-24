@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -33,25 +34,28 @@ export default function Navbar() {
           <TTSLogoMark />
           <span className="text-sm font-semibold text-gray-900">Trojan Technology Solutions</span>
         </Link>
-        <div className="hidden md:flex items-center gap-7">
-          {LINKS.map(({ label, href }) => {
-            const isActive =
-              href === "/" ? pathname === "/" : pathname.startsWith(href);
+        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-0">
+          {LINKS.map(({ label, href }, i) => {
+            const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
-              <Link
-                key={label}
-                href={href}
-                className={`text-sm transition-colors duration-150 ${
-                  isActive
-                    ? "font-semibold text-gray-900 border-b-2 border-gray-900 pb-0.5"
-                    : "font-normal text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                {label}
-              </Link>
+              <React.Fragment key={label}>
+                {i > 0 && (
+                  <span className="text-gray-300 text-xs mx-2 select-none">/</span>
+                )}
+                <Link
+                  href={href}
+                  className={`text-sm no-underline transition-colors duration-150 ${
+                    isActive
+                      ? "text-gray-900 font-semibold"
+                      : "text-gray-400 hover:text-gray-700 font-normal"
+                  }`}
+                >
+                  {label}
+                </Link>
+              </React.Fragment>
             );
           })}
-        </div>
+        </nav>
       </div>
     </nav>
   );

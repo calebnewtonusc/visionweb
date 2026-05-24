@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
-import TTSBreadcrumb from "@/components/TTSBreadcrumb";
 
 const CTA_BG = "linear-gradient(135deg, #F97316 0%, #D946EF 50%, #7C3AED 100%)";
 const PURPLE = "#7C3AED";
@@ -56,7 +55,6 @@ export default function AboutPage() {
           background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(217,70,239,0.10) 0%, transparent 50%), #ffffff",
         }}
       >
-        <TTSBreadcrumb items={[{ label: "Home", href: "/" }, { label: "About" }]} />
         <h1
           className="font-bold tracking-tight leading-none mb-4"
           style={{

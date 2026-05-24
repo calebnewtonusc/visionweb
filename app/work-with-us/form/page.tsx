@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Mail, ArrowLeft, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
 import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
-import TTSBreadcrumb from "@/components/TTSBreadcrumb";
 
 const PURPLE = "#7C3AED";
 const CTA_BG = "linear-gradient(135deg, #F97316 0%, #D946EF 50%, #7C3AED 100%)";
@@ -133,7 +132,6 @@ export default function ClientIntakeForm() {
           background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.10) 0%, transparent 55%), #ffffff",
         }}
       >
-        <TTSBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Work With Us", href: "/work-with-us" }, { label: "Start a Project" }]} />
         <h1
           className="font-bold tracking-tight leading-none mb-3"
           style={{
