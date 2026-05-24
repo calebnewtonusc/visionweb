@@ -98,7 +98,7 @@ export default function TTSSite() {
           <p className="text-xs font-semibold text-gray-600 tracking-widest uppercase mb-6">[ TROJAN TECHNOLOGY SOLUTIONS ]</p>
           <h1
             className="font-black text-gray-900 leading-none mb-6 mx-auto"
-            style={{ fontSize: "clamp(80px,16vw,160px)", letterSpacing: "0.02em" }}
+            style={{ fontSize: "clamp(5rem,16vw,10rem)", letterSpacing: "0.02em" }}
           >
             TTS
           </h1>
@@ -127,13 +127,13 @@ export default function TTSSite() {
       {/* Stats */}
       <section className="px-6 py-20 bg-white">
         <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-12">[ IMPACT_METRICS ]</p>
-        <div className="max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {STATS.map(({ value, label }, i) => (
             <div key={label}>
               <p
                 className="font-black leading-none mb-2"
                 style={{
-                  fontSize: "clamp(36px,5vw,56px)",
+                  fontSize: "clamp(2.25rem,5vw,3.5rem)",
                   letterSpacing: "-0.04em",
                   background: STAT_COLORS[i],
                   WebkitBackgroundClip: "text",
@@ -151,7 +151,7 @@ export default function TTSSite() {
 
       {/* What We Do */}
       <section className="px-6 py-20 bg-gray-100">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">What We Do</h2>
             <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
@@ -177,7 +177,7 @@ export default function TTSSite() {
 
       {/* About / Tracks */}
       <section className="px-6 py-20 bg-white">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             <div>
               <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ ABOUT_US ]</p>

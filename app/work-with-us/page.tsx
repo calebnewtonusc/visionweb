@@ -145,7 +145,7 @@ const PROCESS_STEPS = [
 
 function ProcessGraphic() {
   return (
-    <div className="relative w-full max-w-2xl mx-auto" style={{ height: 80 }}>
+    <div className="relative w-full max-w-3xl mx-auto" style={{ height: 80 }}>
       <svg
         viewBox="0 0 480 80"
         fill="none"
@@ -230,7 +230,7 @@ export default function WorkWithUs() {
         <h1
           className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
-            fontSize: "clamp(40px,7vw,72px)",
+            fontSize: "clamp(2.5rem,7vw,4.5rem)",
             background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -246,7 +246,7 @@ export default function WorkWithUs() {
 
       {/* For Students */}
       <section className="px-6 py-20 border-t-2 border-gray-100">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ JOIN_THE_TEAM ]</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">For Students</h2>
@@ -284,7 +284,7 @@ export default function WorkWithUs() {
 
       {/* Why Join */}
       <section className="px-6 py-16 bg-gray-100">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="border-2 border-gray-300 bg-white p-8 md:p-10">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">Why Join?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -301,7 +301,7 @@ export default function WorkWithUs() {
 
       {/* For Organizations */}
       <section className="px-6 py-20 bg-white">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">For Organizations</h2>
             <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
@@ -322,7 +322,7 @@ export default function WorkWithUs() {
 
       {/* Process — 5 Steps */}
       <section className="px-6 py-20 bg-gray-100">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ HOW_IT_WORKS ]</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Our Process</h2>
@@ -386,9 +386,6 @@ export default function WorkWithUs() {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-sm font-semibold mb-4" style={{ color: PURPLE }}>
-              100% Pro Bono · Professional Quality · Student-Led
-            </p>
             <Link
               href="/work-with-us/form"
               className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white no-underline transition-all duration-200 hover:opacity-90"
@@ -418,7 +415,7 @@ export default function WorkWithUs() {
           </div>
           <h2
             className="font-bold text-white mb-4 tracking-tight"
-            style={{ fontSize: "clamp(28px,4vw,40px)" }}
+            style={{ fontSize: "clamp(1.75rem,4vw,2.5rem)" }}
           >
             Ready to Get Started?
           </h2>

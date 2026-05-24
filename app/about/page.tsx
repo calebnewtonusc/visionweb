@@ -65,7 +65,7 @@ export default function AboutPage() {
         <h1
           className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
-            fontSize: "clamp(40px,7vw,72px)",
+            fontSize: "clamp(2.5rem,7vw,4.5rem)",
             background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -81,7 +81,7 @@ export default function AboutPage() {
 
       {/* Philosophy */}
       <section className="px-6 py-20 border-t-2 border-gray-200">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ OUR_PHILOSOPHY ]</p>
           <h2 className="text-2xl md:text-3xl text-gray-900 text-center mb-16 tracking-tight">
             At TTS,{" "}
@@ -115,7 +115,7 @@ export default function AboutPage() {
 
       {/* Values */}
       <section className="px-6 py-20 bg-gray-100">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">What We Stand For</h2>
             <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
@@ -136,7 +136,7 @@ export default function AboutPage() {
 
       {/* Our Story */}
       <section className="px-6 py-20 bg-white">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-10 text-center">Our Story</h2>
           <div className="flex flex-col gap-6 text-base text-gray-900 leading-relaxed">
             <p>

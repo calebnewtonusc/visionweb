@@ -139,7 +139,7 @@ export default function MembersPage() {
         <h1
           className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
-            fontSize: "clamp(40px,7vw,72px)",
+            fontSize: "clamp(2.5rem,7vw,4.5rem)",
             background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -155,7 +155,7 @@ export default function MembersPage() {
 
       {/* Leadership */}
       <section className="px-6 py-16 border-t-2 border-gray-100">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ LEADERSHIP ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Co-Presidents</h2>
@@ -187,7 +187,7 @@ export default function MembersPage() {
 
       {/* Cabinet */}
       <section className="px-6 py-16 bg-gray-100">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ THE_TEAM ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Cabinet</h2>
@@ -218,7 +218,7 @@ export default function MembersPage() {
 
       {/* Alumni */}
       <section className="px-6 py-16 bg-white">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ WHERE_THEY_ARE_NOW ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Alumni Network</h2>

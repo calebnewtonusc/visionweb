@@ -7,7 +7,7 @@ import LinkedInIcon from "./LinkedInIcon";
 export default function SiteFooter() {
   return (
     <footer className="bg-white border-t-2 border-gray-300 px-6 py-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="flex flex-col gap-2">
           <Image src="/img/tts-logo.png" alt="TTS" width={36} height={36} />
           <a
