@@ -55,9 +55,8 @@ const TRACKS = [
     title: "Consulting",
     sub: "Client Work & Social Impact",
     description: "Live work with nonprofits and research labs. AI-first strategy, real deliverables, and strategic reps before you graduate.",
-    color: "#D946EF",
-    bg: "#FDF4FF",
-    featured: true,
+    color: "#7C3AED",
+    bg: "#F3EFFE",
   },
   {
     Icon: TrendingUp,
@@ -86,20 +85,6 @@ const FOUNDERS = [
   },
 ];
 
-const CABINET: { name: string; role: string; headshot: string | null; link: string | null; initials: string }[] = [
-  { name: "Shirley Park", role: "Co-lead of Building", headshot: "/img/shirley_shot.jpeg", link: "https://www.linkedin.com/in/seoyeon-shirley-park/", initials: "SP" },
-  { name: "Kaitlyn Lee", role: "Co-lead of Building", headshot: "/img/kaitlyn_shot.jpeg", link: "https://www.linkedin.com/in/kaitlynleee/", initials: "KL" },
-  { name: "Malakai Carey", role: "President, Music Team", headshot: "/img/malakai_shot.jpeg", link: "https://www.linkedin.com/in/malakai-carey-11187038a/", initials: "MC" },
-  { name: "Austin Chen", role: "Lead of Biotech", headshot: "/img/austin_shot.png", link: "https://www.linkedin.com/in/austin-f-chen/", initials: "AC" },
-  { name: "Esrom Dawit", role: "External Affairs", headshot: "/img/esrom_shot.jpeg", link: "https://www.linkedin.com/in/esrom-dawit-4780302b2/", initials: "ED" },
-  { name: "Annabelle Forbes", role: "Social Chair", headshot: "/img/annabelle_shot.jpeg", link: "https://www.linkedin.com/in/annabelle-forbes-9b381838b/", initials: "AF" },
-  { name: "Jet Jadeja", role: "President, Web3 Team", headshot: "/img/jet_shot.jpeg", link: "https://www.linkedin.com/in/jet-jadeja/", initials: "JJ" },
-  { name: "Gabriel Oliveri", role: "Lead of Engineering", headshot: "/img/gabriel_shot.png", link: "https://www.linkedin.com/in/gabriel-oliveri/", initials: "GO" },
-  { name: "Omniya Mohamed", role: "Lead of Operations", headshot: "/img/omniya_shot.jpeg", link: "https://www.linkedin.com/in/itsomniya/", initials: "OM" },
-  { name: "Jacob Han", role: "Co-lead of Videography", headshot: "/img/jacob_shot.jpeg", link: "https://www.linkedin.com/in/jacobwonhan/", initials: "JH" },
-  { name: "Alex Choi", role: "Co-lead of Videography", headshot: "/img/alex_shot.jpeg", link: "https://www.linkedin.com/in/alexchoi27/", initials: "AC" },
-  { name: "Mary Zewdie", role: "Lead of Marketing", headshot: "/img/mary_shot.jpeg", link: "https://www.linkedin.com/in/mary-zewdie-826768218/", initials: "MZ" },
-];
 
 export default function TTSSite() {
   return (
@@ -112,14 +97,15 @@ export default function TTSSite() {
       <Navbar />
 
       {/* Hero */}
-      <section className="text-center px-6 pt-20 pb-14">
+      <section className="relative text-center px-6 pt-20 pb-14 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 -z-10" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.12) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 80% 60%, rgba(217,70,239,0.07) 0%, transparent 60%)" }} />
         <h1
           className="font-black tracking-tight leading-tight mb-6"
           style={{ fontSize: "clamp(48px,8vw,80px)", background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
         >
           Trojan Technology<br />Solutions
         </h1>
-        <p className="text-2xl font-extrabold text-gray-900 mb-5 tracking-tight">tech for all</p>
+        <p className="text-2xl font-extrabold text-gray-900 mb-5 tracking-tight">Tech for All</p>
         <p className="text-base text-gray-500 max-w-xl mx-auto leading-relaxed">
           We use cutting-edge technology and artificial intelligence to deliver high-impact consulting projects for social good organizations.
         </p>
@@ -151,8 +137,8 @@ export default function TTSSite() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {SERVICES.map(({ Icon, title, description, iconColor, iconBg }) => (
-              <div key={title} className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ background: iconBg }}>
+              <div key={title} className="bg-white border border-gray-200 rounded p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+                <div className="w-12 h-12 rounded flex items-center justify-center mb-4" style={{ background: iconBg }}>
                   <Icon size={22} color={iconColor} />
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
@@ -181,14 +167,13 @@ export default function TTSSite() {
               </p>
             </div>
             <div className="grid grid-cols-1 gap-4">
-              {TRACKS.map(({ Icon, title, sub, description, color, bg, featured }) => (
+              {TRACKS.map(({ Icon, title, sub, description, color, bg }) => (
                 <div
                   key={title}
-                  className="border rounded-2xl p-5 transition-all duration-200"
-                  style={{ borderColor: featured ? color : "#E5E7EB", background: featured ? bg : "#fff" }}
+                  className="border border-gray-200 rounded p-5 transition-all duration-200 bg-white"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: bg }}>
+                    <div className="w-9 h-9 rounded flex items-center justify-center flex-shrink-0" style={{ background: bg }}>
                       <Icon size={18} color={color} />
                     </div>
                     <div>
@@ -211,9 +196,9 @@ export default function TTSSite() {
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 border border-gray-200 rounded-2xl p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 no-underline"
+                className="flex items-center gap-4 border border-gray-200 rounded p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 no-underline"
               >
-                <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-100">
+                <div className="relative w-16 h-16 rounded overflow-hidden flex-shrink-0 bg-gray-100">
                   <Image src={headshot} alt={name} fill className="object-cover" />
                 </div>
                 <div>
@@ -224,45 +209,6 @@ export default function TTSSite() {
                 <ExternalLink size={14} className="ml-auto text-gray-300 flex-shrink-0" />
               </a>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Members */}
-      <section id="members" className="px-6 py-20 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ THE_TEAM ]</p>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Meet Our Team</h2>
-            <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
-              The people building, consulting, and growing with TTS.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {CABINET.map(({ name, role, headshot, link, initials }) => {
-              const Card = (
-                <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto mb-3 bg-gray-100">
-                    {headshot ? (
-                      <Image src={headshot} alt={name} fill className="object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm font-bold text-gray-400">
-                        {initials}
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-sm font-bold text-gray-900 leading-tight">{name}</p>
-                  <p className="text-xs text-gray-400 mt-0.5 leading-tight">{role}</p>
-                </div>
-              );
-              return link ? (
-                <a key={name} href={link} target="_blank" rel="noopener noreferrer" className="no-underline">
-                  {Card}
-                </a>
-              ) : (
-                <div key={name}>{Card}</div>
-              );
-            })}
           </div>
         </div>
       </section>

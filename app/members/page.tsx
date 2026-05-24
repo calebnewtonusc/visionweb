@@ -9,6 +9,10 @@ import Navbar from "@/components/Navbar";
 const GRADIENT = "linear-gradient(135deg, #7C3AED 0%, #D946EF 100%)";
 const PURPLE = "#7C3AED";
 
+function dicebear(seed: string) {
+  return `https://api.dicebear.com/9.x/micah/svg?seed=${encodeURIComponent(seed)}&baseColor=f9c9b6,ac6651,d2b48c,c8a882&backgroundColor=f3effe,fdf4ff,ede9fe`;
+}
+
 const FOUNDERS = [
   {
     name: "Tyler Larsen",
@@ -26,28 +30,28 @@ const FOUNDERS = [
   },
 ];
 
-const CABINET: { name: string; role: string; headshot: string | null; link: string | null; initials: string }[] = [
-  { name: "Shirley Park", role: "Co-lead of Building", headshot: "/img/shirley_shot.jpeg", link: "https://www.linkedin.com/in/seoyeon-shirley-park/", initials: "SP" },
-  { name: "Kaitlyn Lee", role: "Co-lead of Building", headshot: "/img/kaitlyn_shot.jpeg", link: "https://www.linkedin.com/in/kaitlynleee/", initials: "KL" },
-  { name: "Malakai Carey", role: "President, Music Team", headshot: "/img/malakai_shot.jpeg", link: "https://www.linkedin.com/in/malakai-carey-11187038a/", initials: "MC" },
-  { name: "Austin Chen", role: "Lead of Biotech", headshot: "/img/austin_shot.png", link: "https://www.linkedin.com/in/austin-f-chen/", initials: "AC" },
-  { name: "Esrom Dawit", role: "External Affairs", headshot: "/img/esrom_shot.jpeg", link: "https://www.linkedin.com/in/esrom-dawit-4780302b2/", initials: "ED" },
-  { name: "Annabelle Forbes", role: "Social Chair", headshot: "/img/annabelle_shot.jpeg", link: "https://www.linkedin.com/in/annabelle-forbes-9b381838b/", initials: "AF" },
-  { name: "Jet Jadeja", role: "President, Web3 Team", headshot: "/img/jet_shot.jpeg", link: "https://www.linkedin.com/in/jet-jadeja/", initials: "JJ" },
-  { name: "Gabriel Oliveri", role: "Lead of Engineering", headshot: "/img/gabriel_shot.png", link: "https://www.linkedin.com/in/gabriel-oliveri/", initials: "GO" },
-  { name: "Omniya Mohamed", role: "Lead of Operations", headshot: "/img/omniya_shot.jpeg", link: "https://www.linkedin.com/in/itsomniya/", initials: "OM" },
-  { name: "Jacob Han", role: "Co-lead of Videography", headshot: "/img/jacob_shot.jpeg", link: "https://www.linkedin.com/in/jacobwonhan/", initials: "JH" },
-  { name: "Alex Choi", role: "Co-lead of Videography", headshot: "/img/alex_shot.jpeg", link: "https://www.linkedin.com/in/alexchoi27/", initials: "AC" },
-  { name: "Mary Zewdie", role: "Lead of Marketing", headshot: "/img/mary_shot.jpeg", link: "https://www.linkedin.com/in/mary-zewdie-826768218/", initials: "MZ" },
+const CABINET: { name: string; role: string; seed: string; link: string | null }[] = [
+  { name: "Shirley Park", role: "Co-lead of Building", seed: "ShirleyPark", link: "https://www.linkedin.com/in/seoyeon-shirley-park/" },
+  { name: "Kaitlyn Lee", role: "Co-lead of Building", seed: "KaitlynLee", link: "https://www.linkedin.com/in/kaitlynleee/" },
+  { name: "Malakai Carey", role: "President, Music Team", seed: "MalakaiCarey", link: "https://www.linkedin.com/in/malakai-carey-11187038a/" },
+  { name: "Austin Chen", role: "Lead of Biotech", seed: "AustinChen", link: "https://www.linkedin.com/in/austin-f-chen/" },
+  { name: "Esrom Dawit", role: "External Affairs", seed: "EsromDawit", link: "https://www.linkedin.com/in/esrom-dawit-4780302b2/" },
+  { name: "Annabelle Forbes", role: "Social Chair", seed: "AnnabelleForbes", link: "https://www.linkedin.com/in/annabelle-forbes-9b381838b/" },
+  { name: "Jet Jadeja", role: "President, Web3 Team", seed: "JetJadeja", link: "https://www.linkedin.com/in/jet-jadeja/" },
+  { name: "Gabriel Oliveri", role: "Lead of Engineering", seed: "GabrielOliveri", link: "https://www.linkedin.com/in/gabriel-oliveri/" },
+  { name: "Omniya Mohamed", role: "Lead of Operations", seed: "OmniyaMohamed", link: "https://www.linkedin.com/in/itsomniya/" },
+  { name: "Jacob Han", role: "Co-lead of Videography", seed: "JacobHan", link: "https://www.linkedin.com/in/jacobwonhan/" },
+  { name: "Alex Choi", role: "Co-lead of Videography", seed: "AlexChoi", link: "https://www.linkedin.com/in/alexchoi27/" },
+  { name: "Mary Zewdie", role: "Lead of Marketing", seed: "MaryZewdie", link: "https://www.linkedin.com/in/mary-zewdie-826768218/" },
 ];
 
 const ALUMNI = [
-  { name: "Matthew Kim", detail: "Incoming Analyst at McKinsey", initials: "MK" },
-  { name: "Kevin Sangmuah", detail: "Software Engineer at Reddit", initials: "KS" },
-  { name: "Sagar Tiwari", detail: "Incoming Stanford MBA", initials: "ST" },
-  { name: "Duncan Inganji", detail: "Software Engineer at Google", initials: "DI" },
-  { name: "Catherine Newton M.S.", detail: "Pediatrician", initials: "CN" },
-  { name: "Andrew Laffoon", detail: "Founder & CEO of Mixbook", initials: "AL" },
+  { name: "Matthew Kim", detail: "Incoming Analyst at McKinsey", photo: "/img/matthew_shot.jpeg" },
+  { name: "Kevin Sangmuah", detail: "Software Engineer at Reddit", photo: "/img/kevin_shot.jpeg" },
+  { name: "Sagar Tiwari", detail: "Incoming Stanford MBA", photo: "/img/sagar_shot.jpeg" },
+  { name: "Duncan Inganji", detail: "Software Engineer at Google", photo: "/img/duncan_shot.jpeg" },
+  { name: "Catherine Newton M.S.", detail: "Pediatrician", photo: "/img/catherine_shot.jpg" },
+  { name: "Andrew Laffoon", detail: "Founder & CEO of Mixbook", photo: "/img/andrew_shot.jpeg" },
 ];
 
 export default function MembersPage() {
@@ -56,7 +60,8 @@ export default function MembersPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="text-center px-6 pt-16 pb-10">
+      <section className="relative text-center px-6 pt-16 pb-10 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 -z-10" style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.10) 0%, transparent 70%)" }} />
         <h1
           className="font-black tracking-tight leading-tight mb-4"
           style={{ fontSize: "clamp(40px,7vw,68px)", background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
@@ -82,9 +87,9 @@ export default function MembersPage() {
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 border border-gray-200 rounded-2xl p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 no-underline"
+                className="flex items-center gap-4 border border-gray-200 rounded p-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 no-underline"
               >
-                <div className="relative w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-gray-100">
+                <div className="relative w-16 h-16 rounded overflow-hidden flex-shrink-0 bg-gray-100">
                   <Image src={headshot} alt={name} fill className="object-cover" />
                 </div>
                 <div>
@@ -107,17 +112,17 @@ export default function MembersPage() {
             <p className="text-base text-gray-500">Leading teams and driving impact across our organization.</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {CABINET.map(({ name, role, headshot, link, initials }) => {
+            {CABINET.map(({ name, role, seed, link }) => {
               const Card = (
-                <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto mb-3 bg-gray-100">
-                    {headshot ? (
-                      <Image src={headshot} alt={name} fill className="object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm font-bold text-gray-400">
-                        {initials}
-                      </div>
-                    )}
+                <div className="bg-white border border-gray-200 rounded p-4 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+                  <div className="w-16 h-16 rounded overflow-hidden mx-auto mb-3 bg-purple-50">
+                    <img
+                      src={dicebear(seed)}
+                      alt={name}
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <p className="text-sm font-bold text-gray-900 leading-tight">{name}</p>
                   <p className="text-xs text-gray-400 mt-0.5 leading-tight">{role}</p>
@@ -144,10 +149,10 @@ export default function MembersPage() {
             <p className="text-base text-gray-500">Our graduates continue to make impact across industries.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {ALUMNI.map(({ name, detail, initials }) => (
-              <div key={name} className="flex items-center gap-3 border border-gray-200 rounded-2xl p-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white" style={{ background: GRADIENT }}>
-                  {initials}
+            {ALUMNI.map(({ name, detail, photo }) => (
+              <div key={name} className="flex items-center gap-3 border border-gray-200 rounded p-4">
+                <div className="relative w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
+                  <Image src={photo} alt={name} fill className="object-cover" />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-gray-900 leading-tight">{name}</p>
