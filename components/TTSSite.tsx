@@ -6,12 +6,7 @@ import { ArrowRight, Code2, Smartphone, BarChart2, Mail, Hammer, Briefcase, Tren
 import InstagramIcon from "./InstagramIcon";
 import Navbar from "./Navbar";
 
-const HERO_BG = `
-  radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.18) 0%, transparent 55%),
-  radial-gradient(ellipse 70% 50% at 85% 10%, rgba(217,70,239,0.14) 0%, transparent 50%),
-  radial-gradient(ellipse 60% 60% at 60% 110%, rgba(251,146,60,0.12) 0%, transparent 55%),
-  #ffffff
-`;
+const HERO_BG = "#ffffff";
 
 const STAT_COLORS = [
   "linear-gradient(135deg, #7C3AED, #D946EF)",
@@ -74,6 +69,42 @@ const TRACKS = [
   },
 ];
 
+function GridBackground() {
+  const COLS = 18;
+  const ROWS = 9;
+  const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
+    const col = i % COLS;
+    const row = Math.floor(i / COLS);
+    const t = col / (COLS - 1) * 0.55 + row / (ROWS - 1) * 0.45;
+    const n = ((col * 13 + row * 7) * 37) % 97 / 97;
+    const opacity = 0.07 + n * 0.22;
+    const hue = Math.round(270 - t * 235);
+    const sat = 70 + Math.round(n * 15);
+    const light = 72 - Math.round(t * 8);
+    return { key: i, hue, sat, light, opacity };
+  });
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 overflow-hidden"
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${COLS}, 1fr)`,
+        gridTemplateRows: `repeat(${ROWS}, 1fr)`,
+        gap: "2px",
+        backgroundColor: "#f8f5ff",
+      }}
+    >
+      {cells.map(({ key, hue, sat, light, opacity }) => (
+        <div
+          key={key}
+          style={{ backgroundColor: `hsla(${hue}, ${sat}%, ${light}%, ${opacity})` }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function TTSSite() {
   return (
     <div className="font-sans bg-white text-gray-900 min-h-screen">
@@ -86,9 +117,11 @@ export default function TTSSite() {
 
       {/* Hero */}
       <section className="relative text-center px-6 pt-24 pb-20 overflow-hidden" style={{ background: HERO_BG }}>
+        <GridBackground />
+        <div className="relative z-10">
         <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-6">[ USC TECH FOR GOOD ]</p>
         <h1
-          className="font-display font-bold tracking-tight leading-none mb-6"
+          className="font-bold tracking-tight leading-none mb-6"
           style={{
             fontSize: "clamp(52px,9vw,96px)",
             background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 40%, #FB923C 100%)",
@@ -117,6 +150,7 @@ export default function TTSSite() {
           >
             Learn More
           </Link>
+        </div>
         </div>
       </section>
 

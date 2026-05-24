@@ -6,12 +6,7 @@ import { Mail, ExternalLink } from "lucide-react";
 import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
 
-const CTA_BG = "linear-gradient(135deg, #F97316 0%, #D946EF 50%, #7C3AED 100%)";
 const PURPLE = "#7C3AED";
-
-function avatar(params: string) {
-  return `https://api.dicebear.com/9.x/micah/svg?${params}`;
-}
 
 const FOUNDERS = [
   {
@@ -34,83 +29,79 @@ const CABINET: {
   name: string;
   role: string;
   link: string | null;
-  avatarSrc: string;
-  usePhoto?: boolean;
-  photoSrc?: string;
+  photo: string;
 }[] = [
   {
     name: "Shirley Park",
     role: "Co-lead of Building",
     link: "https://www.linkedin.com/in/seoyeon-shirley-park/",
-    avatarSrc: avatar("seed=shirley-park-24&baseColor[]=f9c9b6&hair[]=wavy&hairColor[]=2c1b18&glassesProbability=0&earringsProbability=0&facialHairProbability=0"),
+    photo: "/img/shirley_shot.jpeg",
   },
   {
     name: "Kaitlyn Lee",
     role: "Co-lead of Building",
     link: "https://www.linkedin.com/in/kaitlynleee/",
-    avatarSrc: avatar("seed=kaitlyn-lee-24&baseColor[]=f9c9b6&hair[]=wavy&hairColor[]=0e0e0e&glassesProbability=0&earringsProbability=0&facialHairProbability=0"),
+    photo: "/img/kaitlyn_shot.jpeg",
   },
   {
     name: "Malakai Carey",
     role: "President, Music Team",
     link: "https://www.linkedin.com/in/malakai-carey-11187038a/",
-    avatarSrc: avatar("seed=malakai-carey-24&baseColor[]=f9c9b6&hair[]=full&hairColor[]=daa849&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/malakai_shot.jpeg",
   },
   {
     name: "Austin Chen",
     role: "Lead of Biotech",
     link: "https://www.linkedin.com/in/austin-f-chen/",
-    avatarSrc: avatar("seed=austin-chen-24&baseColor[]=f9c9b6&hair[]=plain&hairColor[]=0e0e0e&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/austin_shot.jpeg",
   },
   {
     name: "Esrom Dawit",
     role: "External Affairs",
     link: "https://www.linkedin.com/in/esrom-dawit-4780302b2/",
-    avatarSrc: avatar("seed=esrom-dawit-24&baseColor[]=614335&hair[]=plain&hairColor[]=0e0e0e&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/esrom_shot.jpeg",
   },
   {
     name: "Annabelle Forbes",
     role: "Social Chair",
     link: "https://www.linkedin.com/in/annabelle-forbes-9b381838b/",
-    avatarSrc: avatar("seed=annabelle-forbes-24&baseColor[]=8d5524&hair[]=wavy&hairColor[]=2c1b18&glassesProbability=100&glasses[]=square&facialHairProbability=0"),
+    photo: "/img/annabelle_shot.jpeg",
   },
   {
     name: "Jet Jadeja",
     role: "President, Web3 Team",
     link: "https://www.linkedin.com/in/jet-jadeja/",
-    avatarSrc: avatar("seed=jet-jadeja-24&baseColor[]=c8a882&hair[]=full&hairColor[]=0e0e0e&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/jet_shot.jpeg",
   },
   {
     name: "Gabriel Oliveri",
     role: "Lead of Engineering",
     link: "https://www.linkedin.com/in/gabriel-oliveri/",
-    avatarSrc: avatar("seed=gabriel-oliveri-24&baseColor[]=f9c9b6&hair[]=wavy&hairColor[]=4a312c&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/gabriel_shot.jpeg",
   },
   {
     name: "Omniya Mohamed",
     role: "Lead of Operations",
     link: "https://www.linkedin.com/in/itsomniya/",
-    avatarSrc: "",
-    usePhoto: true,
-    photoSrc: "/img/omniya_shot.jpeg",
+    photo: "/img/omniya_shot.jpeg",
   },
   {
     name: "Jacob Han",
     role: "Co-lead of Videography",
     link: "https://www.linkedin.com/in/jacobwonhan/",
-    avatarSrc: avatar("seed=jacob-han-24&baseColor[]=f9c9b6&hair[]=plain&hairColor[]=0e0e0e&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/jacob_shot.jpeg",
   },
   {
     name: "Alex Choi",
     role: "Co-lead of Videography",
     link: "https://www.linkedin.com/in/alexchoi27/",
-    avatarSrc: avatar("seed=alex-choi-24&baseColor[]=f9c9b6&hair[]=plain&hairColor[]=0e0e0e&glassesProbability=0&earringsProbability=100&earrings[]=stud&facialHairProbability=0"),
+    photo: "/img/alex_shot.jpeg",
   },
   {
     name: "Mary Zewdie",
     role: "Lead of Marketing",
     link: "https://www.linkedin.com/in/mary-zewdie-826768218/",
-    avatarSrc: avatar("seed=mary-zewdie-24&baseColor[]=614335&hair[]=wavy&hairColor[]=2c1b18&glassesProbability=0&facialHairProbability=0"),
+    photo: "/img/mary_shot.jpeg",
   },
 ];
 
@@ -136,7 +127,7 @@ export default function MembersPage() {
         }}
       >
         <h1
-          className="font-display font-bold tracking-tight leading-none mb-4"
+          className="font-bold tracking-tight leading-none mb-4"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
             background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 50%, #FB923C 100%)",
@@ -193,15 +184,11 @@ export default function MembersPage() {
             <p className="text-base text-gray-500">Leading teams and driving impact across our organization.</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px border border-gray-200 bg-gray-200">
-            {CABINET.map(({ name, role, link, avatarSrc, usePhoto, photoSrc }) => {
+            {CABINET.map(({ name, role, link, photo }) => {
               const Card = (
                 <div className="bg-white p-5 text-center hover:bg-gray-50 transition-colors duration-150">
-                  <div className="w-16 h-16 overflow-hidden mx-auto mb-3 bg-purple-50">
-                    {usePhoto && photoSrc ? (
-                      <Image src={photoSrc} alt={name} width={64} height={64} className="w-full h-full object-cover" />
-                    ) : (
-                      <img src={avatarSrc} alt={name} width={64} height={64} className="w-full h-full object-cover" />
-                    )}
+                  <div className="relative w-16 h-16 overflow-hidden mx-auto mb-3 bg-gray-100">
+                    <Image src={photo} alt={name} fill className="object-cover object-top" />
                   </div>
                   <p className="text-sm font-bold text-gray-900 leading-tight">{name}</p>
                   <p className="text-xs text-gray-400 mt-0.5 leading-tight">{role}</p>

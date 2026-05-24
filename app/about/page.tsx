@@ -56,7 +56,7 @@ export default function AboutPage() {
         }}
       >
         <h1
-          className="font-display font-bold tracking-tight leading-none mb-4"
+          className="font-bold tracking-tight leading-none mb-4"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
             background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 50%, #FB923C 100%)",
