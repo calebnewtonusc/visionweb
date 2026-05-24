@@ -127,6 +127,20 @@
   }
 }
 
+/* Comico display font */
+@font-face {
+  font-family: "Comico";
+  src: url("/fonts/Comico-Regular.woff2") format("woff2"),
+       url("/fonts/Comico-Regular.woff") format("woff"),
+       url("/fonts/Comico-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+.font-comico {
+  font-family: "Comico", sans-serif !important;
+}
+
 /* Monoska display font */
 @font-face {
   font-family: "Monoska";
