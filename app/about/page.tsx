@@ -83,7 +83,7 @@ export default function AboutPage() {
       <section className="px-6 py-20 border-t-2 border-gray-200">
         <div className="max-w-2xl mx-auto">
           <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ OUR_PHILOSOPHY ]</p>
-          <h2 className="font-monoska text-2xl md:text-3xl text-gray-900 text-center mb-16 tracking-tight">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-16 tracking-tight">
             At TTS,{" "}
             <span className="font-monoska" style={{ background: "rgba(153,166,249,0.3)", padding: "2px 8px", display: "inline" }}>
               Tech is for everyone.
