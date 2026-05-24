@@ -127,6 +127,22 @@
   }
 }
 
+/* Alumni logo marquee */
+@keyframes logo-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.logo-marquee {
+  animation: logo-marquee 22s linear infinite;
+  will-change: transform;
+}
+.logo-marquee:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee { animation: none !important; }
+}
+
 /* Hero animated blobs */
 @keyframes blobA {
   0%, 100% { transform: translate(0%, 0%) scale(1); }

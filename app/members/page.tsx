@@ -228,7 +228,7 @@ export default function MembersPage() {
             {ALUMNI.map(({ name, detail, photo }) => (
               <div key={name} className="bg-white p-5">
                 <div className="flex items-center gap-3">
-                  <div className="relative w-10 h-10 overflow-hidden flex-shrink-0 bg-gray-100">
+                  <div className="relative w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-100">
                     <Image src={photo} alt={name} fill className="object-cover" />
                   </div>
                   <div>
@@ -239,12 +239,14 @@ export default function MembersPage() {
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-center gap-8 mt-8 flex-wrap">
-            {ALUMNI.filter((a) => a.logo).map(({ name, logo }) => (
-              <div key={name} className="relative h-6 w-24">
-                <Image src={logo!} alt="" fill className="object-contain" />
-              </div>
-            ))}
+          <div className="overflow-hidden mt-8">
+            <div className="logo-marquee flex items-center gap-16" style={{ width: "max-content" }}>
+              {[...ALUMNI.filter((a) => a.logo), ...ALUMNI.filter((a) => a.logo)].map(({ name, logo }, i) => (
+                <div key={i} className="flex-shrink-0 relative" style={{ height: "29px", width: "115px" }}>
+                  <Image src={logo!} alt={name} fill className="object-contain" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
