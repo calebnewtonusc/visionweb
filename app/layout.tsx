@@ -61,6 +61,27 @@ export default function RootLayout({
             __html: `try{if(localStorage.getItem('tts-theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}`,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Trojan Technology Solutions",
+              url: "https://usctts.com",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://usctts.com/img/tts-logo.png",
+                width: 512,
+                height: 512,
+              },
+              sameAs: [
+                "https://www.instagram.com/trojantechsolutions",
+                "https://www.linkedin.com/company/trojan-tech-solutions/",
+              ],
+            }),
+          }}
+        />
       </head>
       <body className={`min-h-full bg-white antialiased`}>
         {children}
