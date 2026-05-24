@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation";
 
 const LINKS = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/#about" },
-  { label: "Members", href: "/#members" },
+  { label: "About", href: "/about" },
+  { label: "Members", href: "/members" },
   { label: "Work With Us", href: "/work-with-us" },
 ];
 
@@ -21,7 +21,7 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-7">
           {LINKS.map(({ label, href }) => {
             const isActive =
-              href === "/" ? pathname === "/" : pathname.startsWith(href.replace("/#", "/"));
+              href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
               <Link
                 key={label}
