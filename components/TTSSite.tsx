@@ -97,8 +97,8 @@ export default function TTSSite() {
         <div className="relative z-10">
           <p className="text-xs font-semibold text-gray-600 tracking-widest uppercase mb-6">[ USC TECH FOR GOOD ]</p>
           <h1
-            className="font-black text-gray-900 tracking-tight leading-none mb-6 mx-auto"
-            style={{ fontSize: "clamp(80px,16vw,160px)", letterSpacing: "-0.04em" }}
+            className="font-black text-gray-900 leading-none mb-6 mx-auto"
+            style={{ fontSize: "clamp(80px,16vw,160px)", letterSpacing: "0.02em" }}
           >
             TTS
           </h1>
