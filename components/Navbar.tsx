@@ -7,7 +7,7 @@ import { TTSAsterisk } from "./TTSAsterisk";
 const LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Members", href: "/members" },
+  { label: "Team", href: "/members" },
   { label: "Work With Us", href: "/work-with-us" },
 ];
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import LinkedInIcon from "@/components/LinkedInIcon";
 import Navbar from "@/components/Navbar";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -178,7 +178,7 @@ export default function MembersPage() {
                   <p className="text-sm font-semibold mb-0.5" style={{ color: PURPLE }}>{role}</p>
                   <p className="text-xs text-gray-400">{focus}</p>
                 </div>
-                <ExternalLink size={14} className="ml-auto text-gray-300 flex-shrink-0" />
+                <LinkedInIcon size={18} className="ml-auto flex-shrink-0" color="#0A66C2" />
               </a>
             ))}
           </div>
