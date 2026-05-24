@@ -29,8 +29,12 @@ export const metadata: Metadata = {
       "USC's AI builder club. Open to every major. No experience required.",
   },
   icons: {
-    icon: "/img/tts-logo.png",
-    apple: "/img/tts-logo.png",
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
   },
 };
 
