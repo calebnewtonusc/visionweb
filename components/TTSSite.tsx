@@ -6,15 +6,15 @@ import { ArrowRight, Code2, Smartphone, BarChart2, Hammer, Briefcase, TrendingUp
 import Navbar from "./Navbar";
 import SiteFooter from "./SiteFooter";
 
-const GRADIENT = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
+const GRADIENT = "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)";
 const PERIWINKLE = "#99A6F9";
-const CORAL = "#FE885C";
+const CORAL = "#F07860";
 
 const STAT_COLORS = [
   GRADIENT,
   CORAL,
   PERIWINKLE,
-  "linear-gradient(135deg, #FE885C, #99A6F9)",
+  "linear-gradient(135deg, #F07860, #99A6F9)",
 ];
 
 const STATS = [
@@ -80,27 +80,30 @@ function GlassTTS() {
         aria-label="TTS"
       >
         <defs>
-          <linearGradient id="gFill" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#99A6F9" stopOpacity="0.82" />
-            <stop offset="42%" stopColor="#ffffff" stopOpacity="0.65" />
-            <stop offset="100%" stopColor="#FE885C" stopOpacity="0.78" />
-          </linearGradient>
           <linearGradient id="gGlare" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.92" />
-            <stop offset="48%" stopColor="#ffffff" stopOpacity="0.12" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+            <stop offset="35%" stopColor="#ffffff" stopOpacity="0.45" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </linearGradient>
+          <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.6)" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
+          </linearGradient>
           <filter id="gDrop" x="-15%" y="-15%" width="130%" height="145%">
-            <feDropShadow dx="0" dy="8" stdDeviation="18" floodColor="#99A6F9" floodOpacity="0.48" />
-            <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#ffffff" floodOpacity="0.4" />
+            <feDropShadow dx="0" dy="6" stdDeviation="20" floodColor="#99A6F9" floodOpacity="0.55" />
+            <feDropShadow dx="0" dy="1" stdDeviation="3" floodColor="#ffffff" floodOpacity="0.5" />
           </filter>
           <clipPath id="gTopHalf">
-            <rect x="0" y="0" width="540" height="88" />
+            <rect x="0" y="0" width="540" height="95" />
+          </clipPath>
+          <clipPath id="gBottomHalf">
+            <rect x="0" y="95" width="540" height="95" />
           </clipPath>
         </defs>
 
-        {/* Depth layer — slightly behind and offset */}
-        <g transform="translate(5, 7)">
+        {/* Depth / shadow layer */}
+        <g transform="translate(4, 8)">
           <text
             x="270" y="155"
             textAnchor="middle"
@@ -108,12 +111,11 @@ function GlassTTS() {
             fontWeight="900"
             fontFamily="Inter, system-ui, sans-serif"
             letterSpacing="-12"
-            fill="#99A6F9"
-            opacity="0.22"
+            fill="rgba(153,166,249,0.25)"
           >TTS</text>
         </g>
 
-        {/* Main glass body */}
+        {/* Glass body — transparent fill, white stroke so background shows through */}
         <text
           x="270" y="155"
           textAnchor="middle"
@@ -121,14 +123,14 @@ function GlassTTS() {
           fontWeight="900"
           fontFamily="Inter, system-ui, sans-serif"
           letterSpacing="-12"
-          fill="url(#gFill)"
-          stroke="rgba(255,255,255,0.78)"
-          strokeWidth="2.5"
+          fill="rgba(255,255,255,0.14)"
+          stroke="url(#gEdge)"
+          strokeWidth="3"
           paintOrder="stroke"
           filter="url(#gDrop)"
         >TTS</text>
 
-        {/* Top glare — upper half highlight */}
+        {/* Top glare — bright white highlight on upper half */}
         <text
           x="270" y="155"
           textAnchor="middle"
@@ -138,7 +140,19 @@ function GlassTTS() {
           letterSpacing="-12"
           fill="url(#gGlare)"
           clipPath="url(#gTopHalf)"
-          opacity="0.5"
+          opacity="0.7"
+        >TTS</text>
+
+        {/* Bottom subtle reflection */}
+        <text
+          x="270" y="155"
+          textAnchor="middle"
+          fontSize="180"
+          fontWeight="900"
+          fontFamily="Inter, system-ui, sans-serif"
+          letterSpacing="-12"
+          fill="rgba(255,255,255,0.08)"
+          clipPath="url(#gBottomHalf)"
         >TTS</text>
       </svg>
     </div>
@@ -149,17 +163,30 @@ export default function TTSSite() {
   return (
     <div className="font-sans bg-white text-gray-900 min-h-screen">
       {/* Announcement banner */}
-      <div style={{ background: GRADIENT }} className="text-white text-center py-2.5 px-6 text-sm">
-        Open to All: No application process required. Everyone is welcome to join and contribute.
+      <div style={{ background: GRADIENT }} className="relative overflow-hidden text-white text-center py-2.5 px-6 text-sm">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            backgroundSize: "200px 200px",
+            opacity: 0.08,
+            mixBlendMode: "overlay",
+          }}
+        />
+        <span className="relative z-10">Open to All: No application process required. Everyone is welcome to join and contribute.</span>
       </div>
 
       <Navbar />
 
-      {/* Hero — animated gradient with glass TTS */}
+      {/* Hero — animated blob gradient with glass TTS */}
       <section
-        className="hero-animated-bg relative text-center px-6 pt-24 pb-20 overflow-hidden"
-        style={{ position: "relative" }}
+        className="relative text-center px-6 pt-24 pb-20 overflow-hidden bg-white"
       >
+        {/* Animated color blobs — always both colors visible */}
+        <div aria-hidden="true" className="hero-blob-a" />
+        <div aria-hidden="true" className="hero-blob-b" />
+        <div aria-hidden="true" className="hero-blob-c" />
         {/* Grain overlay */}
         <div
           aria-hidden="true"
@@ -167,7 +194,7 @@ export default function TTSSite() {
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
             backgroundSize: "300px 300px",
-            opacity: 0.07,
+            opacity: 0.08,
             mixBlendMode: "overlay",
           }}
         />
@@ -216,32 +243,32 @@ export default function TTSSite() {
               >
                 {value}
               </p>
-              <p className="text-sm text-gray-500">{label}</p>
+              <p className="text-sm text-gray-700">{label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* What We Do */}
-      <section className="px-6 py-20" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
+      <section className="px-6 py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">What We Do</h2>
-            <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
+            <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
               Our projects span various domains, all focused on creating positive social impact through technology.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-2 border-gray-200">
             {SERVICES.map(({ Icon, title, description, accent }, i) => (
               <div
                 key={title}
-                className={`bg-white p-8 hover:bg-gray-50 transition-all duration-200 ${i < 2 ? "border-r border-gray-200" : ""}`}
+                className={`bg-white p-8 hover:bg-gray-50 transition-all duration-200 ${i < 2 ? "border-r-2 border-gray-200" : ""}`}
               >
                 <div className="w-10 h-10 flex items-center justify-center mb-5" style={{ background: accent }}>
                   <Icon size={20} color="white" />
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+                <p className="text-sm text-gray-900 leading-relaxed">{description}</p>
               </div>
             ))}
           </div>
@@ -258,16 +285,16 @@ export default function TTSSite() {
                 Building Tech<br />
                 <span style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>for Good</span>
               </h2>
-              <p className="text-base text-gray-500 leading-relaxed mb-4">
+              <p className="text-base text-gray-900 leading-relaxed mb-4">
                 Trojan Technology Solutions is USC&apos;s student-run tech consulting org. We connect talented students with nonprofits, social enterprises, and community organizations to build real technology solutions, completely pro bono.
               </p>
-              <p className="text-base text-gray-500 leading-relaxed">
+              <p className="text-base text-gray-900 leading-relaxed">
                 No experience required. No gatekeeping. Just curious people who want to use technology to make a difference.
               </p>
             </div>
-            <div className="flex flex-col gap-0 border border-gray-200">
+            <div className="flex flex-col gap-0 border-2 border-gray-200">
               {TRACKS.map(({ Icon, title, sub, description, accent }) => (
-                <div key={title} className="p-5 border-b border-gray-200 last:border-b-0 bg-white hover:bg-gray-50 transition-colors duration-150">
+                <div key={title} className="p-5 border-b-2 border-gray-200 last:border-b-0 bg-white hover:bg-gray-50 transition-colors duration-150">
                   <div className="flex items-start gap-4">
                     <div className="w-8 h-8 flex items-center justify-center flex-shrink-0" style={{ background: accent }}>
                       <Icon size={16} color="white" />
@@ -275,7 +302,7 @@ export default function TTSSite() {
                     <div>
                       <p className="text-sm font-bold text-gray-900">{title}</p>
                       <p className="text-xs text-gray-400 mb-1">{sub}</p>
-                      <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+                      <p className="text-sm text-gray-900 leading-relaxed">{description}</p>
                     </div>
                   </div>
                 </div>

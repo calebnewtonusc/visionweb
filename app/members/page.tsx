@@ -123,14 +123,24 @@ export default function MembersPage() {
       <section
         className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
         style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(254,136,92,0.10) 0%, transparent 50%), #ffffff",
+          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.22) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(240,120,96,0.18) 0%, transparent 50%), #ffffff",
         }}
       >
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            backgroundSize: "300px 300px",
+            opacity: 0.06,
+            mixBlendMode: "overlay",
+          }}
+        />
         <h1
-          className="font-bold tracking-tight leading-none mb-4"
+          className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)",
+            background: "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -138,20 +148,20 @@ export default function MembersPage() {
         >
           Our Team
         </h1>
-        <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
+        <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed relative z-10">
           Meet the passionate students driving change through technology.
         </p>
       </section>
 
       {/* Leadership */}
-      <section className="px-6 py-16 border-t border-gray-100">
+      <section className="px-6 py-16 border-t-2 border-gray-100">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ LEADERSHIP ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Co-Presidents</h2>
-            <p className="text-base text-gray-500">Guiding our mission and vision forward.</p>
+            <p className="text-base text-gray-900">Guiding our mission and vision forward.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px border border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 border-2 border-gray-200 bg-gray-200">
             {FOUNDERS.map(({ name, role, focus, headshot, link }) => (
               <a
                 key={name}
@@ -176,14 +186,14 @@ export default function MembersPage() {
       </section>
 
       {/* Cabinet */}
-      <section className="px-6 py-16" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
+      <section className="px-6 py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ THE_TEAM ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Cabinet</h2>
-            <p className="text-base text-gray-500">Leading teams and driving impact across our organization.</p>
+            <p className="text-base text-gray-900">Leading teams and driving impact across our organization.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-px border border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-0.5 border-2 border-gray-200 bg-gray-200">
             {CABINET.map(({ name, role, link, photo }) => {
               const Card = (
                 <div className="bg-white p-5 text-center hover:bg-gray-50 transition-colors duration-150">
@@ -212,9 +222,9 @@ export default function MembersPage() {
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ WHERE_THEY_ARE_NOW ]</p>
             <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">Alumni Network</h2>
-            <p className="text-base text-gray-500">Our graduates continue to make impact across industries.</p>
+            <p className="text-base text-gray-900">Our graduates continue to make impact across industries.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px border border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5 border-2 border-gray-200 bg-gray-200">
             {ALUMNI.map(({ name, detail, photo, logo }) => (
               <div key={name} className="bg-white p-5">
                 <div className="flex items-center gap-3 mb-3">
@@ -223,7 +233,7 @@ export default function MembersPage() {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-gray-900 leading-tight">{name}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">{detail}</p>
+                    <p className="text-xs text-gray-900 mt-0.5">{detail}</p>
                   </div>
                 </div>
                 {logo && (

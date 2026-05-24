@@ -19,7 +19,7 @@ import {
 import Navbar from "@/components/Navbar";
 import SiteFooter from "@/components/SiteFooter";
 
-const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
+const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)";
 const PURPLE = "#99A6F9";
 
 const ROLES = [
@@ -28,28 +28,28 @@ const ROLES = [
     title: "Developers & Engineers",
     description: "Build real-world applications using modern tech stacks. Work on full-stack web apps, mobile solutions, and AI/ML projects.",
     tags: ["React", "Python", "Node.js", "Machine Learning"],
-    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
+    accent: "linear-gradient(135deg, #99A6F9, #F07860)",
   },
   {
     Icon: Palette,
     title: "Designers & Product",
     description: "Create intuitive user experiences and beautiful interfaces. Lead product strategy and design thinking workshops.",
     tags: ["UI/UX Design", "Figma", "User Research", "Product Strategy"],
-    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    accent: "linear-gradient(135deg, #F07860, #99A6F9)",
   },
   {
     Icon: Users,
     title: "Project Managers",
     description: "Coordinate teams, manage timelines, and ensure successful project delivery. Interface directly with clients.",
     tags: ["Agile", "Communication", "Stakeholder Management", "Planning"],
-    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
+    accent: "linear-gradient(135deg, #99A6F9, #F07860)",
   },
   {
     Icon: MessageSquare,
     title: "Business & Strategy",
     description: "Work on client relationships, marketing, and organizational growth. Help us expand our impact and reach.",
     tags: ["Marketing", "Strategy", "Partnerships", "Communications"],
-    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    accent: "linear-gradient(135deg, #F07860, #99A6F9)",
   },
 ];
 
@@ -66,17 +66,17 @@ const ORG_TYPES = [
   {
     title: "Nonprofits",
     description: "We help mission-driven organizations leverage technology to amplify their social impact.",
-    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
+    accent: "linear-gradient(135deg, #99A6F9, #F07860)",
   },
   {
     title: "Social Enterprises",
     description: "Partner with us to build sustainable tech solutions that support your business model.",
-    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    accent: "linear-gradient(135deg, #F07860, #99A6F9)",
   },
   {
     title: "Community Groups",
     description: "We work with local organizations to address community needs through technology.",
-    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
+    accent: "linear-gradient(135deg, #99A6F9, #F07860)",
   },
 ];
 
@@ -87,7 +87,7 @@ const PROCESS_STEPS = [
     title: "Contact Us",
     subtitle: "Tell us about your needs",
     description: "Fill out our intake form with details about your organization, what you're looking for, and your timeline. We'll review your submission and assess whether we're a good fit for your project.",
-    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
+    accent: "linear-gradient(135deg, #99A6F9, #F07860)",
     lightAccent: "#eef0fe",
     borderColor: "#99A6F9",
     link: "/work-with-us/form",
@@ -99,9 +99,9 @@ const PROCESS_STEPS = [
     title: "Consultation Meeting",
     subtitle: "Align on scope and vision",
     description: "We schedule a call to dig deeper into your goals, constraints, and success criteria. Together we define the project scope, deliverables, and a realistic timeline.",
-    accent: "#FE885C",
+    accent: "#F07860",
     lightAccent: "#fef0ea",
-    borderColor: "#FE885C",
+    borderColor: "#F07860",
     link: null,
     linkLabel: null,
   },
@@ -111,9 +111,9 @@ const PROCESS_STEPS = [
     title: "Weekly Check-ins",
     subtitle: "Transparent progress updates",
     description: "Your dedicated team holds structured weekly syncs to share progress, gather feedback, and course-correct early. You stay informed at every stage without managing day-to-day execution.",
-    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    accent: "linear-gradient(135deg, #F07860, #99A6F9)",
     lightAccent: "#fef0ea",
-    borderColor: "#FE885C",
+    borderColor: "#F07860",
     link: null,
     linkLabel: null,
   },
@@ -135,7 +135,7 @@ const PROCESS_STEPS = [
     title: "Continued Support",
     subtitle: "We stay in your corner",
     description: "Our relationship doesn't end at delivery. We provide a post-launch support period for bug fixes, updates, and questions. Many of our partners continue working with us on follow-on projects.",
-    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    accent: "linear-gradient(135deg, #F07860, #99A6F9)",
     lightAccent: "#eef0fe",
     borderColor: "#99A6F9",
     link: null,
@@ -145,107 +145,61 @@ const PROCESS_STEPS = [
 
 function ProcessGraphic() {
   return (
-    <div className="relative w-full max-w-lg mx-auto" style={{ height: 160 }}>
+    <div className="relative w-full max-w-2xl mx-auto" style={{ height: 80 }}>
       <svg
-        viewBox="0 0 480 160"
+        viewBox="0 0 480 80"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full"
         aria-hidden="true"
       >
         <defs>
-          <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="pgAll" x1="0" y1="0" x2="480" y2="0" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#99A6F9" />
-            <stop offset="100%" stopColor="#b3b9fb" />
-          </linearGradient>
-          <linearGradient id="pg2" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#b3b9fb" />
-            <stop offset="100%" stopColor="#d4a8fc" />
-          </linearGradient>
-          <linearGradient id="pg3" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#99A6F9" />
-            <stop offset="100%" stopColor="#FE885C" />
-          </linearGradient>
-          <linearGradient id="pg4" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#fba07a" />
-            <stop offset="100%" stopColor="#FE885C" />
-          </linearGradient>
-          <linearGradient id="pg5" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FE885C" />
-            <stop offset="100%" stopColor="#f97060" />
+            <stop offset="100%" stopColor="#F07860" />
           </linearGradient>
           <filter id="pshadow" x="-10%" y="-20%" width="120%" height="160%">
-            <feDropShadow dx="0" dy="5" stdDeviation="5" floodOpacity="0.18" />
+            <feDropShadow dx="0" dy="3" stdDeviation="4" floodOpacity="0.15" />
           </filter>
         </defs>
 
-        {/* Step pills — staggered arc arrangement */}
-        {/* Step 1 */}
+        {/* Connecting line — sits behind pills */}
+        <line x1="48" y1="23" x2="432" y2="23" stroke="url(#pgAll)" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.5" />
+
+        {/* Step 1 — Contact */}
         <g filter="url(#pshadow)">
-          <rect x="4" y="98" width="76" height="28" rx="14" fill="url(#pg1)" />
-          <text x="42" y="117" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Contact</text>
+          <rect x="8" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
+          <text x="48" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Contact</text>
         </g>
+        <text x="48" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">01</text>
 
-        {/* Step 2 */}
+        {/* Step 2 — Consult */}
         <g filter="url(#pshadow)">
-          <rect x="96" y="64" width="76" height="28" rx="14" fill="url(#pg2)" />
-          <text x="134" y="83" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Consult</text>
+          <rect x="104" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
+          <text x="144" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Consult</text>
         </g>
+        <text x="144" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">02</text>
 
-        {/* Step 3 — peak */}
+        {/* Step 3 — Check-ins */}
         <g filter="url(#pshadow)">
-          <rect x="192" y="30" width="96" height="30" rx="15" fill="url(#pg3)" />
-          <text x="240" y="50" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Check-ins</text>
+          <rect x="200" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
+          <text x="240" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Check-ins</text>
         </g>
+        <text x="240" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">03</text>
 
-        {/* Step 4 */}
+        {/* Step 4 — Deliver */}
         <g filter="url(#pshadow)">
-          <rect x="308" y="64" width="76" height="28" rx="14" fill="url(#pg4)" />
-          <text x="346" y="83" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Deliver</text>
+          <rect x="296" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
+          <text x="336" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Deliver</text>
         </g>
+        <text x="336" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">04</text>
 
-        {/* Step 5 */}
+        {/* Step 5 — Support */}
         <g filter="url(#pshadow)">
-          <rect x="400" y="98" width="76" height="28" rx="14" fill="url(#pg5)" />
-          <text x="438" y="117" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Support</text>
+          <rect x="392" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
+          <text x="432" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Support</text>
         </g>
-
-        {/* Connecting dots / line */}
-        <path
-          d="M80 112 C88 112, 92 78, 96 78"
-          stroke="#E5E7EB"
-          strokeWidth="1.5"
-          strokeDasharray="3 3"
-          fill="none"
-        />
-        <path
-          d="M172 78 C180 78, 188 46, 192 46"
-          stroke="#E5E7EB"
-          strokeWidth="1.5"
-          strokeDasharray="3 3"
-          fill="none"
-        />
-        <path
-          d="M288 46 C296 46, 304 78, 308 78"
-          stroke="#E5E7EB"
-          strokeWidth="1.5"
-          strokeDasharray="3 3"
-          fill="none"
-        />
-        <path
-          d="M384 78 C392 78, 396 112, 400 112"
-          stroke="#E5E7EB"
-          strokeWidth="1.5"
-          strokeDasharray="3 3"
-          fill="none"
-        />
-
-        {/* Step numbers below pills */}
-        <text x="42" y="144" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">01</text>
-        <text x="134" y="110" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">02</text>
-        <text x="240" y="80" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">03</text>
-        <text x="346" y="110" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">04</text>
-        <text x="438" y="144" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">05</text>
+        <text x="432" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">05</text>
       </svg>
     </div>
   );
@@ -260,14 +214,24 @@ export default function WorkWithUs() {
       <section
         className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
         style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(254,136,92,0.10) 0%, transparent 50%), #ffffff",
+          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.22) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(240,120,96,0.18) 0%, transparent 50%), #ffffff",
         }}
       >
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            backgroundSize: "300px 300px",
+            opacity: 0.06,
+            mixBlendMode: "overlay",
+          }}
+        />
         <h1
-          className="font-bold tracking-tight leading-none mb-4"
+          className="font-bold tracking-tight leading-none mb-4 relative z-10"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)",
+            background: "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -275,29 +239,32 @@ export default function WorkWithUs() {
         >
           Work With Us
         </h1>
-        <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
-          Whether you're a student looking to contribute or an organization seeking tech solutions, we'd love to connect.
+        <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed relative z-10">
+          Whether you&apos;re a student looking to contribute or an organization seeking tech solutions, we&apos;d love to connect.
         </p>
       </section>
 
       {/* For Students */}
-      <section className="px-6 py-20 border-t border-gray-100">
+      <section className="px-6 py-20 border-t-2 border-gray-100">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ JOIN_THE_TEAM ]</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">For Students</h2>
-            <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
+            <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
               Join a community of passionate students making real impact. No application process, everyone is welcome.
             </p>
+            <p className="text-sm font-semibold mt-3" style={{ color: PURPLE }}>
+              Fall Session starts in August.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px border border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 border-2 border-gray-200 bg-gray-200">
             {ROLES.map(({ Icon, title, description, tags, accent }) => (
               <div key={title} className="bg-white p-6 hover:bg-gray-50 transition-colors duration-150">
                 <div className="w-10 h-10 flex items-center justify-center mb-4" style={{ background: accent }}>
                   <Icon size={18} color="white" />
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-4">{description}</p>
+                <p className="text-sm text-gray-900 leading-relaxed mb-4">{description}</p>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <span
@@ -316,15 +283,15 @@ export default function WorkWithUs() {
       </section>
 
       {/* Why Join */}
-      <section className="px-6 py-16" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
+      <section className="px-6 py-16 bg-gray-50">
         <div className="max-w-3xl mx-auto">
-          <div className="border border-gray-200 bg-white p-8 md:p-10">
+          <div className="border-2 border-gray-200 bg-white p-8 md:p-10">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">Why Join?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {WHY_JOIN.map((item) => (
                 <div key={item} className="flex items-start gap-3">
                   <CheckCircle size={18} color={PURPLE} className="flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700 leading-relaxed">{item}</span>
+                  <span className="text-sm text-gray-900 leading-relaxed">{item}</span>
                 </div>
               ))}
             </div>
@@ -337,16 +304,16 @@ export default function WorkWithUs() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">For Organizations</h2>
-            <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
+            <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
               Partner with us to access high-quality tech consulting services, completely pro bono.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px border border-gray-200 bg-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 border-2 border-gray-200 bg-gray-200">
             {ORG_TYPES.map(({ title, description, accent }) => (
               <div key={title} className="bg-white p-6 hover:bg-gray-50 transition-colors duration-150">
                 <div className="w-8 h-1.5 mb-4" style={{ background: accent }} />
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+                <p className="text-sm text-gray-900 leading-relaxed">{description}</p>
               </div>
             ))}
           </div>
@@ -354,13 +321,13 @@ export default function WorkWithUs() {
       </section>
 
       {/* Process — 5 Steps */}
-      <section className="px-6 py-20" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
+      <section className="px-6 py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ HOW_IT_WORKS ]</p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">Our Process</h2>
-            <p className="text-base text-gray-500 max-w-md mx-auto leading-relaxed">
-              From first contact to continued support, here's what working with TTS looks like.
+            <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
+              From first contact to continued support, here&apos;s what working with TTS looks like.
             </p>
           </div>
 
@@ -370,7 +337,7 @@ export default function WorkWithUs() {
           </div>
 
           {/* Step detail cards */}
-          <div className="flex flex-col gap-px border border-gray-200 bg-gray-200">
+          <div className="flex flex-col gap-0.5 border-2 border-gray-200 bg-gray-200">
             {PROCESS_STEPS.map(({ num, Icon, title, subtitle, description, accent, lightAccent, borderColor, link, linkLabel }) => (
               <div key={num} className="bg-white p-6 md:p-8 hover:bg-gray-50 transition-colors duration-150">
                 <div className="flex items-start gap-5">
@@ -391,7 +358,7 @@ export default function WorkWithUs() {
                     </div>
                     <h3 className="text-base font-bold text-gray-900 mb-0.5">{title}</h3>
                     <p className="text-xs font-semibold mb-2" style={{ color: PURPLE }}>{subtitle}</p>
-                    <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+                    <p className="text-sm text-gray-900 leading-relaxed">{description}</p>
                     {link && linkLabel && (
                       <Link
                         href={link}
@@ -403,7 +370,7 @@ export default function WorkWithUs() {
                     )}
                   </div>
                   <div
-                    className="hidden md:flex items-center justify-center w-10 h-10 flex-shrink-0 border text-lg font-black"
+                    className="hidden md:flex items-center justify-center w-10 h-10 flex-shrink-0 border-2 text-lg font-black"
                     style={{
                       background: lightAccent,
                       borderColor,
@@ -434,36 +401,48 @@ export default function WorkWithUs() {
       </section>
 
       {/* CTA */}
-      <section className="px-6 py-20 text-center" style={{ background: CTA_BG }}>
-        <div className="mb-6">
-          <Mail size={36} className="mx-auto text-white/70" />
-        </div>
-        <h2
-          className="font-bold text-white mb-4 tracking-tight"
-          style={{ fontSize: "clamp(28px,4vw,40px)" }}
-        >
-          Ready to Get Started?
-        </h2>
-        <p className="text-base text-white/85 max-w-md mx-auto leading-relaxed mb-8">
-          Whether you want to join our team or partner with us on a project, we'd love to hear from you.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-4">
-          <a
-            href="mailto:hello@usctts.com"
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold no-underline transition-all duration-200"
-            style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
+      <section className="relative px-6 py-20 text-center overflow-hidden" style={{ background: CTA_BG }}>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+            backgroundSize: "300px 300px",
+            opacity: 0.07,
+            mixBlendMode: "overlay",
+          }}
+        />
+        <div className="relative z-10">
+          <div className="mb-6">
+            <Mail size={36} className="mx-auto text-white/70" />
+          </div>
+          <h2
+            className="font-bold text-white mb-4 tracking-tight"
+            style={{ fontSize: "clamp(28px,4vw,40px)" }}
           >
-            <Mail size={15} /> Email Us
-          </a>
-          <a
-            href="https://discord.gg/trojantechsolutions"
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold no-underline transition-all duration-200"
-            style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
-          >
-            Join Our Discord <ArrowRight size={15} />
-          </a>
+            Ready to Get Started?
+          </h2>
+          <p className="text-base text-white/85 max-w-md mx-auto leading-relaxed mb-8">
+            Whether you want to join our team or partner with us on a project, we&apos;d love to hear from you.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-4">
+            <a
+              href="mailto:hello@usctts.com"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold no-underline transition-all duration-200"
+              style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
+            >
+              <Mail size={15} /> Email Us
+            </a>
+            <a
+              href="https://discord.gg/trojantechsolutions"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold no-underline transition-all duration-200"
+              style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
+            >
+              Join Our Discord <ArrowRight size={15} />
+            </a>
+          </div>
+          <p className="text-xs text-white/60">Response time: Within 48 hours</p>
         </div>
-        <p className="text-xs text-white/60">Response time: Within 48 hours</p>
       </section>
 
       <SiteFooter />

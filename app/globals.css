@@ -127,16 +127,67 @@
   }
 }
 
-/* Hero animated gradient */
-@keyframes heroGradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Hero animated blobs */
+@keyframes blobA {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  20% { transform: translate(28%, -32%) scale(1.12); }
+  40% { transform: translate(42%, 22%) scale(0.93); }
+  60% { transform: translate(8%, 38%) scale(1.08); }
+  80% { transform: translate(-22%, -18%) scale(1.06); }
 }
-.hero-animated-bg {
-  background: linear-gradient(-45deg, #99A6F9, #c4aaf8, #FE885C, #f9a882, #99A6F9);
-  background-size: 400% 400%;
-  animation: heroGradientMove 180s ease infinite;
+@keyframes blobB {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  20% { transform: translate(-32%, 28%) scale(1.07); }
+  40% { transform: translate(-12%, -34%) scale(0.94); }
+  60% { transform: translate(24%, -22%) scale(1.12); }
+  80% { transform: translate(18%, 32%) scale(0.96); }
+}
+@keyframes blobC {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  33% { transform: translate(-18%, 22%) scale(1.1); }
+  66% { transform: translate(22%, -18%) scale(0.92); }
+}
+.hero-blob-a {
+  position: absolute;
+  width: 75%;
+  max-width: 850px;
+  aspect-ratio: 1;
+  background: radial-gradient(ellipse at center, #99A6F9 0%, transparent 68%);
+  border-radius: 50%;
+  filter: blur(65px);
+  opacity: 0.88;
+  top: -25%;
+  left: -12%;
+  animation: blobA 40s ease-in-out infinite;
+  will-change: transform;
+}
+.hero-blob-b {
+  position: absolute;
+  width: 65%;
+  max-width: 750px;
+  aspect-ratio: 1;
+  background: radial-gradient(ellipse at center, #F07860 0%, transparent 68%);
+  border-radius: 50%;
+  filter: blur(65px);
+  opacity: 0.88;
+  bottom: -25%;
+  right: -12%;
+  animation: blobB 50s ease-in-out infinite;
+  will-change: transform;
+}
+.hero-blob-c {
+  position: absolute;
+  width: 50%;
+  max-width: 600px;
+  aspect-ratio: 1;
+  background: radial-gradient(ellipse at center, #c4b5fd 0%, transparent 68%);
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  top: 20%;
+  right: 5%;
+  animation: blobC 35s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Font system */

@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import SiteFooter from "@/components/SiteFooter";
 
 const PURPLE = "#99A6F9";
-const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
+const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #F07860 100%)";
 
 const SERVICE_OPTIONS = [
   "Web Application",
