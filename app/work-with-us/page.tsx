@@ -16,11 +16,11 @@ import {
   PackageCheck,
   HeartHandshake,
 } from "lucide-react";
-import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
+import SiteFooter from "@/components/SiteFooter";
 
-const CTA_BG = "linear-gradient(135deg, #F97316 0%, #D946EF 50%, #7C3AED 100%)";
-const PURPLE = "#7C3AED";
+const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
+const PURPLE = "#99A6F9";
 
 const ROLES = [
   {
@@ -28,28 +28,28 @@ const ROLES = [
     title: "Developers & Engineers",
     description: "Build real-world applications using modern tech stacks. Work on full-stack web apps, mobile solutions, and AI/ML projects.",
     tags: ["React", "Python", "Node.js", "Machine Learning"],
-    accent: "linear-gradient(135deg, #7C3AED, #D946EF)",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
   },
   {
     Icon: Palette,
     title: "Designers & Product",
     description: "Create intuitive user experiences and beautiful interfaces. Lead product strategy and design thinking workshops.",
     tags: ["UI/UX Design", "Figma", "User Research", "Product Strategy"],
-    accent: "linear-gradient(135deg, #D946EF, #FB923C)",
+    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
   },
   {
     Icon: Users,
     title: "Project Managers",
     description: "Coordinate teams, manage timelines, and ensure successful project delivery. Interface directly with clients.",
     tags: ["Agile", "Communication", "Stakeholder Management", "Planning"],
-    accent: "linear-gradient(135deg, #06B6D4, #7C3AED)",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
   },
   {
     Icon: MessageSquare,
     title: "Business & Strategy",
     description: "Work on client relationships, marketing, and organizational growth. Help us expand our impact and reach.",
     tags: ["Marketing", "Strategy", "Partnerships", "Communications"],
-    accent: "linear-gradient(135deg, #10B981, #06B6D4)",
+    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
   },
 ];
 
@@ -66,17 +66,17 @@ const ORG_TYPES = [
   {
     title: "Nonprofits",
     description: "We help mission-driven organizations leverage technology to amplify their social impact.",
-    accent: "linear-gradient(135deg, #7C3AED, #D946EF)",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
   },
   {
     title: "Social Enterprises",
     description: "Partner with us to build sustainable tech solutions that support your business model.",
-    accent: "linear-gradient(135deg, #D946EF, #FB923C)",
+    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
   },
   {
     title: "Community Groups",
     description: "We work with local organizations to address community needs through technology.",
-    accent: "linear-gradient(135deg, #06B6D4, #7C3AED)",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
   },
 ];
 
@@ -87,9 +87,9 @@ const PROCESS_STEPS = [
     title: "Contact Us",
     subtitle: "Tell us about your needs",
     description: "Fill out our intake form with details about your organization, what you're looking for, and your timeline. We'll review your submission and assess whether we're a good fit for your project.",
-    accent: "linear-gradient(135deg, #7C3AED, #A855F7)",
-    lightAccent: "#F5F3FF",
-    borderColor: "#C4B5FD",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
+    lightAccent: "#eef0fe",
+    borderColor: "#99A6F9",
     link: "/work-with-us/form",
     linkLabel: "Start Here",
   },
@@ -99,9 +99,9 @@ const PROCESS_STEPS = [
     title: "Consultation Meeting",
     subtitle: "Align on scope and vision",
     description: "We schedule a call to dig deeper into your goals, constraints, and success criteria. Together we define the project scope, deliverables, and a realistic timeline.",
-    accent: "linear-gradient(135deg, #A855F7, #D946EF)",
-    lightAccent: "#FDF4FF",
-    borderColor: "#E879F9",
+    accent: "#FE885C",
+    lightAccent: "#fef0ea",
+    borderColor: "#FE885C",
     link: null,
     linkLabel: null,
   },
@@ -111,9 +111,9 @@ const PROCESS_STEPS = [
     title: "Weekly Check-ins",
     subtitle: "Transparent progress updates",
     description: "Your dedicated team holds structured weekly syncs to share progress, gather feedback, and course-correct early. You stay informed at every stage without managing day-to-day execution.",
-    accent: "linear-gradient(135deg, #D946EF, #FB923C)",
-    lightAccent: "#FFF7ED",
-    borderColor: "#FDBA74",
+    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    lightAccent: "#fef0ea",
+    borderColor: "#FE885C",
     link: null,
     linkLabel: null,
   },
@@ -123,9 +123,9 @@ const PROCESS_STEPS = [
     title: "Solution Delivered",
     subtitle: "Handoff with full documentation",
     description: "We deliver the final product with complete documentation, training materials, and a thorough handoff session. Everything is built to be maintained by your team independently.",
-    accent: "linear-gradient(135deg, #FB923C, #F97316)",
-    lightAccent: "#FFF7ED",
-    borderColor: "#FB923C",
+    accent: "#99A6F9",
+    lightAccent: "#eef0fe",
+    borderColor: "#99A6F9",
     link: null,
     linkLabel: null,
   },
@@ -135,9 +135,9 @@ const PROCESS_STEPS = [
     title: "Continued Support",
     subtitle: "We stay in your corner",
     description: "Our relationship doesn't end at delivery. We provide a post-launch support period for bug fixes, updates, and questions. Many of our partners continue working with us on follow-on projects.",
-    accent: "linear-gradient(135deg, #F97316, #EF4444)",
-    lightAccent: "#FEF2F2",
-    borderColor: "#FCA5A5",
+    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
+    lightAccent: "#eef0fe",
+    borderColor: "#99A6F9",
     link: null,
     linkLabel: null,
   },
@@ -155,24 +155,24 @@ function ProcessGraphic() {
       >
         <defs>
           <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#7C3AED" />
-            <stop offset="100%" stopColor="#A855F7" />
+            <stop offset="0%" stopColor="#99A6F9" />
+            <stop offset="100%" stopColor="#b3b9fb" />
           </linearGradient>
           <linearGradient id="pg2" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#A855F7" />
-            <stop offset="100%" stopColor="#D946EF" />
+            <stop offset="0%" stopColor="#b3b9fb" />
+            <stop offset="100%" stopColor="#d4a8fc" />
           </linearGradient>
           <linearGradient id="pg3" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#D946EF" />
-            <stop offset="100%" stopColor="#FB923C" />
+            <stop offset="0%" stopColor="#99A6F9" />
+            <stop offset="100%" stopColor="#FE885C" />
           </linearGradient>
           <linearGradient id="pg4" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FB923C" />
-            <stop offset="100%" stopColor="#F97316" />
+            <stop offset="0%" stopColor="#fba07a" />
+            <stop offset="100%" stopColor="#FE885C" />
           </linearGradient>
           <linearGradient id="pg5" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#F97316" />
-            <stop offset="100%" stopColor="#EF4444" />
+            <stop offset="0%" stopColor="#FE885C" />
+            <stop offset="100%" stopColor="#f97060" />
           </linearGradient>
           <filter id="pshadow" x="-10%" y="-20%" width="120%" height="160%">
             <feDropShadow dx="0" dy="5" stdDeviation="5" floodOpacity="0.18" />
@@ -260,14 +260,14 @@ export default function WorkWithUs() {
       <section
         className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
         style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(251,146,60,0.10) 0%, transparent 50%), #ffffff",
+          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(254,136,92,0.10) 0%, transparent 50%), #ffffff",
         }}
       >
         <h1
           className="font-bold tracking-tight leading-none mb-4"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 50%, #FB923C 100%)",
+            background: "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -303,7 +303,7 @@ export default function WorkWithUs() {
                     <span
                       key={tag}
                       className="text-xs font-medium px-2.5 py-1 border"
-                      style={{ color: PURPLE, borderColor: "#C4B5FD", background: "#F5F3FF" }}
+                      style={{ color: PURPLE, borderColor: "#99A6F9", background: "#eef0fe" }}
                     >
                       {tag}
                     </span>
@@ -316,7 +316,7 @@ export default function WorkWithUs() {
       </section>
 
       {/* Why Join */}
-      <section className="px-6 py-16" style={{ background: "linear-gradient(160deg, #faf5ff 0%, #fce7f3 50%, #fff7ed 100%)" }}>
+      <section className="px-6 py-16" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
         <div className="max-w-3xl mx-auto">
           <div className="border border-gray-200 bg-white p-8 md:p-10">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">Why Join?</h2>
@@ -354,7 +354,7 @@ export default function WorkWithUs() {
       </section>
 
       {/* Process — 5 Steps */}
-      <section className="px-6 py-20" style={{ background: "linear-gradient(160deg, #faf5ff 0%, #fce7f3 50%, #fff7ed 100%)" }}>
+      <section className="px-6 py-20" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ HOW_IT_WORKS ]</p>
@@ -466,20 +466,7 @@ export default function WorkWithUs() {
         <p className="text-xs text-white/60">Response time: Within 48 hours</p>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 px-6 py-6">
-        <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
-          <span className="text-base font-black text-gray-900 tracking-tighter font-ui">tts</span>
-          <div className="flex items-center gap-6">
-            <a href="mailto:hello@usctts.com" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <Mail size={14} /> hello@usctts.com
-            </a>
-            <a href="https://instagram.com/trojantechsolutions" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <InstagramIcon size={14} /> @trojantechsolutions
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

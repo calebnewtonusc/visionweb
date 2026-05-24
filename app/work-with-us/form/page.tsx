@@ -3,11 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Mail, ArrowLeft, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
-import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
+import SiteFooter from "@/components/SiteFooter";
 
-const PURPLE = "#7C3AED";
-const CTA_BG = "linear-gradient(135deg, #F97316 0%, #D946EF 50%, #7C3AED 100%)";
+const PURPLE = "#99A6F9";
+const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
 
 const SERVICE_OPTIONS = [
   "Web Application",
@@ -99,7 +99,7 @@ export default function ClientIntakeForm() {
         <div className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center">
           <div
             className="w-16 h-16 flex items-center justify-center mb-6"
-            style={{ background: "linear-gradient(135deg, #7C3AED, #D946EF)" }}
+            style={{ background: "linear-gradient(135deg, #99A6F9, #FE885C)" }}
           >
             <CheckCircle size={32} color="white" />
           </div>
@@ -129,14 +129,14 @@ export default function ClientIntakeForm() {
       <section
         className="relative text-center px-6 pt-16 pb-10 overflow-hidden border-b border-gray-100"
         style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.10) 0%, transparent 55%), #ffffff",
+          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.10) 0%, transparent 55%), #ffffff",
         }}
       >
         <h1
           className="font-bold tracking-tight leading-none mb-3"
           style={{
             fontSize: "clamp(28px,5vw,48px)",
-            background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 50%, #FB923C 100%)",
+            background: "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -328,20 +328,7 @@ export default function ClientIntakeForm() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 px-6 py-6">
-        <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
-          <span className="text-base font-black text-gray-900 tracking-tighter font-ui">tts</span>
-          <div className="flex items-center gap-6">
-            <a href="mailto:hello@usctts.com" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <Mail size={14} /> hello@usctts.com
-            </a>
-            <a href="https://instagram.com/trojantechsolutions" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <InstagramIcon size={14} /> @trojantechsolutions
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

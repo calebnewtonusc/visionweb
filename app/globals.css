@@ -127,6 +127,18 @@
   }
 }
 
+/* Hero animated gradient */
+@keyframes heroGradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-animated-bg {
+  background: linear-gradient(-45deg, #99A6F9, #c4aaf8, #FE885C, #f9a882, #99A6F9);
+  background-size: 400% 400%;
+  animation: heroGradientMove 180s ease infinite;
+}
+
 /* Font system */
 html,
 body,

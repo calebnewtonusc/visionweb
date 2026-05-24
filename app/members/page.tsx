@@ -2,11 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import { Mail, ExternalLink } from "lucide-react";
-import InstagramIcon from "@/components/InstagramIcon";
+import { ExternalLink } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import SiteFooter from "@/components/SiteFooter";
 
-const PURPLE = "#7C3AED";
+const PURPLE = "#99A6F9";
 
 const FOUNDERS = [
   {
@@ -123,14 +123,14 @@ export default function MembersPage() {
       <section
         className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
         style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(251,146,60,0.10) 0%, transparent 50%), #ffffff",
+          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(254,136,92,0.10) 0%, transparent 50%), #ffffff",
         }}
       >
         <h1
           className="font-bold tracking-tight leading-none mb-4"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 50%, #FB923C 100%)",
+            background: "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -176,7 +176,7 @@ export default function MembersPage() {
       </section>
 
       {/* Cabinet */}
-      <section className="px-6 py-16" style={{ background: "linear-gradient(160deg, #faf5ff 0%, #fce7f3 50%, #fff7ed 100%)" }}>
+      <section className="px-6 py-16" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-3">[ THE_TEAM ]</p>
@@ -237,20 +237,7 @@ export default function MembersPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 px-6 py-6">
-        <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
-          <span className="text-base font-black text-gray-900 tracking-tighter font-ui">tts</span>
-          <div className="flex items-center gap-6">
-            <a href="mailto:hello@usctts.com" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <Mail size={14} /> hello@usctts.com
-            </a>
-            <a href="https://instagram.com/trojantechsolutions" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <InstagramIcon size={14} /> @trojantechsolutions
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

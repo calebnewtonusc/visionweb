@@ -2,12 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
-import { Mail } from "lucide-react";
-import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
+import SiteFooter from "@/components/SiteFooter";
 
-const CTA_BG = "linear-gradient(135deg, #F97316 0%, #D946EF 50%, #7C3AED 100%)";
-const PURPLE = "#7C3AED";
+const CTA_BG = "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)";
+const PURPLE = "#99A6F9";
 
 const PHILOSOPHY = [
   {
@@ -29,17 +28,17 @@ const VALUES = [
   {
     title: "Accessibility",
     description: "We believe technology should be accessible to all organizations, regardless of budget. That's why all our work is 100% pro bono.",
-    accent: "linear-gradient(135deg, #7C3AED, #D946EF)",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
   },
   {
     title: "Excellence",
     description: "We deliver professional-grade solutions with the same quality standards as top consulting firms, ensuring real impact for our partners.",
-    accent: "linear-gradient(135deg, #D946EF, #FB923C)",
+    accent: "linear-gradient(135deg, #FE885C, #99A6F9)",
   },
   {
     title: "Growth",
     description: "We create opportunities for students to develop technical and leadership skills while making a tangible difference in their community.",
-    accent: "linear-gradient(135deg, #06B6D4, #7C3AED)",
+    accent: "linear-gradient(135deg, #99A6F9, #FE885C)",
   },
 ];
 
@@ -52,14 +51,14 @@ export default function AboutPage() {
       <section
         className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
         style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(217,70,239,0.10) 0%, transparent 50%), #ffffff",
+          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(254,136,92,0.10) 0%, transparent 50%), #ffffff",
         }}
       >
         <h1
           className="font-bold tracking-tight leading-none mb-4"
           style={{
             fontSize: "clamp(40px,7vw,72px)",
-            background: "linear-gradient(135deg, #7C3AED 0%, #D946EF 50%, #FB923C 100%)",
+            background: "linear-gradient(135deg, #99A6F9 0%, #FE885C 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -96,7 +95,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="px-6 py-20" style={{ background: "linear-gradient(160deg, #faf5ff 0%, #fce7f3 50%, #fff7ed 100%)" }}>
+      <section className="px-6 py-20" style={{ background: "linear-gradient(160deg, #eef0fe 0%, #fef0ea 100%)" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-3">What We Stand For</h2>
@@ -134,20 +133,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 px-6 py-6">
-        <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
-          <span className="text-base font-black text-gray-900 tracking-tighter font-ui">tts</span>
-          <div className="flex items-center gap-6">
-            <a href="mailto:hello@usctts.com" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <Mail size={14} /> hello@usctts.com
-            </a>
-            <a href="https://instagram.com/trojantechsolutions" className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors">
-              <InstagramIcon size={14} /> @trojantechsolutions
-            </a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

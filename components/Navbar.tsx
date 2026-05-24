@@ -15,8 +15,8 @@ function TTSLogoMark() {
     <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#7C3AED" />
-          <stop offset="100%" stopColor="#D946EF" />
+          <stop offset="0%" stopColor="#99A6F9" />
+          <stop offset="100%" stopColor="#FE885C" />
         </linearGradient>
       </defs>
       <circle cx="20" cy="20" r="20" fill="url(#logoGrad)" />
