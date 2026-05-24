@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Mail, ExternalLink } from "lucide-react";
 import InstagramIcon from "@/components/InstagramIcon";
 import Navbar from "@/components/Navbar";
+import TTSBreadcrumb from "@/components/TTSBreadcrumb";
 
 const PURPLE = "#7C3AED";
 
@@ -126,6 +127,7 @@ export default function MembersPage() {
           background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(124,58,237,0.12) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(251,146,60,0.10) 0%, transparent 50%), #ffffff",
         }}
       >
+        <TTSBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Members" }]} />
         <h1
           className="font-bold tracking-tight leading-none mb-4"
           style={{
