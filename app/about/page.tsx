@@ -85,7 +85,7 @@ export default function AboutPage() {
           <p className="text-center text-xs font-semibold text-gray-400 tracking-widest uppercase mb-5">[ OUR_PHILOSOPHY ]</p>
           <h2 className="font-monoska text-2xl md:text-3xl text-gray-900 text-center mb-16 tracking-tight">
             At TTS,{" "}
-            <span style={{ background: "rgba(153,166,249,0.3)", padding: "2px 8px", display: "inline" }}>
+            <span className="font-monoska" style={{ background: "rgba(153,166,249,0.3)", padding: "2px 8px", display: "inline" }}>
               Tech is for everyone.
             </span>
           </h2>
