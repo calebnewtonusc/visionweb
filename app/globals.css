@@ -127,18 +127,6 @@
   }
 }
 
-/* Instrument Serif display font */
-@font-face {
-  font-family: "InstrumentSerif";
-  src: url("/fonts/InstrumentSerif-Regular.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-.font-comico {
-  font-family: "InstrumentSerif", serif !important;
-  font-weight: normal !important;
-}
 
 /* Monoska display font */
 @font-face {

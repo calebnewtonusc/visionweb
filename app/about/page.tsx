@@ -92,10 +92,9 @@ export default function AboutPage() {
           <div className="flex flex-col gap-0 border-2 border-gray-300">
             {PHILOSOPHY.map(({ prefix, keyword, body }) => (
               <div key={keyword} className="p-8 border-b-2 border-gray-300 last:border-b-0">
-                <h3 className="font-comico text-gray-900 mb-3" style={{ fontSize: "1.35rem" }}>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">
                   {prefix}{" "}
                   <span
-                    className="font-comico"
                     style={{
                       background: "linear-gradient(180deg, #99A6F9 0%, #F07860 100%)",
                       WebkitBackgroundClip: "text",
