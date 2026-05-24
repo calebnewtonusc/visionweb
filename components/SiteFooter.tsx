@@ -28,7 +28,7 @@ export default function SiteFooter() {
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors w-fit"
           >
-            <LinkedInIcon size={14} /> LinkedIn
+            <LinkedInIcon size={14} color="#111827" /> LinkedIn
           </a>
         </div>
       </div>
