@@ -237,7 +237,7 @@ export default function MembersPage() {
           <div className="overflow-hidden mt-8">
             <div className="logo-marquee flex items-center gap-16" style={{ width: "max-content" }}>
               {[...ALUMNI.filter((a) => a.logo), ...ALUMNI.filter((a) => a.logo)].map(({ name, logo }, i) => (
-                <div key={i} className="flex-shrink-0 relative" style={{ height: "29px", width: "115px" }}>
+                <div key={i} className="flex-shrink-0 relative" style={{ height: "38px", width: "150px" }}>
                   <Image src={logo!} alt={name} fill className="object-contain" />
                 </div>
               ))}

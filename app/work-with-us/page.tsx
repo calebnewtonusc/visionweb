@@ -142,67 +142,6 @@ const PROCESS_STEPS = [
   },
 ];
 
-function ProcessGraphic() {
-  return (
-    <div className="relative w-full max-w-3xl mx-auto" style={{ height: 80 }}>
-      <svg
-        viewBox="0 0 480 80"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="pgAll" x1="0" y1="0" x2="480" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#99A6F9" />
-            <stop offset="100%" stopColor="#F07860" />
-          </linearGradient>
-          <filter id="pshadow" x="-10%" y="-20%" width="120%" height="160%">
-            <feDropShadow dx="0" dy="3" stdDeviation="4" floodOpacity="0.15" />
-          </filter>
-        </defs>
-
-        {/* Connecting line — sits behind pills */}
-        <line x1="48" y1="23" x2="432" y2="23" stroke="url(#pgAll)" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.5" />
-
-        {/* Step 1 — Contact */}
-        <g filter="url(#pshadow)">
-          <rect x="8" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
-          <text x="48" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Contact</text>
-        </g>
-        <text x="48" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">01</text>
-
-        {/* Step 2 — Consult */}
-        <g filter="url(#pshadow)">
-          <rect x="104" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
-          <text x="144" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Consult</text>
-        </g>
-        <text x="144" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">02</text>
-
-        {/* Step 3 — Check-ins */}
-        <g filter="url(#pshadow)">
-          <rect x="200" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
-          <text x="240" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Check-ins</text>
-        </g>
-        <text x="240" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">03</text>
-
-        {/* Step 4 — Deliver */}
-        <g filter="url(#pshadow)">
-          <rect x="296" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
-          <text x="336" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Deliver</text>
-        </g>
-        <text x="336" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">04</text>
-
-        {/* Step 5 — Support */}
-        <g filter="url(#pshadow)">
-          <rect x="392" y="9" width="80" height="28" rx="14" fill="url(#pgAll)" />
-          <text x="432" y="28" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="Inter,sans-serif">Support</text>
-        </g>
-        <text x="432" y="62" textAnchor="middle" fill="#9CA3AF" fontSize="9" fontFamily="Inter,sans-serif">05</text>
-      </svg>
-    </div>
-  );
-}
 
 export default function WorkWithUs() {
   return (
@@ -319,11 +258,6 @@ export default function WorkWithUs() {
             <p className="text-base text-gray-900 max-w-md mx-auto leading-relaxed">
               From first contact to continued support, here&apos;s what working with TTS looks like.
             </p>
-          </div>
-
-          {/* Visual arc graphic */}
-          <div className="mb-12 px-4">
-            <ProcessGraphic />
           </div>
 
           {/* Step detail cards */}
