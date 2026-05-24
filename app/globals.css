@@ -127,6 +127,16 @@
   }
 }
 
+/* Monoska display font */
+@font-face {
+  font-family: "Monoska";
+  src: url("/fonts/Monoska.ttf") format("truetype"),
+       url("/fonts/Monoska.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Alumni logo marquee */
 @keyframes logo-marquee {
   from { transform: translateX(0); }
