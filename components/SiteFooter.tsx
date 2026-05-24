@@ -9,7 +9,7 @@ export default function SiteFooter() {
     <footer className="bg-white border-t-2 border-gray-300 px-6 py-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col gap-2">
-          <Image src="/img/tts-logo.png" alt="TTS" width={36} height={36} />
+          <Image src="/img/tts-logo.png" alt="TTS" width={47} height={47} />
           <a
             href="mailto:hello@usctts.com"
             className="flex items-center gap-1.5 text-sm text-gray-500 no-underline hover:text-gray-900 transition-colors w-fit"

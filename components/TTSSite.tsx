@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { ArrowRight, Code2, Smartphone, BarChart2, Hammer, Briefcase, TrendingUp } from "lucide-react";
+import { Code2, Smartphone, BarChart2, Hammer, Briefcase, TrendingUp } from "lucide-react";
 import Navbar from "./Navbar";
 import SiteFooter from "./SiteFooter";
 
@@ -106,21 +105,6 @@ export default function TTSSite() {
           <p className="text-base text-gray-900 max-w-lg mx-auto leading-relaxed mb-10">
             USC&apos;s student-run tech org delivering high-impact AI and software solutions for nonprofits, hospitals, and research labs. Completely pro bono.
           </p>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link
-              href="/work-with-us"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white no-underline transition-all duration-200 hover:opacity-90"
-              style={{ background: GRADIENT }}
-            >
-              Join Our Team <ArrowRight size={15} />
-            </Link>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-gray-900 border border-gray-400 no-underline hover:bg-gray-100 transition-all duration-200"
-            >
-              Learn More
-            </Link>
-          </div>
         </div>
       </section>
 

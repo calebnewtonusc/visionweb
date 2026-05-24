@@ -206,7 +206,7 @@ function ProcessGraphic() {
 
 export default function WorkWithUs() {
   return (
-    <div className="font-sans bg-white text-gray-900 min-h-screen">
+    <div className="tts-inner-page font-sans bg-white text-gray-900 min-h-screen">
       <Navbar />
 
       {/* Hero */}

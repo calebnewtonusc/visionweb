@@ -11,6 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://usctts.com"),
   title: "Trojan Technology Solutions | USC Builder Club",
   description:
     "USC's AI builder club. Workshops, client work, and speaker nights open to every major. No experience required. No gatekeeping.",
@@ -21,12 +22,21 @@ export const metadata: Metadata = {
     url: "https://usctts.com",
     siteName: "Trojan Technology Solutions",
     type: "website",
+    images: [
+      {
+        url: "/img/tts-logo.png",
+        width: 512,
+        height: 512,
+        alt: "Trojan Technology Solutions",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Trojan Technology Solutions",
     description:
       "USC's AI builder club. Open to every major. No experience required.",
+    images: ["/img/tts-logo.png"],
   },
   icons: {
     icon: [

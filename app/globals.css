@@ -223,7 +223,7 @@ html {
   opacity: 0.88;
   top: -25%;
   left: -12%;
-  animation: blobA 40s ease-in-out infinite;
+  animation: blobA 32s ease-in-out infinite;
   will-change: transform;
 }
 .hero-blob-b {
@@ -237,7 +237,7 @@ html {
   opacity: 0.88;
   bottom: -25%;
   right: -12%;
-  animation: blobB 50s ease-in-out infinite;
+  animation: blobB 40s ease-in-out infinite;
   will-change: transform;
 }
 .hero-blob-c {
@@ -251,7 +251,7 @@ html {
   opacity: 0.55;
   top: 20%;
   right: 5%;
-  animation: blobC 35s ease-in-out infinite;
+  animation: blobC 28s ease-in-out infinite;
   will-change: transform;
 }
 
@@ -910,6 +910,18 @@ video[id^="webgazer"] {
   .tts-slide-enter-prev > *,
   .tts-meeting-float-icon {
     animation: none !important;
+  }
+}
+
+/* ── Inner pages — body text 25% larger on desktop ────────────────────── */
+@media (min-width: 768px) {
+  .tts-inner-page .text-base {
+    font-size: 1.25rem !important;
+    line-height: 1.8 !important;
+  }
+  .tts-inner-page .text-sm {
+    font-size: 1.09rem !important;
+    line-height: 1.7 !important;
   }
 }
 
