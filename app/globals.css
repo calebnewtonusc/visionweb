@@ -883,6 +883,40 @@ video[id^="webgazer"] {
   }
 }
 
+/* ── Hero section background — light and dark ──────────────────────────── */
+.tts-hero-bg {
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(240,120,96,0.18) 0%, transparent 50%),
+    #ffffff;
+}
+.dark .tts-hero-bg {
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(240,120,96,0.08) 0%, transparent 50%),
+    #1a1a1a !important;
+}
+
+/* ── Tag pills — role/skill tags in work-with-us ───────────────────────── */
+.tts-tag {
+  color: #99A6F9;
+  border-color: #99A6F9;
+  background: #eef0fe;
+}
+.dark .tts-tag {
+  color: #ffffff !important;
+  border-color: #444444 !important;
+  background: #2a2a2a !important;
+}
+
+/* ── Social icon — adaptable grey in both modes ────────────────────────── */
+.tts-social-icon {
+  color: #9CA3AF;
+}
+.dark .tts-social-icon {
+  color: #d4d4d4 !important;
+}
+
 /* ── Dark mode overrides ──────────────────────────────────────────────── */
 .dark,
 .dark body {

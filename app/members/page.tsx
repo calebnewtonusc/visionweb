@@ -120,12 +120,7 @@ export default function MembersPage() {
       <Navbar />
 
       {/* Hero */}
-      <section
-        className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
-        style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.22) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(240,120,96,0.18) 0%, transparent 50%), #ffffff",
-        }}
-      >
+      <section className="relative text-center px-6 pt-20 pb-16 overflow-hidden tts-hero-bg">
         <div
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
@@ -178,7 +173,7 @@ export default function MembersPage() {
                   <p className="text-sm font-semibold mb-0.5" style={{ color: PURPLE }}>{role}</p>
                   <p className="text-xs text-gray-400">{focus}</p>
                 </div>
-                <LinkedInIcon size={18} className="ml-auto flex-shrink-0" color="#0A66C2" />
+                <LinkedInIcon size={18} className="ml-auto flex-shrink-0 tts-social-icon" color="currentColor" />
               </a>
             ))}
           </div>

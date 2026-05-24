@@ -39,6 +39,13 @@ export default function Navbar() {
           <span className="text-sm font-semibold text-gray-900">Trojan Technology Solutions</span>
         </Link>
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-0">
+          <button
+            onClick={() => setDark((d) => !d)}
+            className="mr-3 p-1.5 text-gray-400 hover:text-gray-700 transition-colors duration-150 flex items-center cursor-pointer"
+            aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {dark ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
           {LINKS.map(({ label, href }, i) => {
             const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
             return (
@@ -56,15 +63,6 @@ export default function Navbar() {
                 >
                   {label}
                 </Link>
-                {i === 0 && (
-                  <button
-                    onClick={() => setDark((d) => !d)}
-                    className="ml-3 p-1.5 text-gray-400 hover:text-gray-700 transition-colors duration-150 flex items-center cursor-pointer"
-                    aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-                  >
-                    {dark ? <Sun size={15} /> : <Moon size={15} />}
-                  </button>
-                )}
               </React.Fragment>
             );
           })}

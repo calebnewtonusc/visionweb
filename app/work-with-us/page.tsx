@@ -8,7 +8,6 @@ import {
   Users,
   MessageSquare,
   CheckCircle,
-  Mail,
   ArrowRight,
   PhoneCall,
   Calendar,
@@ -211,12 +210,7 @@ export default function WorkWithUs() {
       <Navbar />
 
       {/* Hero */}
-      <section
-        className="relative text-center px-6 pt-20 pb-16 overflow-hidden"
-        style={{
-          background: "radial-gradient(ellipse 90% 70% at 15% 0%, rgba(153,166,249,0.22) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 10%, rgba(240,120,96,0.18) 0%, transparent 50%), #ffffff",
-        }}
-      >
+      <section className="relative text-center px-6 pt-20 pb-16 overflow-hidden tts-hero-bg">
         <div
           aria-hidden="true"
           className="absolute inset-0 pointer-events-none"
@@ -267,11 +261,7 @@ export default function WorkWithUs() {
                 <p className="text-sm text-gray-900 leading-relaxed mb-4">{description}</p>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-medium px-2.5 py-1 border"
-                      style={{ color: PURPLE, borderColor: "#99A6F9", background: "#eef0fe" }}
-                    >
+                    <span key={tag} className="text-xs font-medium px-2.5 py-1 border tts-tag">
                       {tag}
                     </span>
                   ))}
@@ -394,44 +384,6 @@ export default function WorkWithUs() {
               Start a Project <ArrowRight size={15} />
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative px-6 py-20 text-center overflow-hidden" style={{ background: CTA_BG }}>
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
-            backgroundSize: "300px 300px",
-            opacity: 0.07,
-            mixBlendMode: "overlay",
-          }}
-        />
-        <div className="relative z-10">
-          <div className="mb-6">
-            <Mail size={36} className="mx-auto text-white/70" />
-          </div>
-          <h2
-            className="font-bold text-white mb-4 tracking-tight"
-            style={{ fontSize: "clamp(1.75rem,4vw,2.5rem)" }}
-          >
-            Ready to Get Started?
-          </h2>
-          <p className="text-base text-white/85 max-w-md mx-auto leading-relaxed mb-8">
-            Whether you want to join our team or partner with us on a project, we&apos;d love to hear from you.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-4">
-            <a
-              href="mailto:hello@usctts.com"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold no-underline transition-all duration-200"
-              style={{ background: "rgba(255,255,255,0.15)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)" }}
-            >
-              <Mail size={15} /> Email Us
-            </a>
-          </div>
-          <p className="text-xs text-white/60">Response time: Within 48 hours</p>
         </div>
       </section>
 
